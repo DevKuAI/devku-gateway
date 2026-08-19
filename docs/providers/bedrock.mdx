@@ -33,7 +33,7 @@ long-lived access keys. When `BEDROCK_BASE_URL` is empty, Gateway falls back to
 <CodeGroup>
 
 ```bash Docker (.env file)
-docker run --rm -p 8080:8080 --env-file .env enterpilot/gomodel
+docker run --rm -p 8080:8080 --env-file .env huanghua581/devku-gateway:latest
 ```
 
 ```bash Docker (inline -e)
@@ -42,7 +42,7 @@ docker run --rm -p 8080:8080 \
   -e BEDROCK_BASE_URL="us-east-1" \
   -e AWS_ACCESS_KEY_ID="..." \
   -e AWS_SECRET_ACCESS_KEY="..." \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 ```bash Binary (make build)

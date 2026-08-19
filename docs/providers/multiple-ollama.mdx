@@ -29,7 +29,7 @@ registers `ollama-b`. Use different ports or hostnames per instance.
 <CodeGroup>
 
 ```bash Docker (.env file)
-docker run --rm -p 8080:8080 --env-file .env enterpilot/gomodel
+docker run --rm -p 8080:8080 --env-file .env huanghua581/devku-gateway:latest
 ```
 
 ```bash Docker (inline -e)
@@ -37,7 +37,7 @@ docker run --rm -p 8080:8080 \
   -e GOMODEL_MASTER_KEY="change-me" \
   -e OLLAMA_A_BASE_URL="http://host.docker.internal:11434/v1" \
   -e OLLAMA_B_BASE_URL="http://host.docker.internal:11435/v1" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 ```bash Binary (make build)

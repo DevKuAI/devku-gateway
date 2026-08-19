@@ -25,14 +25,14 @@ Metrics are **disabled by default**. To enable metrics collection, set
 
 ```bash Docker (.env file)
 # Add METRICS_ENABLED=true to your .env file, then:
-docker run --rm -p 8080:8080 --env-file .env enterpilot/gomodel
+docker run --rm -p 8080:8080 --env-file .env huanghua581/devku-gateway:latest
 # Metrics available at http://localhost:8080/metrics
 ```
 
 ```bash Docker (inline -e)
 docker run --rm -p 8080:8080 \
   -e METRICS_ENABLED=true \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 # Metrics available at http://localhost:8080/metrics
 ```
 

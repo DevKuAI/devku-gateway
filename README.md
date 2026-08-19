@@ -13,11 +13,13 @@
 <p align="center">
   <a href="https://github.com/DevKuAI/devku-gateway/actions/workflows/test.yml"><img alt="CI" src="https://github.com/DevKuAI/devku-gateway/actions/workflows/test.yml/badge.svg"></a>
   <a href="https://github.com/DevKuAI/devku-gateway/blob/main/go.mod"><img alt="GO Version" src="https://img.shields.io/github/go-mod/go-version/DevKuAI/devku-gateway?label=GO"></a>
+  <a href="https://hub.docker.com/r/huanghua581/devku-gateway"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/huanghua581/devku-gateway"></a>
 </p>
 
 <p align="center">
   <a href="./docs/getting-started/quickstart.mdx">Documentation</a> |
   <a href="./docs/advanced/configuration.mdx">Configuration</a> |
+  <a href="https://hub.docker.com/r/huanghua581/devku-gateway">Docker Hub</a> |
   <a href="https://github.com/DevKuAI/devku-gateway">Repository</a> |
   <a href="https://github.com/ENTERPILOT/GoModel">Original upstream</a>
 </p>
@@ -59,10 +61,10 @@ gateway
 **Docker**
 
 ```bash
-docker build -t gateway .
+docker pull huanghua581/devku-gateway:latest
 docker run --rm -p 8080:8080 \
   -e OPENAI_API_KEY="your-openai-key" \
-  gateway
+  huanghua581/devku-gateway:latest
 ```
 
 Gateway can be configured with environment variables, `config.yaml`, or the
@@ -179,7 +181,7 @@ docker compose up -d
 # or: make infra
 ```
 
-**Full stack** (adds Gateway + Prometheus; builds the app image):
+**Full stack from source** (adds Gateway + Prometheus and builds the app image locally):
 
 ```bash
 docker compose --profile app up -d

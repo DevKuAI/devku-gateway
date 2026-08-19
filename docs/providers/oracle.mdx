@@ -53,7 +53,7 @@ provider.
 <CodeGroup>
 
 ```bash Docker (.env file)
-docker run --rm -p 8080:8080 --env-file .env enterpilot/gomodel
+docker run --rm -p 8080:8080 --env-file .env huanghua581/devku-gateway:latest
 ```
 
 ```bash Docker (inline -e)
@@ -62,7 +62,7 @@ docker run --rm -p 8080:8080 \
   -e ORACLE_BASE_URL="https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/v1" \
   -e ORACLE_API_KEY="..." \
   -e ORACLE_MODELS="openai.gpt-oss-120b,xai.grok-3" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 ```bash Binary (make build)

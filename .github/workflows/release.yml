@@ -12,6 +12,10 @@ concurrency:
   group: release-${{ github.ref_name }}
   cancel-in-progress: false
 
+env:
+  DOCKERHUB_USERNAME: huanghua581
+  DOCKER_IMAGE: huanghua581/devku-gateway
+
 jobs:
   docker:
     name: Build and push Docker image by digest
@@ -31,20 +35,16 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          # Repository secret containing a Docker Hub token with read/write access.
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set build metadata
         id: build_meta
         shell: bash
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKERHUB_PROJECT_NAME: ${{ secrets.DOCKERHUB_PROJECT_NAME }}
         run: |
-          image="${DOCKER_USERNAME}/${DOCKERHUB_PROJECT_NAME}"
           version="${GITHUB_REF_NAME#v}"
           {
-            echo "image=${image}"
             echo "version=${version}"
             echo "commit=${GITHUB_SHA}"
             echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
@@ -54,7 +54,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ steps.build_meta.outputs.image }}
+          images: ${{ env.DOCKER_IMAGE }}
 
       - name: Build and push by digest
         id: build
@@ -63,7 +63,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ steps.build_meta.outputs.image }},push-by-digest=true,name-canonical=true,push=true,compression=zstd,compression-level=3
+          outputs: type=image,name=${{ env.DOCKER_IMAGE }},push-by-digest=true,name-canonical=true,push=true,compression=zstd,compression-level=3
           build-args: |
             VERSION=${{ steps.build_meta.outputs.version }}
             COMMIT=${{ steps.build_meta.outputs.commit }}
@@ -82,16 +82,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set Docker image
-        id: image_meta
-        shell: bash
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKERHUB_PROJECT_NAME: ${{ secrets.DOCKERHUB_PROJECT_NAME }}
-        run: echo "image=${DOCKER_USERNAME}/${DOCKERHUB_PROJECT_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Detect prerelease tag
         id: release_meta
@@ -108,7 +100,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ steps.image_meta.outputs.image }}
+          images: ${{ env.DOCKER_IMAGE }}
           flavor: |
             latest=false
           tags: |
@@ -120,7 +112,7 @@ jobs:
       - name: Promote Docker tags
         shell: bash
         env:
-          IMAGE: ${{ steps.image_meta.outputs.image }}
+          IMAGE: ${{ env.DOCKER_IMAGE }}
           DIGEST: ${{ needs.docker.outputs.digest }}
           FINAL_TAGS: ${{ steps.meta.outputs.tags }}
         run: |
@@ -181,64 +173,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false --verify-tag
-
-  deploy-demo:
-    name: Update demo.enterpilot.io
-    runs-on: ubuntu-latest
-    # Must run after tag promotion: the demo pulls :latest, which is what
-    # docker-promote pushes.
-    needs: docker-promote
-    # :latest is only promoted for stable releases (see "Detect prerelease
-    # tag"), so skip prereleases like v1.2.3-rc1 — the demo wouldn't change.
-    if: ${{ !contains(github.ref_name, '-') }}
-    # Best-effort: a demo host outage must not fail the release
-    continue-on-error: true
-    steps:
-      - name: Trigger demo deploy webhook
-        env:
-          DEMO_HOOK_TOKEN: ${{ secrets.DEMO_HOOK_TOKEN }}
-        run: |
-          curl -fsS --connect-timeout 10 --max-time 20 --retry-max-time 40 \
-            --retry 3 --retry-delay 5 -X PUT \
-            -H "X-Hook-Token: ${DEMO_HOOK_TOKEN}" \
-            -d "deploy ${GITHUB_REF_NAME}" \
-            https://demo.enterpilot.io/hooks/update-demo
-
-  publish-mcp:
-    name: Publish to MCP Registry
-    runs-on: ubuntu-latest
-    # Registry verification pulls the versioned Docker Hub image, so the tag must exist first
-    needs: docker-promote
-    # Best-effort: a registry outage must not fail the release
-    continue-on-error: true
-    permissions:
-      id-token: write # GitHub OIDC grants the io.github.enterpilot/* namespace
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Install mcp-publisher
-        env:
-          PUBLISHER_VERSION: v1.8.0
-          PUBLISHER_SHA256: 1370446bbe74d562608e8005a6ccce02d146a661fbd78674e11cc70b9618d6cf
-        run: |
-          curl -fsSL -o mcp-publisher.tar.gz "https://github.com/modelcontextprotocol/registry/releases/download/${PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz"
-          echo "${PUBLISHER_SHA256}  mcp-publisher.tar.gz" | sha256sum -c -
-          tar xzf mcp-publisher.tar.gz mcp-publisher
-
-      - name: Set release version in server.json
-        shell: bash
-        run: |
-          version="${GITHUB_REF_NAME#v}"
-          jq --arg v "$version" \
-            '.version = $v | .packages[0].identifier = "docker.io/enterpilot/gomodel:" + $v' \
-            docs/server.json > server.json.tmp && mv server.json.tmp docs/server.json
-
-      - name: Authenticate to MCP Registry
-        run: ./mcp-publisher login github-oidc
-
-      - name: Publish server to MCP Registry
-        run: ./mcp-publisher publish docs/server.json

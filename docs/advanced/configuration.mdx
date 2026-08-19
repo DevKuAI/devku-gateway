@@ -571,7 +571,7 @@ register a keyless vLLM server:
 docker run --rm -p 8080:8080 \
   -e GOMODEL_MASTER_KEY="change-me" \
   -e VLLM_BASE_URL="http://host.docker.internal:8000/v1" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 If the upstream server was started with `vllm serve ... --api-key token-abc123`,
@@ -582,7 +582,7 @@ docker run --rm -p 8080:8080 \
   -e GOMODEL_MASTER_KEY="change-me" \
   -e VLLM_BASE_URL="http://host.docker.internal:8000/v1" \
   -e VLLM_API_KEY="token-abc123" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 You can also register more than one vLLM instance without YAML:
@@ -592,7 +592,7 @@ docker run --rm -p 8080:8080 \
   -e GOMODEL_MASTER_KEY="change-me" \
   -e VLLM_BASE_URL="http://host.docker.internal:8000/v1" \
   -e VLLM_TEST_BASE_URL="http://host.docker.internal:8000/v1" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 This registers providers `vllm` and `vllm-test`. Use YAML only when the

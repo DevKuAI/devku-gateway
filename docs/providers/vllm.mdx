@@ -36,14 +36,14 @@ GOMODEL_MASTER_KEY=change-me
 <CodeGroup>
 
 ```bash Docker (.env file)
-docker run --rm -p 8080:8080 --env-file .env enterpilot/gomodel
+docker run --rm -p 8080:8080 --env-file .env huanghua581/devku-gateway:latest
 ```
 
 ```bash Docker (inline -e)
 docker run --rm -p 8080:8080 \
   -e GOMODEL_MASTER_KEY="change-me" \
   -e VLLM_BASE_URL="http://host.docker.internal:8000/v1" \
-  enterpilot/gomodel
+  huanghua581/devku-gateway:latest
 ```
 
 ```bash Binary (make build)

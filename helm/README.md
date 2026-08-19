@@ -44,11 +44,12 @@ helm install gomodel ./helm \
 
 ### Key Values
 
-| Parameter                        | Description                                                                                    | Default                |
-| -------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------- |
-| `replicaCount`                   | Number of replicas                                                                             | `2`                    |
-| `image.repository`               | Image repository                                                                               | `enterpilot/gomodel`   |
-| `image.tag`                      | Image tag                                                                                      | `""` (uses appVersion) |
+| Parameter                        | Description                                                                                    | Default                         |
+| -------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------- |
+| `replicaCount`                   | Number of replicas                                                                             | `2`                             |
+| `image.repository`               | Image repository                                                                               | `huanghua581/devku-gateway`      |
+| `image.tag`                      | Image tag; pin a release version for reproducible deployments                                  | `"latest"`                      |
+| `image.pullPolicy`               | Image pull policy                                                                              | `Always`                         |
 | `server.port`                    | Server port                                                                                    | `8080`                 |
 | `server.basePath`                | URL path prefix where Gateway is mounted                                                       | `"/"`                  |
 | `server.userPathHeader`          | Header used to read/write request user_path values                                             | `"X-GoModel-User-Path"` |

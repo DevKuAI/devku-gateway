@@ -130,7 +130,7 @@ the in-container path Gateway expects:
 ```bash
 docker run --rm -p 8080:8080 \
   -v "$PWD/config.yml:/app/config/config.yaml:ro" \
-  enterpilot/gomodel:latest
+  huanghua581/devku-gateway:latest
 ```
 
 With Docker Compose:
@@ -138,7 +138,7 @@ With Docker Compose:
 ```yaml
 services:
   gomodel:
-    image: enterpilot/gomodel:latest
+    image: huanghua581/devku-gateway:latest
     ports:
       - "8080:8080"
     volumes:
