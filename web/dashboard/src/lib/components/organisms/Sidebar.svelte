@@ -244,8 +244,9 @@
   }
 
 .nav-item.active {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-weight: 600;
   }
 
 .nav-label {

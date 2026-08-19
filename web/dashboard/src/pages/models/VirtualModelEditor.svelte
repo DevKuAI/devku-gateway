@@ -233,7 +233,7 @@
   }
 
   .vm-session-affinity-checkbox input {
-    accent-color: var(--accent);
+    accent-color: var(--accent-solid);
     cursor: pointer;
   }
 </style>

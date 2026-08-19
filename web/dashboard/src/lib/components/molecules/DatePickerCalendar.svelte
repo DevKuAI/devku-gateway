@@ -213,15 +213,15 @@
   }
 
   .dp-day.range-start {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-solid);
+    color: var(--text-on-accent);
     border-radius: 6px 0 0 6px;
     font-weight: 600;
   }
 
   .dp-day.range-end {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-solid);
+    color: var(--text-on-accent);
     border-radius: 0 6px 6px 0;
     font-weight: 600;
   }

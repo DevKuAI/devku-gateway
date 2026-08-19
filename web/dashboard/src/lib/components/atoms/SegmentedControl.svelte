@@ -56,8 +56,8 @@
   }
 
   .segmented-btn.active {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-solid);
+    color: var(--text-on-accent);
   }
 
   @media (max-width: 768px) {

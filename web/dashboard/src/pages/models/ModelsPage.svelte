@@ -196,9 +196,9 @@
   }
 
 .category-tab.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
+    background: var(--accent-solid);
+    color: var(--text-on-accent);
+    border-color: var(--accent-solid);
   }
 
 .category-tab .tab-count {

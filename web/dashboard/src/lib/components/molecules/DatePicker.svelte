@@ -212,8 +212,8 @@
   }
 
   .preset-btn.active {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-solid);
+    color: var(--text-on-accent);
   }
 
   .date-picker-calendars {

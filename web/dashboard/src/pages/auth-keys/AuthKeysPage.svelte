@@ -120,7 +120,7 @@
 .auth-keys-inactive-toggle input {
   width: 16px;
   height: 16px;
-  accent-color: var(--accent);
+  accent-color: var(--accent-solid);
   cursor: pointer;
 }
 </style>

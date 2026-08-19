@@ -6,16 +6,24 @@
    reads these variables back through getComputedStyle, and an unregistered
    custom property computes to its token stream — Chart.js would receive the
    literal "light-dark(...)" text instead of a color. */
-/* Dark mode (default) — matches gomodel.enterpilot.io */
+/* Dark mode (default). */
 :root {
-  --bg: #111110;
-  --bg-surface: #1e1d1c;
-  --bg-surface-hover: #2a2420;
-  --border: #2a2826;
-  --text: #e8e0d6;
-  --text-muted: #9a918a;
-  --accent: #b8956e;
-  --accent-hover: #d4b896;
+  --bg: #111318;
+  --bg-surface: #1a1d24;
+  --bg-surface-hover: #242933;
+  --border: #2d333d;
+  --border-strong: #3d4654;
+  --text: #f3f4f6;
+  --text-muted: #a4abb5;
+  --text-faint: #7f8792;
+  --accent-solid: #0068f9;
+  --accent-solid-hover: #024bb1;
+  --accent-text: #60a5fa;
+  --accent-strong: #93c5fd;
+  --accent-soft: rgba(0, 104, 249, 0.16);
+  --text-on-accent: #ffffff;
+  --accent: var(--accent-text);
+  --accent-hover: var(--accent-solid-hover);
   --success: #34d399;
   --info: #3b82f6;
   --warning: #f59e0b;
@@ -40,15 +48,17 @@
   --token-local: color-mix(in srgb, var(--info) 20%, transparent);
   --sidebar-width: 240px;
   --radius: 8px;
-  --chart-grid: #2a2826;
-  --chart-text: #9a918a;
+  --shadow-subtle: rgba(0, 0, 0, 0.18) 0 1px 2px 0;
+  --shadow-product: rgba(0, 0, 0, 0.28) 0 16px 32px -12px;
+  --chart-grid: #2d333d;
+  --chart-text: #a4abb5;
   /* High-contrast color for chart day-boundary markers (divider line + date
      label) so they stand out from the muted axis text: bright on dark,
      dark on light. */
   --chart-day-marker: var(--text);
-  --chart-tooltip-bg: #1e1d1c;
-  --chart-tooltip-border: #2a2826;
-  --chart-tooltip-text: #e8e0d6;
+  --chart-tooltip-bg: #1a1d24;
+  --chart-tooltip-border: #2d333d;
+  --chart-tooltip-text: #f3f4f6;
   /* Activity-calendar ramp — graduated blue derived from the prompt-cache blue
      (--info) so the chart reads like the cache visuals. Dark theme climbs from a
      dark navy through --info and into a brighter tint, giving 10 distinguishable
@@ -77,28 +87,40 @@
   color-scheme: dark;
 }
 
-/* Light mode — matches gomodel.enterpilot.io */
+/* Light mode follows the DevKu operations-console token system. */
 [data-theme="light"] {
-  --bg: #f5f0ea;
+  --bg: #f7f8fa;
   --bg-surface: #ffffff;
-  --bg-surface-hover: #ece5dc;
-  --border: #e8e0d6;
-  --text: #2d2519;
-  --text-muted: #7a7068;
-  --accent: #755c3d;
-  --accent-hover: #9a7d5a;
+  --bg-surface-hover: #f3f4f6;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --text: #121722;
+  --text-muted: #626873;
+  --text-faint: #6b707a;
+  --accent-solid: #0068f9;
+  --accent-solid-hover: #024bb1;
+  --accent-text: #0074dd;
+  --accent-strong: #024bb1;
+  --accent-soft: rgba(0, 104, 249, 0.08);
+  --text-on-accent: #ffffff;
+  --accent: var(--accent-text);
+  --accent-hover: var(--accent-solid-hover);
   --success: #34d399;
   --info: #2563eb;
   --warning: #d97706;
   --danger: #dc2626;
   --prompt-cache-color: color-mix(in srgb, var(--info) 84%, #0f172a);
   --prompt-cache-color-bg: color-mix(in srgb, var(--token-prompt) 18%, var(--bg-surface));
-  --chart-grid: #e8e0d6;
-  --chart-text: #7a7068;
+  --shadow-subtle: rgba(0, 0, 0, 0.07) 0 1px 1px 0,
+    rgba(0, 0, 0, 0.04) 0 -1px 1px 0 inset,
+    rgba(0, 0, 0, 0.14) 0 0 0 0.5px inset;
+  --shadow-product: rgba(0, 0, 0, 0.04) 0 20px 20px -8px;
+  --chart-grid: #e5e7eb;
+  --chart-text: #626873;
   --chart-day-marker: var(--text);
   --chart-tooltip-bg: #ffffff;
-  --chart-tooltip-border: #e8e0d6;
-  --chart-tooltip-text: #2d2519;
+  --chart-tooltip-border: #e5e7eb;
+  --chart-tooltip-text: #121722;
   /* Light theme: graduated blue climbing from a pale tint through --info into a
      deep navy, keeping 10 distinguishable steps (see :root for the dark ramp). */
   --cal-level-0: #ebedf0;
@@ -128,26 +150,38 @@
 /* System preference: light */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-      --bg: #f5f0ea;
+      --bg: #f7f8fa;
       --bg-surface: #ffffff;
-      --bg-surface-hover: #ece5dc;
-      --border: #e8e0d6;
-      --text: #2d2519;
-      --text-muted: #7a7068;
-      --accent: #755c3d;
-      --accent-hover: #9a7d5a;
+      --bg-surface-hover: #f3f4f6;
+      --border: #e5e7eb;
+      --border-strong: #d1d5db;
+      --text: #121722;
+      --text-muted: #626873;
+      --text-faint: #6b707a;
+      --accent-solid: #0068f9;
+      --accent-solid-hover: #024bb1;
+      --accent-text: #0074dd;
+      --accent-strong: #024bb1;
+      --accent-soft: rgba(0, 104, 249, 0.08);
+      --text-on-accent: #ffffff;
+      --accent: var(--accent-text);
+      --accent-hover: var(--accent-solid-hover);
       --success: #34d399;
       --info: #2563eb;
       --warning: #d97706;
       --danger: #dc2626;
       --prompt-cache-color: color-mix(in srgb, var(--info) 84%, #0f172a);
       --prompt-cache-color-bg: color-mix(in srgb, var(--token-prompt) 18%, var(--bg-surface));
-      --chart-grid: #e8e0d6;
-      --chart-text: #7a7068;
+      --shadow-subtle: rgba(0, 0, 0, 0.07) 0 1px 1px 0,
+        rgba(0, 0, 0, 0.04) 0 -1px 1px 0 inset,
+        rgba(0, 0, 0, 0.14) 0 0 0 0.5px inset;
+      --shadow-product: rgba(0, 0, 0, 0.04) 0 20px 20px -8px;
+      --chart-grid: #e5e7eb;
+      --chart-text: #626873;
       --chart-day-marker: var(--text);
       --chart-tooltip-bg: #ffffff;
-      --chart-tooltip-border: #e8e0d6;
-      --chart-tooltip-text: #2d2519;
+      --chart-tooltip-border: #e5e7eb;
+      --chart-tooltip-text: #121722;
       /* Light theme (system preference): mirror the [data-theme="light"] blue ramp. */
       --cal-level-0: #ebedf0;
       --cal-level-1: color-mix(in srgb, var(--info) 12%, #ffffff);

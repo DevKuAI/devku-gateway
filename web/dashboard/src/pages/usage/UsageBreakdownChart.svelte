@@ -336,8 +336,8 @@
 }
 
 .chart-view-btn.active {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-solid);
+  color: var(--text-on-accent);
 }
 
 .chart-view-btn :global(svg) {

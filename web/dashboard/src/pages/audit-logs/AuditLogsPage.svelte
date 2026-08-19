@@ -207,7 +207,7 @@
   }
 
   .audit-group-checkbox input {
-    accent-color: var(--accent);
+    accent-color: var(--accent-solid);
     cursor: pointer;
   }
 /* Audit Log Section */

@@ -26,16 +26,16 @@
 }
 
 .btn-primary {
-  background: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 70%, #000 10%);
-  color: #fff;
+  background: var(--accent-solid);
+  border-color: var(--accent-solid);
+  color: var(--text-on-accent);
   font-weight: 600;
-  box-shadow: 0 10px 22px rgba(59, 130, 246, 0.18);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent-solid) 18%, transparent);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 90%, #fff 10%);
-  border-color: color-mix(in srgb, var(--accent) 78%, #000 12%);
+  background: var(--accent-solid-hover);
+  border-color: var(--accent-solid-hover);
 }
 
 .btn-danger-outline {
