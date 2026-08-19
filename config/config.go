@@ -177,6 +177,7 @@ func buildDefaultConfig() *Config {
 			CircuitBreaker: DefaultCircuitBreakerConfig(),
 		},
 		Admin: AdminConfig{
+			Password:                 "password",
 			EndpointsEnabled:         true,
 			UIEnabled:                true,
 			LiveLogsEnabled:          true,

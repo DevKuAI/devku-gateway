@@ -33,10 +33,11 @@ const (
 	CacheTypeExact    = "exact"
 	CacheTypeSemantic = "semantic"
 
-	AuthMethodAPIKey    = "api_key"
-	AuthMethodMasterKey = "master_key"
-	AuthMethodNoKey     = "no_key"
-	AuthMethodExtension = "extension"
+	AuthMethodAPIKey       = "api_key"
+	AuthMethodMasterKey    = "master_key"
+	AuthMethodAdminSession = "admin_session"
+	AuthMethodNoKey        = "no_key"
+	AuthMethodExtension    = "extension"
 )
 
 const (

@@ -757,6 +757,7 @@ func New(ctx context.Context, cfg Config) (*App, error) {
 		RealtimeEnabled:                 appCfg.Server.RealtimeEnabled,
 		AllowPassthroughV1Alias:         &allowPassthroughV1Alias,
 		UserPathHeader:                  appCfg.Server.UserPathHeader,
+		AdminPassword:                   appCfg.Admin.Password,
 		SwaggerEnabled:                  swaggerEnabled,
 		Tagging:                         taggingResult.Service,
 		SessionDetector:                 session.NewDetectorFromConfig(appCfg.Session),

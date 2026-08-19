@@ -67,7 +67,7 @@ func clearAllConfigEnvVars(t *testing.T) {
 		"BUDGETS_ENABLED",
 		"RATE_LIMITS_ENABLED", "RATE_LIMITS_FLUSH_INTERVAL",
 		"DASHBOARD_LIVE_LOGS_ENABLED", "DASHBOARD_LIVE_LOGS_BUFFER_SIZE",
-		"DASHBOARD_LIVE_LOGS_REPLAY_LIMIT", "DASHBOARD_LIVE_LOGS_HEARTBEAT_SECONDS",
+		"DASHBOARD_LIVE_LOGS_REPLAY_LIMIT", "DASHBOARD_LIVE_LOGS_HEARTBEAT_SECONDS", "ADMIN_PASSWORD",
 		"GUARDRAILS_ENABLED", "ENABLE_GUARDRAILS_FOR_BATCH_PROCESSING",
 		"FAILOVER_MODE", "FAILOVER_MANUAL_RULES_PATH", "FAILOVER_ENABLED", "FAILOVER_RULES_JSON", "FAILOVER_DISABLED_MODELS", "FAILOVER_DISABLED_MODELS_JSON",
 		"MODELS_ENABLED_BY_DEFAULT", "KEEP_ONLY_ALIASES_AT_MODELS_ENDPOINT", "CONFIGURED_PROVIDER_MODELS_MODE",
@@ -209,6 +209,9 @@ func TestBuildDefaultConfig(t *testing.T) {
 	}
 	if !cfg.Admin.EndpointsEnabled {
 		t.Error("expected Admin.EndpointsEnabled=true")
+	}
+	if cfg.Admin.Password != "password" {
+		t.Errorf("expected Admin.Password=password, got %q", cfg.Admin.Password)
 	}
 	if !cfg.Admin.UIEnabled {
 		t.Error("expected Admin.UIEnabled=true")
@@ -684,6 +687,8 @@ func TestLoad_YAMLOverridesDefaults(t *testing.T) {
 server:
   port: "3000"
   pprof_enabled: true
+admin:
+  password: "yaml-admin-password"
 models:
   enabled_by_default: false
   keep_only_aliases_at_models_endpoint: true
@@ -714,6 +719,9 @@ logging:
 		}
 		if !cfg.Server.PprofEnabled {
 			t.Error("expected Server.PprofEnabled=true from YAML")
+		}
+		if cfg.Admin.Password != "yaml-admin-password" {
+			t.Errorf("expected Admin.Password from YAML, got %q", cfg.Admin.Password)
 		}
 		if cfg.Models.EnabledByDefault {
 			t.Error("expected Models.EnabledByDefault=false from YAML")

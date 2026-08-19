@@ -67,16 +67,52 @@
   const PageComponent = $derived(pageComponents[router.page] || OverviewPage);
 </script>
 
-<Sidebar />
-<main
-  id="dashboard-content"
-  class="content"
-  class:interactions-open={conversationDrawer.conversationOpen}
+<div
+  class="dashboard-surface"
+  class:authentication-concealed={!auth.accessVerified}
+  inert={!auth.accessVerified}
+  aria-hidden={auth.accessVerified ? undefined : "true"}
 >
-  <DemoModeBanner />
-  <PageComponent />
-</main>
-<ConversationDrawer />
+  <Sidebar />
+  <main
+    id="dashboard-content"
+    class="content"
+    class:interactions-open={conversationDrawer.conversationOpen}
+  >
+    <DemoModeBanner />
+    <PageComponent />
+  </main>
+  <ConversationDrawer />
+  <TypedConfirmationDialog />
+  <FlashMessages />
+</div>
 <AuthDialog />
-<TypedConfirmationDialog />
-<FlashMessages />
+
+<style>
+  .dashboard-surface {
+    display: flex;
+    flex: 1 1 0;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    transition:
+      filter 160ms ease,
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .dashboard-surface.authentication-concealed {
+    filter: blur(14px);
+    opacity: 0.52;
+    transform: scale(1.018);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dashboard-surface {
+      transition: none;
+    }
+  }
+</style>

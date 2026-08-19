@@ -127,19 +127,34 @@
         </a>
       </div>
     {/if}
+    {#if auth.sessionAuthenticated}
+      <div class="api-key-section">
+        <button
+          type="button"
+          class="api-key-open-btn"
+          onclick={() => auth.logoutSession()}
+          aria-label={m.sidebar_action_sign_out()}
+        >
+          <Icon icon={LogOut} class="api-key-open-icon" />
+          <span>{m.sidebar_action_sign_out()}</span>
+        </button>
+      </div>
+    {/if}
     {#if auth.needsAuth || auth.hasApiKey()}
       <div class="api-key-section">
         <button
           type="button"
           class="api-key-open-btn"
-          onclick={() => auth.openDialog()}
+          onclick={() => auth.needsAuth
+            ? auth.openPasswordDialog()
+            : auth.openApiKeyDialog()}
           aria-label={auth.needsAuth
-            ? m.sidebar_action_enter_api_key()
+            ? m.sidebar_action_admin_sign_in()
             : m.sidebar_action_change_api_key()}
         >
           <Icon icon={LockKeyhole} class="api-key-open-icon" />
           <span>{auth.needsAuth
-              ? m.sidebar_action_enter_api_key()
+              ? m.sidebar_action_admin_sign_in()
               : m.sidebar_action_change_api_key()}</span>
         </button>
       </div>
@@ -258,6 +273,8 @@
   }
 
 .sidebar-footer {
+    display: grid;
+    gap: 16px;
     padding: 16px;
     border-top: 1px solid var(--border);
   }
@@ -270,7 +287,6 @@
 .external-auth-section {
     display: grid;
     gap: 8px;
-    margin-top: 8px;
 }
 
 .external-auth-user {

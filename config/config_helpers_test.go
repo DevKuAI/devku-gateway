@@ -378,6 +378,15 @@ func TestApplyEnvOverrides(t *testing.T) {
 			},
 		},
 		{
+			name:    "admin password override",
+			envVars: map[string]string{"ADMIN_PASSWORD": "env-admin-password"},
+			check: func(t *testing.T, cfg *Config) {
+				if cfg.Admin.Password != "env-admin-password" {
+					t.Errorf("Admin.Password = %q, want env-admin-password", cfg.Admin.Password)
+				}
+			},
+		},
+		{
 			name:    "provider passthrough override",
 			envVars: map[string]string{"ENABLE_PASSTHROUGH_ROUTES": "false"},
 			check: func(t *testing.T, cfg *Config) {

@@ -51,12 +51,12 @@
   /* Wide form: a compact pill of three segments. */
   .theme-toggle {
     display: inline-flex;
+    justify-self: start;
     align-items: center;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 2px;
-    margin-bottom: 10px;
   }
 
   .theme-btn {

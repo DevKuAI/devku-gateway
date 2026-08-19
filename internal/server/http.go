@@ -101,6 +101,7 @@ type Config struct {
 	UserPathHeader                  string                                 // Header carrying the request user path (default: X-GoModel-User-Path)
 	AdminEndpointsEnabled           bool                                   // Whether admin API endpoints are enabled
 	AdminUIEnabled                  bool                                   // Whether admin dashboard UI is enabled
+	AdminPassword                   string                                 // Password for the built-in admin dashboard session
 	AdminHandler                    *admin.Handler                         // Admin API handler (nil if disabled)
 	DashboardHandler                *dashboard.Handler                     // Dashboard UI handler (nil if disabled)
 	SwaggerEnabled                  bool                                   // Whether to expose the Swagger UI at /swagger/index.html
@@ -219,6 +220,18 @@ func New(provider core.RoutableProvider, cfg *Config) *Server {
 		handler.SetConversationStore(cfg.ConversationStore)
 	}
 
+	var adminSession *adminSessionAuth
+	requestAuthenticators := []ext.RequestAuthenticator(nil)
+	if cfg != nil && cfg.AdminEndpointsEnabled && cfg.AdminHandler != nil {
+		adminSession = newAdminSessionAuth(cfg.AdminPassword, basePath)
+	}
+	if cfg != nil {
+		requestAuthenticators = append(requestAuthenticators, cfg.RequestAuthenticators...)
+	}
+	if adminSession != nil {
+		requestAuthenticators = append(requestAuthenticators, adminSession)
+	}
+
 	// Build list of paths that skip authentication
 	authSkipPaths := []string{"/health", "/health/ready"}
 
@@ -242,7 +255,9 @@ func New(provider core.RoutableProvider, cfg *Config) *Server {
 	}
 	// When no bootstrap master key is configured, keep admin APIs reachable so
 	// the dashboard can recover managed-key access instead of locking itself out.
-	if cfg != nil && cfg.MasterKey == "" && !hasRequestAuthenticators(cfg.RequestAuthenticators) && cfg.AdminEndpointsEnabled && cfg.AdminHandler != nil {
+	if adminSession != nil {
+		authSkipPaths = append(authSkipPaths, "/admin/auth/login", "/admin/auth/logout", "/admin/auth/session")
+	} else if cfg != nil && cfg.MasterKey == "" && !hasRequestAuthenticators(cfg.RequestAuthenticators) && cfg.AdminEndpointsEnabled && cfg.AdminHandler != nil {
 		authSkipPaths = append(authSkipPaths, "/admin/*")
 	}
 	if cfg != nil && cfg.SwaggerEnabled && SwaggerAvailable() {
@@ -352,9 +367,9 @@ func New(provider core.RoutableProvider, cfg *Config) *Server {
 
 	// Authentication (skips public paths)
 	// Register by authenticator presence; its Enabled state can change at runtime.
-	authMiddlewareRegistered := cfg != nil && (cfg.MasterKey != "" || cfg.Authenticator != nil || hasRequestAuthenticators(cfg.RequestAuthenticators))
+	authMiddlewareRegistered := cfg != nil && (cfg.MasterKey != "" || cfg.Authenticator != nil || hasRequestAuthenticators(requestAuthenticators))
 	if authMiddlewareRegistered {
-		e.Use(AuthMiddlewareWithRequestAuthenticators(cfg.MasterKey, cfg.Authenticator, cfg.RequestAuthenticators, authSkipPaths, userPathHeaderName))
+		e.Use(AuthMiddlewareWithRequestAuthenticators(cfg.MasterKey, cfg.Authenticator, requestAuthenticators, authSkipPaths, userPathHeaderName))
 	}
 
 	// Session identification runs after auth so session ids are scoped by the
@@ -468,6 +483,11 @@ func New(provider core.RoutableProvider, cfg *Config) *Server {
 	// need dashboard access to pass the gate; the master key always does.
 	if cfg != nil && cfg.AdminEndpointsEnabled && cfg.AdminHandler != nil {
 		adminGate := AdminAccessMiddleware()
+		if adminSession != nil {
+			e.POST("/admin/auth/login", adminSession.Login)
+			e.POST("/admin/auth/logout", adminSession.Logout)
+			e.GET("/admin/auth/session", adminSession.Status)
+		}
 		// Admin responses are large, highly compressible JSON (audit entries
 		// carrying request/response bodies, usage aggregates), so gzip cuts
 		// the wire size roughly an order of magnitude. The live-log SSE
@@ -478,7 +498,8 @@ func New(provider core.RoutableProvider, cfg *Config) *Server {
 				return strings.HasSuffix(c.Request().URL.Path, "/live/logs")
 			},
 		})
-		cfg.AdminHandler.RegisterRoutes(e.Group("/admin", adminGate, adminGzip))
+		adminGroup := e.Group("/admin", adminGate, adminGzip)
+		cfg.AdminHandler.RegisterRoutes(adminGroup)
 
 		// Legacy alias under /admin/api/v1/* — accepted until adminLegacySunset
 		// to give operators a window to migrate. Responses carry Deprecation,

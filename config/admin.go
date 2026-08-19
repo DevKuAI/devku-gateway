@@ -2,6 +2,10 @@ package config
 
 // AdminConfig holds configuration for the admin API and dashboard UI.
 type AdminConfig struct {
+	// Password authenticates the built-in admin dashboard session.
+	// Default: password
+	Password string `yaml:"password" env:"ADMIN_PASSWORD"`
+
 	// EndpointsEnabled controls whether the admin REST API is active
 	// Default: true
 	EndpointsEnabled bool `yaml:"endpoints_enabled" env:"ADMIN_ENDPOINTS_ENABLED"`

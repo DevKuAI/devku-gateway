@@ -5,6 +5,7 @@
 import { gomodelPath } from "./paths.js";
 import { auth, normalizeApiKey } from "$lib/stores/auth.svelte.js";
 import { timezone } from "$lib/stores/timezone.svelte.js";
+import * as m from "$lib/paraglide/messages.js";
 
 // STALE marks a response that belongs to a previous API key; callers must
 // leave their state untouched when they see it.
@@ -24,6 +25,7 @@ export function apiHeaders() {
 export function apiFetch(path, options = {}) {
   return fetch(gomodelPath(path), {
     ...options,
+    credentials: options.credentials || "same-origin",
     headers: { ...apiHeaders(), ...(options.headers || {}) },
   });
 }
@@ -51,7 +53,7 @@ async function request(path, options, { label = path, parse = true } = {}) {
     if (res.status === 403 && data?.error?.code === "dashboard_access_denied") {
       auth.handleUnauthorized(
         generation,
-        "This API key does not have dashboard access. Use the master key or a key with dashboard access.",
+        m.auth_api_key_no_dashboard_access(),
       );
       return { ok: false, stale, status: res.status, data, res };
     }
@@ -59,6 +61,9 @@ async function request(path, options, { label = path, parse = true } = {}) {
       console.error(`Failed to fetch ${label}: ${res.status} ${res.statusText}`);
     }
     return { ok: false, stale, status: res.status, data, res };
+  }
+  if (!stale) {
+    auth.markAuthorized(generation);
   }
   let data = null;
   if (parse) {

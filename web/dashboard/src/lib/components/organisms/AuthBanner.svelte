@@ -1,5 +1,5 @@
 <script>
-  // "Authentication required" page banner with the Enter-API-key button.
+  // "Authentication required" page banner with the admin sign-in button.
   // Owns its own visibility (auth.authError), so pages just drop it in.
   import { auth } from "$lib/stores/auth.svelte.js";
   import * as m from "$lib/paraglide/messages.js";
@@ -11,9 +11,9 @@
     <button
       type="button"
       class="btn btn-primary"
-      onclick={() => auth.openDialog()}
+      onclick={() => auth.openPasswordDialog()}
     >
-      {m.sidebar_action_enter_api_key()}
+      {m.sidebar_action_admin_sign_in()}
     </button>
   </div>
 {/if}
