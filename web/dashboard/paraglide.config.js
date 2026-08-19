@@ -3,5 +3,5 @@
 export const paraglideOptions = Object.freeze({
   project: "./project.inlang",
   outdir: "./src/lib/paraglide",
-  strategy: ["custom-dashboard", "preferredLanguage", "baseLocale"],
+  strategy: ["custom-dashboard", "baseLocale"],
 });

@@ -4,6 +4,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
+import { overwriteGetLocale } from "../src/lib/paraglide/runtime.js";
 
 import {
   auditCacheRatioLabel,
@@ -66,13 +67,25 @@ test("auditRetentionText hides missing or invalid retention values", () => {
 
 test("auditRetentionPrefix and auditRetentionHighlight split finite and indefinite retention", () => {
   assert.equal(auditRetentionPrefix("30"), "Audit logs are retained for ");
-  assert.equal(auditRetentionHighlight("30"), "30 days");
+  assert.equal(auditRetentionHighlight("30"), "30 days.");
 
   assert.equal(auditRetentionPrefix("1"), "Audit logs are retained for ");
-  assert.equal(auditRetentionHighlight("1"), "1 day");
+  assert.equal(auditRetentionHighlight("1"), "1 day.");
 
   assert.equal(auditRetentionPrefix("0"), "Audit logs are retained ");
-  assert.equal(auditRetentionHighlight("0"), "indefinitely");
+  assert.equal(auditRetentionHighlight("0"), "indefinitely.");
+});
+
+test("audit retention copy composes correctly in Simplified Chinese", () => {
+  overwriteGetLocale(() => "zh-CN");
+  try {
+    assert.equal(auditRetentionText("30"), "审计日志将保留 30 天。");
+    assert.equal(auditRetentionText("0"), "审计日志将永久保留。");
+    assert.equal(auditRetentionPrefix("0"), "审计日志将");
+    assert.equal(auditRetentionHighlight("0"), "永久保留。");
+  } finally {
+    overwriteGetLocale(() => "en");
+  }
 });
 
 test("auditRetentionPrefix and auditRetentionHighlight hide missing or invalid retention values", () => {

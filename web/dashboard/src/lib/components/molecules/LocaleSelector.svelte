@@ -1,6 +1,6 @@
 <script>
-  // Settings locale picker. It deliberately renders nothing until a second
-  // locale is configured, so adding a translation is enough to expose it.
+  // Settings locale picker. Locale labels are stable in every active locale
+  // so users can always recognize both available language choices.
   import { localeDisplayName } from "$lib/i18n/locale.js";
   import * as m from "$lib/paraglide/messages.js";
   import { getLocale, locales, setLocale } from "$lib/paraglide/runtime.js";
@@ -32,7 +32,7 @@
 
 <style>
   .locale-settings {
-    grid-template-columns: minmax(280px, 420px);
+    grid-template-columns: minmax(0, 420px);
   }
 
   .locale-selector-label {

@@ -40,9 +40,9 @@ import {
 } from "../src/pages/rate-limits/rateLimitsLogic.js";
 
 test("rate-limit numbers follow the selected locale", () => {
-  overwriteGetLocale(() => "pl");
+  overwriteGetLocale(() => "zh-CN");
   try {
-    assert.equal(formatRateLimitNumber(1234567), "1 234 567");
+    assert.equal(formatRateLimitNumber(1234567), "1,234,567");
     assert.equal(formatRateLimitNumber("invalid"), "0");
   } finally {
     overwriteGetLocale(() => "en");

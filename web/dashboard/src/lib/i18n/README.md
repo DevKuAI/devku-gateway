@@ -1,9 +1,9 @@
 # Dashboard translations
 
 Paraglide JS v2 reads JSON catalogs from `messages/`. English (`en`) is the
-source, runtime default, and fallback locale. Change `baseLocale` only if
-English stops being the source language; it is configured in
-`project.inlang/settings.json`. Never edit generated files in `src/lib/paraglide/`.
+source catalog, while Simplified Chinese (`zh-CN`) is the runtime default and
+fallback locale. Both are configured in `project.inlang/settings.json`. Never
+edit generated files in `src/lib/paraglide/`.
 
 ## Using a message
 
@@ -19,12 +19,13 @@ English stops being the source language; it is configured in
 Use flat `snake_case` keys. Reuse a message only when its meaning is identical,
 and prefer complete phrases with named inputs so translators can reorder text.
 
-## Adding a locale
+## Updating a locale
 
-1. Copy `messages/en.json` to a BCP 47 tag such as `pl.json` or `pt-BR.json`.
-2. Translate values without changing keys, inputs, or plural branches.
-3. Add the locale tag to `locales` in `project.inlang/settings.json`.
-4. Run `npm test`, `npm run check`, and `npm run build`.
+1. Add or update keys in the English source catalog.
+2. Apply the same keys to `messages/zh-CN.json` without changing inputs or
+   plural branches.
+3. Run `npm test`, `npm run check`, and `npm run build`.
 
-The locale selector in Settings reads this list automatically. Tests reject
-unused English messages.
+The locale selector in Settings reads the configured locale list automatically.
+Tests reject unused English messages and catalogs with mismatched keys or
+inputs.

@@ -8,7 +8,7 @@
     "build": "vite build",
     "i18n:compile": "node ./scripts/compile-i18n.js",
     "check": "npm run i18n:compile && svelte-check --tsconfig ./jsconfig.json",
-    "test": "npm run i18n:compile && node --test \"tests/*.test.js\""
+    "test": "npm run i18n:compile && node --import ./tests/setup.js --test \"tests/*.test.js\""
   },
   "dependencies": {
     "chart.js": "^4.4.9",

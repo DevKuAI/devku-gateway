@@ -76,7 +76,7 @@
               {auditRetentionPrefix(retentionRaw)}<span
                 class="audit-retention-highlight"
                 >{auditRetentionHighlight(retentionRaw)}</span
-              >.
+              >
             </p>
           {/snippet}
         </InlineHelpSection>

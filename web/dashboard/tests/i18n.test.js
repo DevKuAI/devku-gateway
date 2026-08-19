@@ -11,12 +11,22 @@ import {
   locales,
   strategy,
 } from "../src/lib/paraglide/runtime.js";
+import {
+  localeDisplayName,
+  supportedLocale,
+} from "../src/lib/i18n/locale.js";
 
 const catalogPath = fileURLToPath(
   new URL("../messages/en.json", import.meta.url),
 );
 const { $schema, ...englishMessages } = JSON.parse(
   readFileSync(catalogPath, "utf8"),
+);
+const { $schema: chineseSchema, ...chineseMessages } = JSON.parse(
+  readFileSync(
+    fileURLToPath(new URL("../messages/zh-CN.json", import.meta.url)),
+    "utf8",
+  ),
 );
 
 test("the English source catalog contains valid flat semantic keys", () => {
@@ -33,143 +43,167 @@ test("the English source catalog contains valid flat semantic keys", () => {
   }
 });
 
-test("Paraglide compiles interpolation and locale-aware plurals", () => {
+test("the Simplified Chinese catalog matches the English source", () => {
   assert.equal(
-    m.pagination_summary({ start: 1, end: 25, total: 80 }),
-    "Showing 1–25 of 80",
+    chineseSchema,
+    "https://inlang.com/schema/inlang-message-format",
   );
-  assert.equal(m.date_picker_last_days({ count: 1 }), "Last 1 day");
-  assert.equal(m.date_picker_last_days({ count: 14 }), "Last 14 days");
-  assert.equal(m.date_picker_days({ count: 1 }), "1 day");
+  assert.deepEqual(Object.keys(chineseMessages), Object.keys(englishMessages));
+
+  const inputs = (message) =>
+    [...JSON.stringify(message).matchAll(/\{([a-z][a-z0-9_]*)\}/g)]
+      .map((match) => match[1])
+      .sort();
+
+  for (const key of Object.keys(englishMessages)) {
+    assert.deepEqual(
+      inputs(chineseMessages[key]),
+      inputs(englishMessages[key]),
+      `${key} must preserve every message input`,
+    );
+  }
+});
+
+test("the Simplified Chinese catalog follows the project copy conventions", () => {
+  const catalog = JSON.stringify(chineseMessages);
+
+  assert.doesNotMatch(catalog, /\.\.\./);
+  assert.doesNotMatch(catalog, /[“”]/);
+  assert.equal(
+    chineseMessages.usage_rewrite_summed,
+    "节省量按每次 provider 请求汇总；重新发送的对话历史会再次计入。",
+  );
+  assert.equal(chineseMessages.budgets_period_elapsed, "预算周期进度");
+  assert.equal(chineseMessages.models_virtual_model, "Virtual Model");
+  assert.equal(chineseMessages.providers_vertex_project, "Vertex Project");
+  assert.equal(chineseMessages.providers_vertex_location, "Vertex Location");
+  assert.equal(chineseMessages.workflows_created, "Workflow 已创建并激活。");
+});
+
+test("Paraglide compiles the Chinese default and English override", () => {
   assert.equal(
     m.pagination_summary(
       { start: 1, end: 25, total: 80 },
-      { locale: "pl" },
+      { locale: "zh-CN" },
     ),
-    "Wyświetlanie 1–25 z 80",
+    "显示 1–25（共 80）",
   );
   assert.equal(
-    m.date_picker_last_days({ count: 1 }, { locale: "pl" }),
-    "Ostatni 1 dzień",
+    m.date_picker_last_days({ count: 1 }, { locale: "zh-CN" }),
+    "最近 1 天",
   );
   assert.equal(
-    m.date_picker_last_days({ count: 2 }, { locale: "pl" }),
-    "Ostatnie 2 dni",
+    m.date_picker_last_days({ count: 14 }, { locale: "zh-CN" }),
+    "最近 14 天",
   );
   assert.equal(
-    m.date_picker_last_days({ count: 5 }, { locale: "pl" }),
-    "Ostatnie 5 dni",
+    m.date_picker_days({ count: 1 }, { locale: "zh-CN" }),
+    "1 天",
   );
   assert.equal(
-    m.date_picker_days({ count: 1 }, { locale: "pl" }),
-    "1 dzień",
+    m.pagination_summary(
+      { start: 1, end: 25, total: 80 },
+      { locale: "en" },
+    ),
+    "Showing 1–25 of 80",
   );
   assert.equal(
-    m.date_picker_days({ count: 2 }, { locale: "pl" }),
-    "2 dni",
+    m.date_picker_last_days({ count: 1 }, { locale: "zh-CN" }),
+    "最近 1 天",
   );
   assert.equal(
-    m.date_picker_days({ count: 5 }, { locale: "pl" }),
-    "5 dni",
+    m.date_picker_last_days({ count: 2 }, { locale: "zh-CN" }),
+    "最近 2 天",
   );
   assert.equal(
-    m.audit_provider_attempts({ count: 1 }, { locale: "pl" }),
-    "1 próba dostawcy",
+    m.date_picker_days({ count: 5 }, { locale: "zh-CN" }),
+    "5 天",
   );
   assert.equal(
-    m.audit_provider_attempts({ count: 2 }, { locale: "pl" }),
-    "2 próby dostawców",
-  );
-  assert.equal(
-    m.audit_provider_attempts({ count: 5 }, { locale: "pl" }),
-    "5 prób dostawców",
+    m.audit_provider_attempts({ count: 5 }, { locale: "zh-CN" }),
+    "5 次 provider 尝试",
   );
   assert.equal(
     m.settings_pricing_summary(
       { matched: 1, recalculated: 1 },
-      { locale: "pl" },
+      { locale: "zh-CN" },
     ),
-    "Przeliczono ceny dla 1 z 1 rekordu zużycia.",
+    "已重新计算 1 条用量记录中 1 条记录的定价。",
   );
   assert.equal(
-    m.settings_pricing_missing({ count: 2 }, { locale: "pl" }),
-    "2 rekordy zużycia nadal nie mają metadanych cen.",
+    m.settings_pricing_missing({ count: 2 }, { locale: "zh-CN" }),
+    "仍有 2 条用量记录缺少定价元数据。",
   );
   assert.equal(
-    m.settings_pricing_missing({ count: 5 }, { locale: "pl" }),
-    "5 rekordów zużycia nadal nie ma metadanych cen.",
+    m.settings_runtime_refresh_models({ count: 2 }, { locale: "zh-CN" }),
+    "2 个 model",
   );
   assert.equal(
-    m.settings_runtime_refresh_models({ count: 2 }, { locale: "pl" }),
-    "2 modele",
+    m.settings_runtime_refresh_providers(
+      { count: 5 },
+      { locale: "zh-CN" },
+    ),
+    "5 个 provider",
   );
   assert.equal(
-    m.settings_runtime_refresh_providers({ count: 5 }, { locale: "pl" }),
-    "5 dostawców",
+    m.settings_pricing_confirmation({}, { locale: "zh-CN" }),
+    "重新计算",
   );
   assert.equal(
-    m.settings_pricing_confirmation({}, { locale: "pl" }),
-    "przelicz",
+    m.providers_keys_count({ count: 2 }, { locale: "zh-CN" }),
+    "2 个密钥",
   );
   assert.equal(
-    m.providers_keys_count({ count: 1 }, { locale: "pl" }),
-    "1 klucz",
+    m.providers_models_count({ count: 5 }, { locale: "zh-CN" }),
+    "5 个 model",
   );
   assert.equal(
-    m.providers_keys_count({ count: 2 }, { locale: "pl" }),
-    "2 klucze",
+    m.models_count({ count: 5 }, { locale: "zh-CN" }),
+    "5 个 model",
   );
   assert.equal(
-    m.providers_keys_count({ count: 5 }, { locale: "pl" }),
-    "5 kluczy",
+    m.models_alias_count({ count: 5 }, { locale: "zh-CN" }),
+    "5 个 alias",
   );
   assert.equal(
-    m.providers_models_count({ count: 5 }, { locale: "pl" }),
-    "5 modeli",
+    m.models_failover_generated({ count: 5 }, { locale: "zh-CN" }),
+    "已生成 5 个 Fallback Model。",
   );
   assert.equal(
-    m.models_count({ count: 5 }, { locale: "pl" }),
-    "5 modeli",
+    m.models_failover_saved({ count: 5 }, { locale: "zh-CN" }),
+    "已保存 5 条 Failover 映射。",
   );
   assert.equal(
-    m.models_alias_count({ count: 5 }, { locale: "pl" }),
-    "5 aliasów",
+    m.overview_total_requests({}, { locale: "zh-CN" }),
+    "请求总数",
   );
   assert.equal(
-    m.models_failover_generated({ count: 5 }, { locale: "pl" }),
-    "Wygenerowano 5 modeli Fallback.",
+    m.overview_live_token_throughput({}, { locale: "zh-CN" }),
+    "实时 Token 吞吐量",
   );
   assert.equal(
-    m.models_failover_saved({ count: 5 }, { locale: "pl" }),
-    "Zapisano 5 mapowań Failover.",
+    m.overview_provider_status({}, { locale: "zh-CN" }),
+    "provider 状态",
   );
   assert.equal(
-    m.overview_total_requests({}, { locale: "pl" }),
-    "Łączna liczba Request'ów",
+    m.overview_input_tokens({}, { locale: "zh-CN" }),
+    "输入 Token",
   );
   assert.equal(
-    m.overview_live_token_throughput({}, { locale: "pl" }),
-    "Przepływ tokenów",
+    m.rate_limits_title({}, { locale: "zh-CN" }),
+    "速率限制",
   );
-  assert.equal(
-    m.overview_provider_status({}, { locale: "pl" }),
-    "Status provider'ów",
-  );
-  assert.equal(
-    m.overview_input_tokens({}, { locale: "pl" }),
-    "Input Tokens",
-  );
-  assert.equal(m.rate_limits_title({}, { locale: "pl" }), "Rate Limits");
 });
 
-test("the browser locale strategy persists overrides without changing routes", () => {
-  assert.equal(baseLocale, "en");
-  assert.deepEqual(locales, ["en", "pl"]);
-  assert.deepEqual(strategy, [
-    "custom-dashboard",
-    "preferredLanguage",
-    "baseLocale",
-  ]);
+test("the browser locale strategy defaults to Simplified Chinese", () => {
+  assert.equal(baseLocale, "zh-CN");
+  assert.deepEqual(locales, ["zh-CN", "en"]);
+  assert.deepEqual(strategy, ["custom-dashboard", "baseLocale"]);
+  assert.equal(supportedLocale("zh-CN"), "zh-CN");
+  assert.equal(supportedLocale("en"), "en");
+  assert.equal(supportedLocale("pl"), undefined);
+  assert.equal(localeDisplayName("zh-CN"), "简体中文");
+  assert.equal(localeDisplayName("en"), "English");
   assert.equal(getTextDirection("en"), "ltr");
   assert.equal(getTextDirection("ar"), "rtl");
 });

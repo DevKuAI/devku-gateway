@@ -145,14 +145,14 @@
   "audit_retention_help": "To change the retention period, set LOGGING_RETENTION_DAYS (environment variable) or logging.retention_days (config.yaml) and restart the gateway. The default is 30 days; 0 keeps audit logs forever.",
   "audit_retention_prefix_indefinite": "Audit logs are retained ",
   "audit_retention_prefix_days": "Audit logs are retained for ",
-  "audit_retention_indefinitely": "indefinitely",
+  "audit_retention_indefinitely": "indefinitely.",
   "audit_retention_days": [
     {
       "declarations": ["input count", "local count_plural = count: plural"],
       "selectors": ["count_plural"],
       "match": {
-        "count_plural=one": "{count} day",
-        "count_plural=*": "{count} days"
+        "count_plural=one": "{count} day.",
+        "count_plural=*": "{count} days."
       }
     }
   ],

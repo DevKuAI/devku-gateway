@@ -92,9 +92,7 @@ function auditRetentionDays(raw) {
 export function auditRetentionText(raw) {
   const days = auditRetentionDays(raw);
   if (days === null) return "";
-  return (
-    auditRetentionPrefix(raw) + auditRetentionHighlight(raw) + "."
-  );
+  return auditRetentionPrefix(raw) + auditRetentionHighlight(raw);
 }
 
 export function auditRetentionPrefix(raw) {

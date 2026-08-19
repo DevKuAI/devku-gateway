@@ -128,18 +128,18 @@ test("buildCalendarGrid applies the same power scaling to the costs view", () =>
 });
 
 test("calendar summaries and tooltips follow the selected locale", () => {
-  overwriteGetLocale(() => "pl");
+  overwriteGetLocale(() => "zh-CN");
   try {
     assert.equal(
       calendarSummaryText([{ total_cost: 1234.5 }], "costs"),
-      "$1234,50 w ostatnim roku",
+      "过去一年共 $1,234.50",
     );
     assert.equal(
       calendarTooltipText(
         { value: 1234567, dateStr: "2026-06-23" },
         "tokens",
       ),
-      "1 234 567 tokenów dnia 23 cze 2026",
+      "2026年6月23日：1,234,567 个 Token",
     );
   } finally {
     overwriteGetLocale(() => "en");
