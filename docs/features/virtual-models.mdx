@@ -1,13 +1,13 @@
 ---
 title: "Virtual Models"
-description: "Use GoModel virtual models to expose stable model names and test model swaps without changing app code."
+description: "Use Gateway virtual models to expose stable model names and test model swaps without changing app code."
 icon: "tags"
 keywords: ["virtual models", "model alias", "load balancing", "model routing", "model swap"]
 ---
 
 <img
   src="/features/virtual-models.png"
-  alt="GoModel dashboard models page with the New virtual model button and an active redirect row"
+  alt="Gateway dashboard models page with the New virtual model button and an active redirect row"
   style={{ width: "100%", maxWidth: "1280px", height: "auto" }}
   className="rounded-lg"
 />
@@ -15,10 +15,10 @@ keywords: ["virtual models", "model alias", "load balancing", "model routing", "
 ## What virtual models do
 
 A virtual model is a model you define, instead of one a provider advertises.
-GoModel picks the kind from whether you give it a target:
+Gateway picks the kind from whether you give it a target:
 
 - A **redirect** (an alias) is a stable name that points to a concrete provider
-  model. Your app sends the name in the `model` field, and GoModel resolves it
+  model. Your app sends the name in the `model` field, and Gateway resolves it
   before sending the request upstream.
 - An **access policy** has no target. It gates an existing model selector by
   `user_path` — or disables it entirely — without adding a new name. See
@@ -28,10 +28,10 @@ Create and manage both in the admin dashboard at `Models -> New virtual model`.
 Fill **Target model** to make a redirect; leave it empty to make an access
 policy on the **Source** selector.
 
-GoModel does not persist empty, ineffective access policies, whether saved from
+Gateway does not persist empty, ineffective access policies, whether saved from
 the dashboard or through the admin API. If a saved policy has no target, user
 paths, description, or slowdown and its enabled state matches the inherited/default
-access state, GoModel removes the stored row. It retains an otherwise empty
+access state, Gateway removes the stored row. It retains an otherwise empty
 policy when that row still overrides a disabled default or an inherited
 user-path restriction.
 
@@ -44,7 +44,7 @@ adds 50%, so a response that takes 2 seconds upstream is returned after about
 from a concrete model. Leaving the field empty leaves the setting unspecified.
 Delays honor request cancellation.
 
-For Chat Completions and Responses API SSE streams, GoModel drains the upstream
+For Chat Completions and Responses API SSE streams, Gateway drains the upstream
 in the background and releases each read chunk on the scaled timeline. This
 preserves the provider's relative chunk timing while delayed chunks accumulate
 in memory. A large factor on a long or high-volume stream can therefore use
@@ -112,7 +112,7 @@ with the cost strategy to always take the cheaper one.
 
 ## Rename or repoint a redirect
 
-Open a redirect in the dashboard and edit its **Source** to rename it. GoModel
+Open a redirect in the dashboard and edit its **Source** to rename it. Gateway
 moves the definition to the new name in one step — the old name stops resolving,
 so update any app still sending it. Renaming onto a name that already belongs to
 another virtual model is rejected; renaming onto a concrete model name shadows
@@ -190,7 +190,7 @@ To hide provider models from `GET /v1/models`, set:
 KEEP_ONLY_ALIASES_AT_MODELS_ENDPOINT=true
 ```
 
-When this is enabled, GoModel returns enabled redirects from `/v1/models`
+When this is enabled, Gateway returns enabled redirects from `/v1/models`
 instead of the full provider model list. The setting is also listed in
 `.env.template`.
 
@@ -205,7 +205,7 @@ For example:
 - source: `anthropic/claude-opus-4-6`
 - target model: `anthropic/claude-sonnet-4-6`
 
-Your app can keep sending `anthropic/claude-opus-4-6`, while GoModel routes the
+Your app can keep sending `anthropic/claude-opus-4-6`, while Gateway routes the
 request to `anthropic/claude-sonnet-4-6`.
 
 ## A/B testing

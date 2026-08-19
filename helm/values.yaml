@@ -23,7 +23,7 @@ fullnameOverride: ""
 server:
   # -- Server port
   port: 8080
-  # -- URL path prefix where GoModel is mounted (for example, "/g")
+  # -- URL path prefix where Gateway is mounted (for example, "/g")
   basePath: "/"
   # -- Header used to read/write request user_path values
   userPathHeader: "X-GoModel-User-Path"
@@ -136,7 +136,7 @@ providers:
     baseUrl: ""
     # -- Optional trusted llm-d InferenceObjective name
     inferenceObjective: ""
-    # -- Derive the llm-d fairness ID from GoModel's effective user path
+    # -- Derive the llm-d fairness ID from Gateway's effective user path
     fairnessFromUserPath: true
 
   sglang:

@@ -1,11 +1,11 @@
 ---
 title: "Providers Overview"
-description: "Supported AI providers in GoModel and which ones have dedicated configuration guides."
+description: "Supported AI providers in Gateway and which ones have dedicated configuration guides."
 icon: "list"
 keywords: ["AI providers", "supported providers", "LLM providers", "provider list"]
 ---
 
-GoModel routes OpenAI-compatible requests to many AI providers through one
+Gateway routes OpenAI-compatible requests to many AI providers through one
 gateway. For most providers, setting the API key is the whole setup. The pages
 in this section exist for the ones whose setup is **not** purely "set an API
 key" — auth flows from cloud credentials, deployment-based URLs, region or
@@ -17,14 +17,14 @@ quirks.
 Every credential below (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, ...) can
 instead be set from the **Providers** page in the admin dashboard
 (`/admin/dashboard`) — no restart required. This is the easiest way to run
-GoModel with zero provider env vars: start the gateway with none configured
+Gateway with zero provider env vars: start the gateway with none configured
 (the catalog starts empty; the gateway still boots and serves the dashboard),
 then add providers from the UI. A provider added this way registers into the
 running gateway immediately.
 
 Providers declared via env vars or `config.yaml` always take precedence: a
 name configured either way is **read-only** in the dashboard (shown with a
-"Config" badge), the same rule GoModel already applies to MCP servers,
+"Config" badge), the same rule Gateway already applies to MCP servers,
 virtual models, and rate limits. API keys and service-account secrets are
 masked (`***`) once saved — editing a provider re-sends `***` for anything you
 didn't change, and the gateway keeps the stored value. Disabling a provider
@@ -89,7 +89,7 @@ support, not every individual model capability exposed by an upstream provider.
   $0.30 input, $1.20 output, $0.06 cached input, and $0.375 cache writes for
   M2.7. M3 supports adaptive or disabled thinking; M2.7 always thinks.
 - **Amazon Bedrock Mantle** — GPT-5.6 Sol, Terra, and Luna accept only the
-  Responses API on Mantle. GoModel sends `/v1/responses` requests directly to
+  Responses API on Mantle. Gateway sends `/v1/responses` requests directly to
   AWS and selects the required `/openai/v1/responses` upstream path.
 - **Fireworks AI** — model IDs are account-scoped paths such as
   `accounts/fireworks/models/gpt-oss-120b`; use them verbatim in requests and
@@ -102,7 +102,7 @@ support, not every individual model capability exposed by an upstream provider.
   audio formats and speech-to-text models.
 - **Chutes AI** — defaults to `https://llm.chutes.ai/v1` and discovers its
   current model IDs, context limits, capabilities, and pricing from the live
-  catalog. GoModel translates `/v1/responses` requests to chat completions;
+  catalog. Gateway translates `/v1/responses` requests to chat completions;
   Chutes' shared LLM endpoint does not expose embeddings. Passthrough support
   requires explicit operator opt-in by adding `chutes` to
   `ENABLED_PASSTHROUGH_PROVIDERS`.
@@ -112,10 +112,10 @@ support, not every individual model capability exposed by an upstream provider.
   under `providers.meta.models` metadata in `config.yaml` if you want cost
   tracking and context-window reporting.
 - **Kilo AI** — model IDs use `provider/model` (for example,
-  `anthropic/claude-sonnet-4.5`) and are forwarded unchanged. GoModel serves
+  `anthropic/claude-sonnet-4.5`) and are forwarded unchanged. Gateway serves
   `/v1/responses` by translating it to Kilo's chat-completions endpoint. If
   another configured provider exposes the same raw model ID, select Kilo
-  explicitly with `kilo/anthropic/claude-sonnet-4.5`; GoModel removes only the
+  explicitly with `kilo/anthropic/claude-sonnet-4.5`; Gateway removes only the
   outer `kilo/` routing qualifier before forwarding.
 - **Xiaomi MiMo** — TTS (`mimo-v2.5-tts*`) and ASR (`mimo-v2.5-asr`) are served
   through `/v1/audio/speech` and `/v1/audio/transcriptions` (translated to
@@ -171,7 +171,7 @@ support, not every individual model capability exposed by an upstream provider.
 - **vLLM** — set `VLLM_API_KEY` only if the upstream server was started with
   `--api-key`.
 - **llama.cpp / LM Studio** — `LLAMACPP_BASE_URL` is required (llama-server's
-  default port collides with GoModel's own 8080, so there is no default);
+  default port collides with Gateway's own 8080, so there is no default);
   `LLAMACPP_API_KEY` is optional. Do not register these servers as `ollama`,
   which speaks Ollama's native API. See [llama.cpp](/providers/llamacpp).
 - **llm-d** — `LLMD_BASE_URL` is required. `LLMD_API_KEY` is optional and is
@@ -215,7 +215,7 @@ These are the providers most users hit friction on:
 - **Xiaomi MiMo** — thinking mode on by default, a `[1m]` context suffix, and
   TTS/ASR that run through chat completions rather than native audio endpoints.
 - **OpenCode Go** — OpenCode Zen splits models across OpenAI-style
-  `/chat/completions` and Anthropic-native `/messages`; GoModel routes per model
+  `/chat/completions` and Anthropic-native `/messages`; Gateway routes per model
   (the `/messages`-only set is maintained manually, default `qwen3.7-max`).
 
 <Tip>
@@ -228,7 +228,7 @@ These are the providers most users hit friction on:
 
 Providers without a dedicated page (OpenAI, Groq, Fireworks AI, Meta,
 OpenRouter, Kilo AI, Z.ai, xAI, MiniMax) follow the same pattern: set the API key (and
-optional base URL where supported), start GoModel, route by model ID. The full env-var reference
+optional base URL where supported), start Gateway, route by model ID. The full env-var reference
 lives in [Configuration](/advanced/configuration).
 
 ## Provider status
@@ -239,7 +239,7 @@ configured provider in the **Providers Overview** section of the
 
 <img
   src="/providers/provider-status.png"
-  alt="GoModel dashboard Providers Overview with a Degraded openai card showing a failing model and a Healthy vllm card"
+  alt="Gateway dashboard Providers Overview with a Degraded openai card showing a failing model and a Healthy vllm card"
   style={{ width: "100%", maxWidth: "1280px", height: "auto" }}
   className="rounded-lg"
 />

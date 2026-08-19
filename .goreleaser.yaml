@@ -1,6 +1,6 @@
 version: 2
 
-project_name: gomodel
+project_name: gateway
 
 builds:
   - env:

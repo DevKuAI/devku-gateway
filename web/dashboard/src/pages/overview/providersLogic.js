@@ -10,11 +10,12 @@ const PROVIDER_CARD_OVERRIDES_STORAGE_KEY =
   "gomodel_provider_card_expanded_overrides";
 export const PROVIDER_STATUS_POLL_MS = 3000;
 
-// Provider types that have a dedicated docs page at
-// gomodel.enterpilot.io/docs/providers/. Keyed by provider type; the value is
-// the docs slug (identical to the type except opencode_go → opencode-go).
+// Provider types that have a dedicated docs page in this repository. Keyed by
+// provider type; the value is the docs slug (identical to the type except
+// opencode_go → opencode-go).
 // Types absent here get no help icon — that is the "doc exists" gate.
-const PROVIDER_DOCS_BASE_URL = "https://gomodel.enterpilot.io/docs/providers/";
+const PROVIDER_DOCS_BASE_URL =
+  "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/";
 const PROVIDER_DOC_SLUGS = {
   anthropic: "anthropic",
   azure: "azure",
@@ -219,7 +220,7 @@ export function providerDocUrl(provider) {
     .toLowerCase();
   const slug = type ? PROVIDER_DOC_SLUGS[type] : "";
   return slug
-    ? PROVIDER_DOCS_BASE_URL + slug + "?utm_source=gomodel_dashboard"
+    ? PROVIDER_DOCS_BASE_URL + slug + ".mdx"
     : "";
 }
 

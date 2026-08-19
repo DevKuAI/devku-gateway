@@ -1,30 +1,31 @@
 ---
 title: "Quick Start"
-description: "GoModel AI gateway: run an OpenAI-compatible LLM gateway in 20 seconds, send your first request and see the real-time logs."
+description: "Run Gateway in 20 seconds, send your first OpenAI-compatible request, and inspect the real-time logs."
 icon: "rocket"
 keywords: ["quick start", "install", "getting started", "AI gateway setup", "Docker"]
 ---
 
-## Run GoModel in 20 Seconds
+## Run Gateway in 20 Seconds
 
-### 1. Install and start GoModel
+### 1. Install and start Gateway
 
 <Tabs>
   <Tab title="macOS / Linux">
     ```bash
-    curl -fsSL https://gomodel.enterpilot.io/install.sh | sh
-    gomodel
+    curl -fsSL https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.sh | sh
+    gateway
     ```
   </Tab>
   <Tab title="Windows">
     ```powershell
-    irm https://gomodel.enterpilot.io/install.ps1 | iex
-    gomodel
+    irm https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.ps1 | iex
+    gateway
     ```
   </Tab>
   <Tab title="Docker">
     ```bash
-    docker run --rm -p 8080:8080 enterpilot/gomodel
+    docker build -t gateway .
+    docker run --rm -p 8080:8080 gateway
     ```
   </Tab>
   <Tab title="Live Demo" icon="monitor-play">
@@ -39,7 +40,7 @@ a [config.yaml file](/advanced/config-yaml) (infrastructure as code), or from
 the Dashboard's [Providers page](/providers/overview#configuring-providers-without-env-vars) -
 (no restart required in this case).
 
-![Add Provider dialog in the GoModel dashboard](./images/add-provider.png)
+![Add Provider dialog in the Gateway dashboard](./images/add-provider.png)
 
 ### 3. Send your first request
 
@@ -127,7 +128,7 @@ console.log(message.content[0].text);
 </CodeGroup>
 
 <Tip>
-  The Anthropic SDK examples call `POST /v1/messages`, GoModel's
+  The Anthropic SDK examples call `POST /v1/messages`, Gateway's
   [Anthropic-compatible endpoint](/advanced/anthropic-messages-api). Any
   configured provider's model can be used there, not only Anthropic's.
 </Tip>
@@ -146,11 +147,11 @@ Open this URL in your browser to see the management dashboard and real-time audi
 
 ### Usage Analytics
 
-![GoModel AI gateway usage analytics dashboard](./images/usage-analytics.png)
+![Gateway usage analytics dashboard](./images/usage-analytics.png)
 
 ### Audit Logs
 
-![GoModel AI gateway audit logs dashboard](./images/audit-logs.png)
+![Gateway audit logs dashboard](./images/audit-logs.png)
 
 ## Next Steps
 
@@ -160,4 +161,4 @@ Open this URL in your browser to see the management dashboard and real-time audi
 - Add spend limits: [Budgets](/features/budgets)
 - Configure production settings: [Configuration](/advanced/configuration)
 - Add request policies: [Guardrails](/advanced/guardrails)
-- Connect OpenClaw: [Using GoModel with OpenClaw](/guides/openclaw)
+- Connect OpenClaw: [Using Gateway with OpenClaw](/guides/openclaw)

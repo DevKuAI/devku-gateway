@@ -7,7 +7,7 @@ keywords: ["admin API", "dashboard", "REST API", "monitoring", "gateway health"]
 
 ## Philosophy
 
-GoModel ships with admin endpoints **enabled by default**. The goal is simple: you should be able to deploy GoModel and immediately have visibility into what's happening — no extra services, no separate monitoring stack, no configuration.
+Gateway ships with admin endpoints **enabled by default**. The goal is simple: you should be able to deploy Gateway and immediately have visibility into what's happening — no extra services, no separate monitoring stack, no configuration.
 
 The admin layer is split into two independently controllable pieces:
 
@@ -125,7 +125,7 @@ Dashboard access only gates `/admin/*`. Model endpoints and the self-service [`G
 The dashboard UI pages (`/admin/dashboard`) and static assets (`/admin/static/*`) **skip authentication** so the dashboard shell is accessible without configuring API keys in the browser — the data it loads still requires a key with dashboard access.
 
 <Warning>
-  If your GoModel instance is publicly accessible, be aware that the dashboard
+  If your Gateway instance is publicly accessible, be aware that the dashboard
   UI is unauthenticated. Disable it with `ADMIN_UI_ENABLED=false` or restrict
   access at the network level.
 </Warning>
@@ -373,7 +373,7 @@ This differs from the standard `/v1/models` endpoint: the admin version includes
 
 ## Admin Dashboard
 
-The dashboard is a server-rendered HTML page embedded in the GoModel binary. Access it at:
+The dashboard is a server-rendered HTML page embedded in the Gateway binary. Access it at:
 
 ```
 http://localhost:8080/admin/dashboard

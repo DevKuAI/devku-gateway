@@ -112,7 +112,7 @@ echo "Using model: ${MODEL}"
 echo "Results dir: ${RESULTS_DIR}"
 
 mkdir -p "${ROOT_DIR}/bin"
-(cd "${ROOT_DIR}" && go build -o bin/gomodel ./cmd/gomodel)
+(cd "${ROOT_DIR}" && go build -o bin/gateway ./cmd/gomodel)
 (cd "${ROOT_DIR}" && go build -o bin/bench ./cmd/bench)
 
 LITELLM_CONFIG="${RESULTS_DIR}/litellm_config.yaml"
@@ -147,10 +147,10 @@ start_gomodel() {
       GOMODEL_MASTER_KEY="" \
       LOGGING_ENABLED=false \
       METRICS_ENABLED=false \
-      ./bin/gomodel >"${log_file}" 2>&1
+      ./bin/gateway >"${log_file}" 2>&1
   ) &
   GOMODEL_PID=$!
-  wait_for_models "http://127.0.0.1:${GOMODEL_PORT}" "GoModel"
+  wait_for_models "http://127.0.0.1:${GOMODEL_PORT}" "Gateway"
   sleep 2
 }
 
@@ -211,7 +211,7 @@ run_bench_matrix() {
   done
 }
 
-echo "Starting GoModel..."
+echo "Starting Gateway..."
 start_gomodel
 run_bench_matrix "gomodel" "http://127.0.0.1:${GOMODEL_PORT}" "${GOMODEL_PID}"
 kill "${GOMODEL_PID}" >/dev/null 2>&1 || true
@@ -247,7 +247,7 @@ if [[ "${RUN_DIRECT_BASELINE}" == "1" ]]; then
 fi
 
 {
-  echo "# GoModel vs LiteLLM Benchmark"
+  echo "# Gateway vs LiteLLM Benchmark"
   echo
   echo "- Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   echo "- Model: \`${MODEL}\`"

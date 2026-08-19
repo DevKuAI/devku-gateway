@@ -1,4 +1,4 @@
-# GoModel Configuration (optional)
+# Gateway Configuration (optional)
 # Copy to config/config.yaml to customize.
 # Environment variables always override values in this file.
 # All settings have sensible defaults — no config file is required.
@@ -15,7 +15,7 @@ server:
   user_path_header: "X-GoModel-User-Path" # env: USER_PATH_HEADER; inbound header used for user_path scoping
   enabled_passthrough_providers: ["openai", "anthropic", "cohere", "openrouter", "kilo", "zai", "sglang", "vllm", "llmd", "deepseek", "bailian"] # providers enabled on /p/{provider}/...
   realtime_enabled: true # env: REALTIME_ENABLED; expose /v1/realtime websocket and /p/{provider}/v1/realtime upgrades (OpenAI only)
-  pid_file: "data/gomodel.pid" # env: PID_FILE; where the running gateway records its process id so `gomodel --reload` can find it. Set per instance when several gateways share a host; empty writes no pid file and disables --reload; changing it needs a restart, not a reload
+  pid_file: "data/gomodel.pid" # env: PID_FILE; where the running gateway records its process id so `gateway --reload` can find it. Set per instance when several gateways share a host; empty writes no pid file and disables --reload; changing it needs a restart, not a reload
 
 admin:
   password: "password" # env: ADMIN_PASSWORD; change in production; remains an admin login method when GOMODEL_MASTER_KEY is set
@@ -185,7 +185,7 @@ budgets:
     # Env equivalent:
     # SET_BUDGET_USER__PATH__EXAMPLE="daily=10,weekly=50"
     - path: "/user/path/example"
-      per_child: false # GoModel Pro: true gives each direct child an independent budget
+      per_child: false # Gateway Pro: true gives each direct child an independent budget
       limits:
         - period: "daily" # hourly, daily, weekly, monthly; stored in DB as period_seconds
           amount: 10.00
@@ -206,7 +206,7 @@ rate_limits:
     # Env equivalent:
     # SET_RATE_LIMIT_USER__PATH__EXAMPLE="rpm=100,tpm=50000,rpd=10000,concurrent=10"
     - path: "/user/path/example"
-      per_child: false # GoModel Pro: true gives each direct child independent counters
+      per_child: false # Gateway Pro: true gives each direct child independent counters
       limits:
         - period: "minute" # minute, hour, day, concurrent; stored in DB as period_seconds
           max_requests: 100
@@ -444,7 +444,7 @@ providers:
     base_url: "http://quickstart-epp.llm-d.svc.cluster.local/v1"
     # Optional trusted request class injected as llm-d inference headers.
     # inference_objective: "standard-traffic"
-    # Derive the llm-d fairness ID from GoModel's effective user path (default).
+    # Derive the llm-d fairness ID from Gateway's effective user path (default).
     fairness_from_user_path: true
     # Declare models when the route does not forward GET /v1/models.
     models:
@@ -518,7 +518,7 @@ providers:
   #     - openai.gpt-oss-120b
   #     - xai.grok-3
 
-  # Example: DeepSeek. GoModel translates /v1/responses requests to DeepSeek
+  # Example: DeepSeek. Gateway translates /v1/responses requests to DeepSeek
   # chat completions because DeepSeek does not expose a native Responses API.
   # deepseek:
   #   type: "deepseek"

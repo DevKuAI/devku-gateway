@@ -40,7 +40,7 @@ func featureUnavailableError(message string) error {
 func quotaTemplatesUnavailableError() error {
 	return core.NewInvalidRequestErrorWithStatus(
 		http.StatusForbidden,
-		"per-child quota templates require a GoModel Pro quota_templates entitlement",
+		"per-child quota templates require a Gateway Pro quota_templates entitlement",
 		nil,
 	).WithCode("quota_templates_not_entitled")
 }

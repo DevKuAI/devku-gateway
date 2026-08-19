@@ -228,7 +228,7 @@ func TestAdminDashboard_Enabled_E2E(t *testing.T) {
 
 		// Guard against regressions that return a 200 with an empty/placeholder
 		// document. The built SPA entry point pins these markers.
-		assert.Contains(t, html, "<title>GoModel Dashboard</title>",
+		assert.Contains(t, html, "<title>Gateway Dashboard</title>",
 			"dashboard HTML should carry the expected <title>")
 		assert.Contains(t, html, `<meta name="robots" content="noindex, nofollow, nosnippet, noimageindex"`,
 			"dashboard HTML should prevent search engine indexing")

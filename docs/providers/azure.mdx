@@ -1,11 +1,11 @@
 ---
 title: "Azure OpenAI"
-description: "Configure Azure OpenAI in GoModel using deployment-based URLs and the api-version query parameter."
+description: "Configure Azure OpenAI in Gateway using deployment-based URLs and the api-version query parameter."
 icon: "/brand/azure.svg"
 keywords: ["Azure OpenAI", "deployment", "api-version", "provider setup"]
 ---
 
-Azure OpenAI speaks the OpenAI API shape with two GoModel-handled differences:
+Azure OpenAI speaks the OpenAI API shape with two Gateway-handled differences:
 an `api-key` header instead of `Authorization: Bearer`, and a required
 `api-version` query parameter on every request.
 
@@ -29,7 +29,7 @@ providers:
     api_version: "2024-10-21"
 ```
 
-## Run GoModel
+## Run Gateway
 
 <CodeGroup>
 
@@ -47,7 +47,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash Binary (make build)
 make build
-./bin/gomodel
+./bin/gateway
 ```
 
 </CodeGroup>
@@ -129,8 +129,8 @@ root (no `/deployments/...`) and use [virtual models](/features/virtual-models) 
 
 ## Notes
 
-- GoModel accepts the deployment-scoped URL the portal hands you. For
-  account-wide operations (model listing, batches) GoModel strips the
+- Gateway accepts the deployment-scoped URL the portal hands you. For
+  account-wide operations (model listing, batches) Gateway strips the
   `/openai/deployments/<deployment>` suffix automatically, so one
   `AZURE_BASE_URL` covers both chat and resource-level calls.
 - `AZURE_API_VERSION` only needs to be set explicitly when you need a different

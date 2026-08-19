@@ -1,27 +1,27 @@
 ---
-title: "GoModel & Coding Agents"
-description: "Connect OpenCode, Cline, Roo Code, and other OpenAI-compatible coding agents to GoModel through the standard /v1 endpoint and a single gateway key."
+title: "Gateway & Coding Agents"
+description: "Connect OpenCode, Cline, Roo Code, and other OpenAI-compatible coding agents to Gateway through the standard /v1 endpoint and a single gateway key."
 icon: "bot"
 keywords: ["OpenCode", "coding agents", "OpenAI-compatible", "setup guide"]
 ---
 
-Most coding agents outside Claude Code are easiest to connect to GoModel
+Most coding agents outside Claude Code are easiest to connect to Gateway
 through the standard OpenAI-compatible API.
 
 Flow:
 
-`OpenCode / Cline / Roo Code / Kilo Code -> GoModel -> your upstream providers`
+`OpenCode / Cline / Roo Code / Kilo Code -> Gateway -> your upstream providers`
 
 ## Before you start
 
-- Choose a GoModel master key, for example `change-me`.
-- Start GoModel with at least one upstream provider key.
-- Use GoModel standard `http://localhost:8080/v1` unless your client
+- Choose a Gateway master key, for example `change-me`.
+- Start Gateway with at least one upstream provider key.
+- Use Gateway standard `http://localhost:8080/v1` unless your client
   specifically requires a full endpoint URL.
 
-## 1. Run GoModel
+## 1. Run Gateway
 
-Start GoModel with a master key and at least one upstream provider:
+Start Gateway with a master key and at least one upstream provider:
 
 ```bash
 docker run --rm -p 8080:8080 \
@@ -32,7 +32,7 @@ docker run --rm -p 8080:8080 \
 
 <Note>
   You can swap `OPENAI_API_KEY` for another provider key if that is what your
-  target models use. The important part is that GoModel has at least one
+  target models use. The important part is that Gateway has at least one
   upstream provider configured.
 </Note>
 
@@ -92,7 +92,7 @@ If the gateway is wired correctly, the response will contain `ok`.
 
 ### OpenCode
 
-Create an `opencode.json` file with a GoModel provider:
+Create an `opencode.json` file with a Gateway provider:
 
 ```json
 {
@@ -100,7 +100,7 @@ Create an `opencode.json` file with a GoModel provider:
   "provider": {
     "gomodel": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "GoModel",
+      "name": "Gateway",
       "options": {
         "baseURL": "http://localhost:8080/v1",
         "apiKey": "{env:OPENAI_API_KEY}"
@@ -119,7 +119,7 @@ Create an `opencode.json` file with a GoModel provider:
 }
 ```
 
-Then export the GoModel key:
+Then export the Gateway key:
 
 ```bash
 export OPENAI_API_KEY=change-me
@@ -188,15 +188,15 @@ small prompt such as:
 Reply with exactly ok and no punctuation.
 ```
 
-## 5. Check the traffic in GoModel
+## 5. Check the traffic in Gateway
 
-Open the GoModel dashboard audit logs:
+Open the Gateway dashboard audit logs:
 
 [http://localhost:8080/admin/dashboard/audit](http://localhost:8080/admin/dashboard/audit)
 
-This is the quickest way to confirm that your coding agent is reaching GoModel
+This is the quickest way to confirm that your coding agent is reaching Gateway
 and to inspect each interaction. From the same dashboard, you can keep
-following your GoModel traffic and usage.
+following your Gateway traffic and usage.
 
 ## Current status
 
@@ -216,7 +216,7 @@ following your GoModel traffic and usage.
 
 This guide combines:
 
-- local validation against a GoModel instance on `http://localhost:8080`
+- local validation against a Gateway instance on `http://localhost:8080`
 - local validation with OpenCode `1.1.36`
 - official documentation for Cline, Roo Code, and Kilo Code
 
@@ -224,4 +224,4 @@ Local validation confirmed:
 
 - OpenCode worked against `http://localhost:8080/v1`
 - the validated OpenCode request used `POST /v1/chat/completions`
-- GoModel dashboard audit logs showed the OpenCode traffic immediately
+- Gateway dashboard audit logs showed the OpenCode traffic immediately

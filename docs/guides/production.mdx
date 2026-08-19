@@ -1,11 +1,11 @@
 ---
 title: "Production Deployment"
-description: "A production-grade deployment checklist for GoModel: storage backends, credential handling, air-gapped installs, multi-replica behavior, retention, and hardening."
+description: "A production-grade deployment checklist for Gateway: storage backends, credential handling, air-gapped installs, multi-replica behavior, retention, and hardening."
 icon: "server-cog"
 keywords: ["production", "deployment", "self-hosted", "air-gapped", "offline", "Kubernetes", "hardening", "security"]
 ---
 
-This page collects the best practices for running GoModel in production. The
+This page collects the best practices for running Gateway in production. The
 [Quick Start](/getting-started/quickstart) gets you serving traffic in a minute;
 this page covers what to decide before that install carries real load.
 
@@ -14,11 +14,11 @@ change it. A condensed [checklist](#production-checklist) is at the end.
 
 ## Small enough to run anywhere
 
-GoModel is a single static Go binary with no runtime dependencies. It is built
+Gateway is a single static Go binary with no runtime dependencies. It is built
 with `CGO_ENABLED=0` and ships on `distroless/static`, so the container has no shell,
 no package manager, and no libc to patch.
 
-| | GoModel |
+| | Gateway |
 | --- | --- |
 | Container image (compressed) | `16 MB` |
 | Peak RAM under load | `37 MB` |
@@ -27,7 +27,7 @@ no package manager, and no libc to patch.
 Those numbers are from the [benchmarks](/about/benchmarks) page, measured
 against other gateways on identical hardware.
 
-The practical consequence is that GoModel fits comfortably where size and cold
+The practical consequence is that Gateway fits comfortably where size and cold
 starts are penalized: Cloud Run, Fargate, Container Apps, Fly.io, container
 Lambdas, or a small VM next to your app. It does not need a dedicated node pool.
 
@@ -41,7 +41,7 @@ Lambdas, or a small VM next to your app. It does not need a dedicated node pool.
 
 ## Choose a storage backend
 
-GoModel persists audit logs, usage records, budgets, virtual models, managed API
+Gateway persists audit logs, usage records, budgets, virtual models, managed API
 keys, and other admin state through `STORAGE_TYPE`.
 
 | Backend | `STORAGE_TYPE` | Use it when |
@@ -50,7 +50,7 @@ keys, and other admin state through `STORAGE_TYPE`.
 | PostgreSQL | `postgresql` | More than one replica, or you already operate Postgres. The usual production choice. |
 | MongoDB | `mongodb` | You already operate MongoDB and prefer it over Postgres. |
 
-SQLite is the default so GoModel works with zero configuration, and it is a real
+SQLite is the default so Gateway works with zero configuration, and it is a real
 production option for a single instance with a persistent volume. It removes a
 network hop and a component to operate.
 
@@ -79,12 +79,12 @@ exists next to the binary, and the OS per-user data directory otherwise. That
 makes the default path dependent on the working directory, so set `SQLITE_PATH`
 explicitly in production. The resolved path is printed at startup as
 `storage configured`. See
-[Where does GoModel store its data?](/about/faq#where-does-gomodel-store-its-data).
+[Where does Gateway store its data?](/about/faq#where-does-gomodel-store-its-data).
 
 ### Redis
 
 Redis is optional. It backs the shared model catalog snapshot and the exact
-[response cache](/features/cache). Without it, GoModel uses an in-process cache
+[response cache](/features/cache). Without it, Gateway uses an in-process cache
 plus a local file cache, which is correct but not shared between replicas. Add
 Redis when several replicas should share discovery results and cache hits.
 
@@ -99,7 +99,7 @@ distributed lock.
 
 ## Provider credentials
 
-GoModel takes provider credentials from environment variables, from
+Gateway takes provider credentials from environment variables, from
 `config.yaml`, or from the dashboard's Providers page. All three work. They do
 not carry the same risk.
 
@@ -136,7 +136,7 @@ as code means that change can only arrive through your deploy pipeline.
   or describe the pod.
 </Warning>
 
-GoModel does not support a `<VAR>_FILE` convention for reading secrets from
+Gateway does not support a `<VAR>_FILE` convention for reading secrets from
 mounted files, with the single exception of the Vertex AI
 `SERVICE_ACCOUNT_FILE`. If your secret tooling mounts files, materialize them
 into environment variables in your entrypoint.
@@ -162,7 +162,7 @@ classify backups accordingly.
 
 ### TLS
 
-GoModel does not terminate TLS. It serves plain HTTP and expects a reverse proxy
+Gateway does not terminate TLS. It serves plain HTTP and expects a reverse proxy
 or load balancer in front of it. Run one for any deployment that is not
 loopback-only: without it, client API keys, managed gateway keys, and the master
 key all cross the network in cleartext.
@@ -172,7 +172,7 @@ call the gateway directly. Add the headers at your proxy if you need that.
 
 ## Air-gapped and offline deployments
 
-**GoModel runs fully air-gapped.** There is no telemetry, no phone-home, no
+**Gateway runs fully air-gapped.** There is no telemetry, no phone-home, no
 update check, and no license check. The admin dashboard is embedded in the
 binary and its fonts are vendored, so the UI loads no CDN assets. Paired with
 local model servers such as [Ollama](/providers/multiple-ollama),
@@ -262,13 +262,13 @@ own refresh cadence, and two of them have none.
 
 ### Health probes and shutdown
 
-GoModel exposes liveness and readiness separately, and the binary can probe
+Gateway exposes liveness and readiness separately, and the binary can probe
 itself, which works in a distroless image with no shell or `curl`.
 
 | Purpose | HTTP | CLI | Checks |
 | --- | --- | --- | --- |
-| Liveness | `GET /health` | `gomodel --health` | Nothing. Confirms the listener answers. |
-| Readiness | `GET /health/ready` | `gomodel --ready` | Storage (503 if down), Redis (degraded, still 200). |
+| Liveness | `GET /health` | `gateway --health` | Nothing. Confirms the listener answers. |
+| Readiness | `GET /health/ready` | `gateway --ready` | Storage (503 if down), Redis (degraded, still 200). |
 
 Point Kubernetes readiness at `/health/ready`, not `/health`. A Helm chart is
 included in the repository under `helm/`; check its probe paths and its
@@ -351,7 +351,7 @@ if the file size matters.
   auth by design; only the data they load is gated.
 - **Restrict the database file.** The SQLite data directory is created `0755`
   and the database file with default permissions, so on a shared host it can be
-  world-readable. Run GoModel as a dedicated user and tighten permissions,
+  world-readable. Run Gateway as a dedicated user and tighten permissions,
   especially if any credentials are stored through the dashboard.
 - **Keep `BODY_SIZE_LIMIT` sane.** It defaults to `10M` and is what stops an
   oversized body becoming a memory-exhaustion vector. An unparseable value falls

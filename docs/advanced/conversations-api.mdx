@@ -1,17 +1,17 @@
 ---
 title: "Conversations API"
-description: "Create, read, and delete OpenAI-compatible conversations and their items through GoModel, which stores them at the gateway so any provider can be used."
+description: "Create, read, and delete OpenAI-compatible conversations and their items through Gateway, which stores them at the gateway so any provider can be used."
 icon: "messages-square"
 keywords: ["conversations API", "/v1/conversations", "conversation history", "stateful requests"]
 ---
 
 ## Overview
 
-GoModel exposes OpenAI-compatible Conversations API endpoints under
+Gateway exposes OpenAI-compatible Conversations API endpoints under
 `/v1/conversations`.
 
 Conversations are a **gateway-managed resource**. The OpenAI Conversations API
-is provider-specific, so GoModel generates the conversation ID and stores the
+is provider-specific, so Gateway generates the conversation ID and stores the
 conversation itself. This keeps `/v1/conversations` available and consistent
 regardless of which provider routes your model traffic, and requires no
 provider configuration.
@@ -44,14 +44,14 @@ provider configuration.
 
 ## Limits
 
-GoModel enforces the OpenAI Conversations limits so the public contract stays
+Gateway enforces the OpenAI Conversations limits so the public contract stays
 compatible:
 
 - `items` — at most 20 entries on create.
 - `metadata` — at most 16 key-value pairs; keys up to 64 characters; values up
   to 512 characters.
 
-Item payloads follow the Responses API input/output item union. GoModel
+Item payloads follow the Responses API input/output item union. Gateway
 normalizes convenient message strings, assigns stable item IDs, and preserves
 new or provider-specific item fields so they can be listed and replayed later.
 
@@ -59,13 +59,13 @@ Item lists default to newest-first (`order=desc`) with 20 items per page. Use
 the returned `last_id` as the next request's `after` cursor. `limit` accepts up
 to 100 items. The optional `include` parameter accepts the same values as the
 OpenAI Conversations API, including `reasoning.encrypted_content` and
-`message.output_text.logprobs`. GoModel stores complete item payloads, so
+`message.output_text.logprobs`. Gateway stores complete item payloads, so
 optional fields remain available for later requests while only the fields named
 by `include` are returned.
 
 ## Storage and retention
 
-The normal GoModel application stores conversations in the configured shared
+The normal Gateway application stores conversations in the configured shared
 storage backend (`sqlite`, `postgresql`, or `mongodb`), so they survive process
 restarts. Conversation snapshots expire after 30 days.
 
@@ -76,7 +76,7 @@ evicting the oldest first.
 
 ## Errors
 
-GoModel returns OpenAI-compatible errors:
+Gateway returns OpenAI-compatible errors:
 
 - `400 invalid_request_error` — invalid body, missing `metadata` on update, an
   invalid item, or a limit exceeded (the `param` field names the offending field).
@@ -87,7 +87,7 @@ GoModel returns OpenAI-compatible errors:
 Conversation persistence is part of a successful `/v1/responses` turn. If the
 provider succeeds but the completed exchange cannot be stored, a non-streaming
 request returns `500`; a streaming request ends without emitting
-`response.completed`. GoModel does not currently deduplicate a client retry of
+`response.completed`. Gateway does not currently deduplicate a client retry of
 that failed request, so retrying can invoke the provider and incur its cost
 again. The failed exchange is absent from conversation history, so inspecting
 history cannot reliably determine whether the provider call already ran. Avoid

@@ -1,11 +1,11 @@
 ---
 title: "DeepSeek"
-description: "Configure DeepSeek V4 in GoModel and understand how reasoning effort is mapped to DeepSeek's reasoning_effort field."
+description: "Configure DeepSeek V4 in Gateway and understand how reasoning effort is mapped to DeepSeek's reasoning_effort field."
 icon: "brain"
 keywords: ["DeepSeek", "reasoning effort", "provider setup"]
 ---
 
-DeepSeek does not expose a native Responses API, so GoModel translates
+DeepSeek does not expose a native Responses API, so Gateway translates
 `/v1/responses` to `/chat/completions` automatically. It also remaps
 OpenAI-style reasoning levels to the two DeepSeek accepts.
 
@@ -40,11 +40,11 @@ with two permitted levels: `high` and `max`.
 | ------------ | ----------------- |
 | `low` / `medium` / `high` | `high` |
 | `xhigh` / `max` | `max` |
-| anything else | passed through by GoModel, then rejected by DeepSeek |
+| anything else | passed through by Gateway, then rejected by DeepSeek |
 
-GoModel rewrites the OpenAI-shaped `"reasoning": {"effort": "..."}` into
+Gateway rewrites the OpenAI-shaped `"reasoning": {"effort": "..."}` into
 DeepSeek's top-level `reasoning_effort` — no client change required. Validate
-or normalize custom client values to `high` or `max` before calling GoModel.
+or normalize custom client values to `high` or `max` before calling Gateway.
 To disable reasoning, omit the `reasoning` field entirely; any provided
 `reasoning.effort`, including `low`, is mapped and enables reasoning.
 

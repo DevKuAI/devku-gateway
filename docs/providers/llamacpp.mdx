@@ -1,11 +1,11 @@
 ---
 title: "llama.cpp"
-description: "Route OpenAI-compatible GoModel requests to a llama.cpp llama-server instance (the same provider type works for LM Studio)."
+description: "Route OpenAI-compatible Gateway requests to a llama.cpp llama-server instance (the same provider type works for LM Studio)."
 icon: "server"
 keywords: ["llama.cpp", "llama-server", "LM Studio", "local models", "self-hosted", "OpenAI-compatible server"]
 ---
 
-llama.cpp's `llama-server` speaks the OpenAI API directly, and GoModel has a
+llama.cpp's `llama-server` speaks the OpenAI API directly, and Gateway has a
 dedicated `llamacpp` provider type for it: the API key is optional
 (llama-server usually runs keyless), and provider-native endpoints such as
 `/health` and `/rerank` are reachable through passthrough. Do **not** register
@@ -26,7 +26,7 @@ llama-server -hf ggml-org/gemma-3-4b-it-GGUF --alias gemma-3-4b-it --port 8081
 ## Configure
 
 The base URL is required and registers the provider — llama-server's default
-port (8080) collides with GoModel's own, so there is no default:
+port (8080) collides with Gateway's own, so there is no default:
 
 ```bash
 LLAMACPP_BASE_URL=http://host.docker.internal:8081/v1   # include /v1
@@ -35,8 +35,8 @@ GOMODEL_MASTER_KEY=change-me
 ```
 
 <Note>
-  These examples assume GoModel runs in Docker and llama-server is on the host
-  at `localhost:8081` — hence `host.docker.internal`. If GoModel runs on the
+  These examples assume Gateway runs in Docker and llama-server is on the host
+  at `localhost:8081` — hence `host.docker.internal`. If Gateway runs on the
   host directly, use `http://localhost:8081/v1`. Running several llama-server
   instances? Register each under a suffixed name:
   `LLAMACPP_STUDIO_BASE_URL=...` creates provider `llamacpp-studio`.
@@ -58,7 +58,7 @@ curl -s http://localhost:8080/v1/chat/completions \
 
 ## Embeddings
 
-`/v1/embeddings` works through GoModel as long as llama-server can serve it:
+`/v1/embeddings` works through Gateway as long as llama-server can serve it:
 the loaded model must use a pooling type other than `none`. Dedicated embedding
 GGUFs usually declare pooling in their metadata; otherwise pass `--pooling mean`
 (or `cls`/`last`). The `--embeddings` flag is optional — it restricts the
@@ -77,7 +77,7 @@ curl -s http://localhost:8080/v1/embeddings \
 
 ## Model classification
 
-llama-server's `/v1/models` listing carries no capability metadata, so GoModel
+llama-server's `/v1/models` listing carries no capability metadata, so Gateway
 classifies its models by ID: names containing `embed` or matching well-known
 embedding families (`bge`, `e5`, `gte`, `minilm`) are categorized as embedding
 models, and names containing `rerank` as reranking models — namespaced IDs are
@@ -100,6 +100,6 @@ any model the provider serves regardless of category.
   `/infill`, ...) from the server root. For a suffixed setup use the instance
   name, e.g. `/p/llamacpp-studio/health`.
 - **Reranking** — llama-server serves reranking (start with a reranker model
-  and `--rerank --embedding --pooling rank`), but GoModel has no rerank
+  and `--rerank --embedding --pooling rank`), but Gateway has no rerank
   endpoint; reach it through passthrough: `POST /p/llamacpp/rerank` (or
   `/p/llamacpp/v1/rerank`).

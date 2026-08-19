@@ -1,27 +1,27 @@
 ---
-title: "GoModel & Claude Code"
-description: "Step-by-step guide for routing Claude Code through GoModel with Anthropic passthrough."
+title: "Gateway & Claude Code"
+description: "Step-by-step guide for routing Claude Code through Gateway with Anthropic passthrough."
 icon: "terminal"
 keywords: ["Claude Code", "Anthropic passthrough", "coding agent", "setup guide"]
 ---
 
-GoModel can sit in front of Claude Code so every request goes through your own
+Gateway can sit in front of Claude Code so every request goes through your own
 gateway first.
 
 Flow:
 
-`Claude Code -> GoModel -> Anthropic`
+`Claude Code -> Gateway -> Anthropic`
 
 ## Before you start
 
 - Install Claude Code on your machine.
-- Choose a GoModel master key, for example `change-me`.
-- Make sure GoModel has an Anthropic upstream credential.
+- Choose a Gateway master key, for example `change-me`.
+- Make sure Gateway has an Anthropic upstream credential.
 
 <Note>
-  Claude Code can be routed through GoModel whether or not you personally use a
-  Claude Code subscription. For gateway mode, Claude Code talks to GoModel with
-  `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`. GoModel still needs its own
+  Claude Code can be routed through Gateway whether or not you personally use a
+  Claude Code subscription. For gateway mode, Claude Code talks to Gateway with
+  `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`. Gateway still needs its own
   `ANTHROPIC_API_KEY` to reach Anthropic upstream — either a Console API key
   or a Claude subscription OAuth token.
 </Note>
@@ -32,7 +32,7 @@ Flow:
 
 1. Open the Claude Console and sign in to your API account.
 2. Go to account settings in Console, then create an API key.
-3. Copy the key once and set it for GoModel as `ANTHROPIC_API_KEY`.
+3. Copy the key once and set it for Gateway as `ANTHROPIC_API_KEY`.
 
 Anthropic's API docs state that API keys are created in Console account
 settings.
@@ -46,23 +46,23 @@ settings.
 
 1. Run `claude setup-token` on a machine where Claude Code is logged in to
    your subscription.
-2. Copy the generated `sk-ant-oat01-...` token and set it for GoModel as
+2. Copy the generated `sk-ant-oat01-...` token and set it for Gateway as
    `ANTHROPIC_API_KEY`.
 
-GoModel detects the `sk-ant-oat` prefix and authenticates upstream with the
+Gateway detects the `sk-ant-oat` prefix and authenticates upstream with the
 OAuth Bearer scheme automatically. Usage is covered by your subscription's
 limits instead of API billing.
 
 <Warning>
   Anthropic authorizes subscription tokens **only for Claude Code traffic**.
-  This setup works because Claude Code remains the client and GoModel relays
+  This setup works because Claude Code remains the client and Gateway relays
   its requests unchanged; pointing other clients or tools at the same gateway
   credential is rejected upstream and is against Anthropic's terms of service.
 </Warning>
 
-## 1. Run GoModel
+## 1. Run Gateway
 
-Start GoModel with a master key and an Anthropic provider key:
+Start Gateway with a master key and an Anthropic provider key:
 
 ```bash
 docker run --rm -p 8080:8080 \
@@ -168,9 +168,9 @@ console.log(message.content[0].text);
 
 If the gateway is wired correctly, the response will contain `ok`.
 
-## 3. Configure Claude Code to use GoModel
+## 3. Configure Claude Code to use Gateway
 
-Point Claude Code at GoModel:
+Point Claude Code at Gateway:
 
 ```bash
 export ANTHROPIC_BASE_URL=http://localhost:8080
@@ -193,7 +193,7 @@ your gateway URL and `ANTHROPIC_AUTH_TOKEN` to your gateway token, then run
 Claude Code normally. See the official guide:
 [Claude Code LLM gateway docs](https://code.claude.com/docs/en/llm-gateway).
 
-If GoModel is not running on your local machine, replace `localhost:8080` with
+If Gateway is not running on your local machine, replace `localhost:8080` with
 the correct host and port.
 
 ## 4. Run a Claude Code test prompt
@@ -209,15 +209,15 @@ The validated result was:
 ok
 ```
 
-## 5. Check the traffic in GoModel
+## 5. Check the traffic in Gateway
 
-Open the GoModel dashboard audit logs:
+Open the Gateway dashboard audit logs:
 
 [http://localhost:8080/admin/dashboard/audit](http://localhost:8080/admin/dashboard/audit)
 
-This is the easiest place to confirm that Claude Code is reaching GoModel and
+This is the easiest place to confirm that Claude Code is reaching Gateway and
 to inspect the full request and response trail. From the same dashboard, you
-can keep following your GoModel traffic and usage.
+can keep following your Gateway traffic and usage.
 
 ## References
 
@@ -231,12 +231,12 @@ can keep following your GoModel traffic and usage.
 
 This guide was validated against:
 
-- a local GoModel instance on `http://localhost:8080`
-- a GoModel branch exposing `/p/{provider}/v1/...`
+- a local Gateway instance on `http://localhost:8080`
+- a Gateway branch exposing `/p/{provider}/v1/...`
 - Claude Code `2.1.72`
 
 Local validation confirmed:
 
 - `GET /p/anthropic/v1/models` returned `200 OK`
 - `POST /p/anthropic/v1/messages` returned `200 OK`
-- `claude` returned `ok` when pointed at GoModel
+- `claude` returned `ok` when pointed at Gateway

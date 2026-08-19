@@ -1,11 +1,11 @@
 ---
 title: "Ollama"
-description: "Use one GoModel instance with multiple Ollama providers through suffixed environment variables and provider-qualified model IDs."
+description: "Use one Gateway instance with multiple Ollama providers through suffixed environment variables and provider-qualified model IDs."
 icon: "network"
 keywords: ["Ollama", "local models", "self-hosted", "multiple providers"]
 ---
 
-GoModel registers Ollama through `OLLAMA_BASE_URL`. To run multiple Ollama
+Gateway registers Ollama through `OLLAMA_BASE_URL`. To run multiple Ollama
 instances behind one gateway, use suffixed env vars.
 
 ## Configure
@@ -24,7 +24,7 @@ registers `ollama-b`. Use different ports or hostnames per instance.
   `docker run` command so the container can reach Ollama on the host.
 </Tip>
 
-## Run GoModel
+## Run Gateway
 
 <CodeGroup>
 
@@ -42,7 +42,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash Binary (make build)
 make build
-./bin/gomodel
+./bin/gateway
 ```
 
 </CodeGroup>

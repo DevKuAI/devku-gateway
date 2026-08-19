@@ -19,12 +19,12 @@ function parseServers(value) {
   }
   const [defaultURL, ...alternatives] = urls;
   const description = alternatives.length === 0
-    ? "Your GoModel deployment URL"
-    : `Your GoModel deployment URL (e.g. ${alternatives.join(", ")})`;
+    ? "Your Gateway deployment URL"
+    : `Your Gateway deployment URL (e.g. ${alternatives.join(", ")})`;
   return [
     {
       url: "{base_url}",
-      description: "Edit the base URL to point at your GoModel deployment.",
+      description: "Edit the base URL to point at your Gateway deployment.",
       variables: {
         base_url: {
           default: defaultURL,
@@ -453,7 +453,7 @@ function applyMintlifyOperationMetadata() {
 
   for (const { path, method, operation, summary } of operations) {
     const endpoint = `${method.toUpperCase()} ${path}`;
-    const description = `GoModel API reference for ${endpoint}: ${summary.replace(/\.$/, "")}.`;
+    const description = `Gateway API reference for ${endpoint}: ${summary.replace(/\.$/, "")}.`;
 
     operation["x-mint"] ??= {};
     operation["x-mint"].metadata ??= {};

@@ -25,7 +25,7 @@ install-tools:
 	@echo "All tools are ready"
 
 build:
-	go build -ldflags '$(LDFLAGS)' -o bin/gomodel ./cmd/gomodel
+	go build -ldflags '$(LDFLAGS)' -o bin/gateway ./cmd/gomodel
 # Run the application.
 #
 # Built and exec'd rather than `go run`: `go run` exits 1 when it is
@@ -34,10 +34,10 @@ build:
 # recipe shell, which also puts the gateway directly under make's signal
 # handling instead of behind a supervisor.
 run:
-	go build -tags=swagger -ldflags '$(LDFLAGS)' -o bin/gomodel ./cmd/gomodel
-	LOG_LEVEL="$(LOG_LEVEL)" SWAGGER_ENABLED="$(SWAGGER_ENABLED)" exec ./bin/gomodel
+	go build -tags=swagger -ldflags '$(LDFLAGS)' -o bin/gateway ./cmd/gomodel
+	LOG_LEVEL="$(LOG_LEVEL)" SWAGGER_ENABLED="$(SWAGGER_ENABLED)" exec ./bin/gateway
 
-# Seed the local SQLite database and start GoModel with a populated dashboard.
+# Seed the local SQLite database and start Gateway with a populated dashboard.
 demo: seed-demo-data
 	$(MAKE) run GOMODEL_DEMO_MODE=true
 
@@ -59,7 +59,7 @@ mod-check:
 infra:
 	docker compose up -d
 
-# Docker Compose: full stack (GoModel + Prometheus; builds app image when needed)
+# Docker Compose: full stack (Gateway + Prometheus; builds app image when needed)
 image:
 	docker compose --profile app up -d
 

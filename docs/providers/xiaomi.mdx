@@ -1,6 +1,6 @@
 ---
 title: "Xiaomi MiMo"
-description: "Configure Xiaomi MiMo in GoModel: thinking mode, the [1m] context suffix, and how TTS/ASR map onto the standard audio endpoints."
+description: "Configure Xiaomi MiMo in Gateway: thinking mode, the [1m] context suffix, and how TTS/ASR map onto the standard audio endpoints."
 icon: "mic"
 keywords: ["Xiaomi MiMo", "thinking mode", "TTS", "ASR", "provider setup"]
 ---
@@ -8,7 +8,7 @@ keywords: ["Xiaomi MiMo", "thinking mode", "TTS", "ASR", "provider setup"]
 Xiaomi MiMo speaks an OpenAI-compatible chat API with a few dialect quirks:
 thinking mode is on by default, 1M context is selected with a model-ID suffix,
 and TTS/ASR run through chat completions instead of dedicated audio endpoints.
-GoModel translates the standard `/v1/audio/speech` and `/v1/audio/transcriptions`
+Gateway translates the standard `/v1/audio/speech` and `/v1/audio/transcriptions`
 endpoints into that dialect for you.
 
 ## Configure
@@ -30,7 +30,7 @@ providers:
 ## Thinking mode
 
 MiMo models think by default, which increases token usage. Disable it per
-request with MiMo's `thinking` parameter — GoModel forwards it unchanged:
+request with MiMo's `thinking` parameter — Gateway forwards it unchanged:
 
 ```json
 {"model": "xiaomi/mimo-v2.5-pro", "thinking": {"type": "disabled"}, ...}
@@ -38,7 +38,7 @@ request with MiMo's `thinking` parameter — GoModel forwards it unchanged:
 
 In multi-turn tool-calling conversations, replay the assistant's
 `reasoning_content` field in the message history exactly as you received it.
-GoModel preserves it in both directions.
+Gateway preserves it in both directions.
 
 ## 1M context
 
@@ -54,7 +54,7 @@ XIAOMI_MODELS=mimo-v2.5-pro,mimo-v2.5-pro[1m]
 
 MiMo has no native `/audio/*` endpoints — TTS (`mimo-v2.5-tts`,
 `mimo-v2.5-tts-voicedesign`, `mimo-v2.5-tts-voiceclone`) and ASR
-(`mimo-v2.5-asr`) run through chat completions. GoModel exposes both ways:
+(`mimo-v2.5-asr`) run through chat completions. Gateway exposes both ways:
 
 - **Standard audio endpoints** — `/v1/audio/speech` and
   `/v1/audio/transcriptions` are translated automatically. Speech supports
@@ -65,7 +65,7 @@ MiMo has no native `/audio/*` endpoints — TTS (`mimo-v2.5-tts`,
 - **MiMo's chat dialect** — send chat completions directly: synthesis text in
   an `assistant` message with a top-level `audio: {format, voice}` parameter,
   or an `input_audio` content part whose `data` is a base64 `data:` URI for
-  transcription. GoModel forwards these shapes untouched.
+  transcription. Gateway forwards these shapes untouched.
 
 ## Not supported by Xiaomi MiMo
 

@@ -50,7 +50,7 @@ USAGE_ENABLED=true
 ```
 
 Request and concurrency limits work without usage tracking. If token rules are
-configured while usage tracking is off, GoModel starts and logs a warning; the
+configured while usage tracking is off, Gateway starts and logs a warning; the
 token limits are not enforced.
 
 ## Create rate limits
@@ -63,7 +63,7 @@ Rate Limits -> Create Rate Limit
 
 <img
   src="/features/rate-limits.png"
-  alt="GoModel dashboard Rate Limits page listing user-path, provider, and model rules with live usage bars for requests, tokens, and concurrency"
+  alt="Gateway dashboard Rate Limits page listing user-path, provider, and model rules with live usage bars for requests, tokens, and concurrency"
   style={{ width: "100%", maxWidth: "1280px", height: "auto" }}
   className="rounded-lg"
 />
@@ -99,7 +99,7 @@ rate_limits:
         - period: "concurrent"
           max_requests: 10
     - path: "/customers"
-      # GoModel Pro: requires the quota_templates entitlement.
+      # Gateway Pro: requires the quota_templates entitlement.
       per_child: true
       limits:
         - period: "minute"
@@ -127,7 +127,7 @@ path segments); provider rules use `SET_PROVIDER_RATE_LIMIT_<NAME>`
 SET_RATE_LIMIT_TEAM__ALPHA="rpm=100,tpm=50000,rpd=10000,concurrent=10"
 SET_RATE_LIMIT_="rpm=1000"
 SET_PROVIDER_RATE_LIMIT_OPENAI="rpm=500,concurrent=50"
-# GoModel Pro (quota_templates entitlement):
+# Gateway Pro (quota_templates entitlement):
 SET_RATE_LIMIT_CUSTOMERS='[{"period":"minute","max_requests":100,"per_child":true}]'
 ```
 
@@ -171,10 +171,10 @@ and model routed there. For per-key limits, bind each managed API key to its
 own user path and define rules there.
 
 <Info>
-  Dynamic per-child rate limits are available in GoModel Pro and require the
+  Dynamic per-child rate limits are available in Gateway Pro and require the
   `quota_templates` license entitlement. Without it, admin API writes are
   rejected with 403 `quota_templates_not_entitled`, and `per_child: true` in
-  configuration aborts startup — GoModel never silently falls back to one
+  configuration aborts startup — Gateway never silently falls back to one
   shared subtree counter, since that would change enforcement semantics.
 </Info>
 
@@ -229,7 +229,7 @@ Details worth knowing:
   concurrency slot.
 - Request and token windows live in memory for admission and are snapshotted
   to the configured store about once a second (and on shutdown), so they
-  survive a restart and `gomodel --reload`. Concurrency gauges are not
+  survive a restart and `gateway --reload`. Concurrency gauges are not
   persisted: after a bounce nothing is in flight. With N replicas the
   effective limit is still about N times the configured value — use budgets
   for durable, cross-instance control. Tune the snapshot interval with

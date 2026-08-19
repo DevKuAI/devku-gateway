@@ -1,13 +1,13 @@
 ---
 title: "CLI Operations"
-description: "Command-line flags for inspecting the GoModel binary, probing a running gateway's health, and reloading its configuration."
+description: "Command-line flags for inspecting the Gateway binary, probing a running gateway's health, and reloading its configuration."
 icon: "terminal"
 keywords: ["CLI", "command-line flags", "health check", "version probe", "config reload", "SIGHUP"]
 ---
 
 ## Overview
 
-The `gomodel` binary exposes a small set of command-line flags for operational
+The `gateway` binary exposes a small set of command-line flags for operational
 tasks. Flags accept both single-dash (`-flag`) and double-dash (`--flag`) forms;
 the examples below use the long form.
 
@@ -25,7 +25,7 @@ the examples below use the long form.
 Print the build version and exit:
 
 ```bash
-gomodel --version
+gateway --version
 ```
 
 ## Health probe
@@ -34,7 +34,7 @@ gomodel --version
 configuration as the server, requests the local `/health` endpoint, and exits.
 
 ```bash
-gomodel --health
+gateway --health
 ```
 
 - Exits `0` when the endpoint returns HTTP `200` with `{"status":"ok"}`.
@@ -47,7 +47,7 @@ inside the same container as the server, but it derives the `PORT` and
 the request with `--health-timeout`:
 
 ```bash
-gomodel --health --health-timeout 5s
+gateway --health --health-timeout 5s
 ```
 
 ### Docker `HEALTHCHECK`
@@ -58,7 +58,7 @@ official image wires it up automatically:
 
 ```dockerfile
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD ["/gomodel", "--health"]
+  CMD ["/gateway", "--health"]
 ```
 
 Orchestrators (Docker, Compose, Kubernetes) can then detect and restart an
@@ -80,7 +80,7 @@ Upstream **provider** reachability is deliberately excluded: a provider outage
 must not pull a healthy gateway out of rotation.
 
 ```bash
-gomodel --ready
+gateway --ready
 ```
 
 - Exits `0` when the endpoint returns HTTP `200` (`ready` or `degraded`).
@@ -97,7 +97,7 @@ gomodel --ready
 restarting it — the same operation as `nginx -s reload`:
 
 ```bash
-gomodel --reload
+gateway --reload
 ```
 
 It loads the same configuration the gateway does to find the pid file, signals
@@ -159,12 +159,12 @@ though `kill -HUP` still works. An empty `PID_FILE` env var reads as unset and
 keeps the default, the same as every other setting. If the path is not writable
 the gateway logs a warning and serves normally, only without `--reload` support.
 
-Both the gateway and `gomodel --reload` resolve the path from the same
+Both the gateway and `gateway --reload` resolve the path from the same
 configuration, so run the command from the same working directory (or with the
 same `PID_FILE`) as the gateway:
 
 ```bash
-docker exec my-gateway /gomodel --reload
+docker exec my-gateway /gateway --reload
 ```
 
 ### What a reload does not change
@@ -186,6 +186,6 @@ the lighter option.
 Liveness (`--health`) is the right signal for a Docker `HEALTHCHECK` (restart on
 crash). Readiness (`/health/ready`) is the right signal for a Kubernetes
 `readinessProbe` (gate traffic) — point it at the HTTP endpoint directly or run
-`gomodel --ready` as an exec probe. Keep `--ready-timeout` larger than the
+`gateway --ready` as an exec probe. Keep `--ready-timeout` larger than the
 server's internal per-dependency probe timeout (`2s`) so a slow backend returns
 a clean `not_ready` instead of the client timing out first.

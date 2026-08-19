@@ -1,13 +1,13 @@
 ---
 title: "SGLang"
-description: "Route OpenAI-compatible GoModel requests to one or more self-hosted SGLang servers."
+description: "Route OpenAI-compatible Gateway requests to one or more self-hosted SGLang servers."
 icon: "server"
 keywords: ["SGLang", "self-hosted", "Hugging Face models", "OpenAI-compatible server"]
 ---
 
-GoModel talks to SGLang through its OpenAI-compatible `/v1` API and exposes
+Gateway talks to SGLang through its OpenAI-compatible `/v1` API and exposes
 SGLang-native endpoints through provider passthrough. Hugging Face model IDs
-with slashes work because GoModel splits provider-qualified selectors on the
+with slashes work because Gateway splits provider-qualified selectors on the
 first slash only.
 
 Start SGLang first:
@@ -32,13 +32,13 @@ GOMODEL_MASTER_KEY=change-me
 ```
 
 <Note>
-  These examples assume GoModel runs in Docker and SGLang runs on the host. If
+  These examples assume Gateway runs in Docker and SGLang runs on the host. If
   both run in the same Docker or Kubernetes network, use the SGLang service
-  name. If GoModel runs directly on the host, use
+  name. If Gateway runs directly on the host, use
   `http://localhost:30000/v1`.
 </Note>
 
-## Run GoModel
+## Run Gateway
 
 <CodeGroup>
 
@@ -55,7 +55,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash Binary (make build)
 make build
-./bin/gomodel
+./bin/gateway
 ```
 
 </CodeGroup>
@@ -187,7 +187,7 @@ Keep the explicit `v1/` segment for SGLang endpoints that include it, such as
 /p/sglang/v1/tokenize
 ```
 
-GoModel strips client authorization before forwarding and applies
+Gateway strips client authorization before forwarding and applies
 `SGLANG_API_KEY` when configured.
 
 ## Capability notes
@@ -196,5 +196,5 @@ GoModel strips client authorization before forwarding and applies
   SGLang's OpenAI-compatible API.
 - Embeddings and model-specific features depend on the model loaded by SGLang.
 - Native batch, file, and stored-response lifecycle interfaces are not yet
-  exposed as typed GoModel provider capabilities; use passthrough where the
+  exposed as typed Gateway provider capabilities; use passthrough where the
   installed SGLang version supports them.

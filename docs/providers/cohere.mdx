@@ -1,11 +1,11 @@
 ---
 title: "Cohere"
-description: "Configure Cohere in GoModel and use Command chat, tool calling, reasoning, image input, audio transcription, and Embed models through OpenAI-compatible APIs."
+description: "Configure Cohere in Gateway and use Command chat, tool calling, reasoning, image input, audio transcription, and Embed models through OpenAI-compatible APIs."
 icon: "comment"
 keywords: ["Cohere", "Command models", "Embed", "tool calling", "provider setup"]
 ---
 
-GoModel translates OpenAI-compatible Chat Completions, Responses, Embeddings,
+Gateway translates OpenAI-compatible Chat Completions, Responses, Embeddings,
 and Audio Transcription requests to Cohere's native v2 API. Model
 discovery uses Cohere's model catalog and exposes chat, embedding, and
 transcription models through `/v1/models`.
@@ -159,7 +159,7 @@ console.log(transcription.text);
 
 </CodeGroup>
 
-The Cohere transcription API requires `language` and returns JSON. GoModel
+The Cohere transcription API requires `language` and returns JSON. Gateway
 accepts the OpenAI-compatible `response_format=json` field but omits it from the
 native request because JSON is Cohere's fixed response format. Cohere does not
 support text-to-speech, prompt hints, timestamp granularities, or streaming
@@ -167,7 +167,7 @@ transcription.
 
 ## Embeddings
 
-GoModel supplies Cohere's required embedding fields while retaining the
+Gateway supplies Cohere's required embedding fields while retaining the
 OpenAI request shape:
 
 <CodeGroup>
@@ -233,7 +233,7 @@ console.log(embeddings.data[0].embedding);
 
 Add `cohere` to `server.enabled_passthrough_providers`, then use paths such as
 `/p/cohere/v2/chat` or `/p/cohere/v2/rerank` to call Cohere-native APIs that do
-not have an OpenAI-compatible GoModel surface.
+not have an OpenAI-compatible Gateway surface.
 
 See Cohere's [Chat API](https://docs.cohere.com/reference/chat),
 [Embed API](https://docs.cohere.com/reference/embed),

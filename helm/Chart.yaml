@@ -17,12 +17,12 @@ keywords:
   - xai
   - proxy
 
-home: https://github.com/ENTERPILOT/GoModel
+home: https://github.com/DevKuAI/devku-gateway
 sources:
-  - https://github.com/ENTERPILOT/GoModel
+  - https://github.com/DevKuAI/devku-gateway
 
 maintainers:
-  - name: GoModel Team
+  - name: Gateway Team
 
 dependencies:
   - name: redis

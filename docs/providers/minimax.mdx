@@ -1,12 +1,12 @@
 ---
 title: "MiniMax"
-description: "Configure MiniMax in GoModel: chat models, temperature handling, and native text-to-speech through the standard audio endpoint."
+description: "Configure MiniMax in Gateway: chat models, temperature handling, and native text-to-speech through the standard audio endpoint."
 icon: "audio-waveform"
 keywords: ["MiniMax", "text-to-speech", "TTS", "t2a_v2", "provider setup"]
 ---
 
 MiniMax speaks an OpenAI-compatible chat API, so chat models work out of the
-box. Text-to-speech, however, uses MiniMax's own `t2a_v2` API — GoModel
+box. Text-to-speech, however, uses MiniMax's own `t2a_v2` API — Gateway
 translates the standard `/v1/audio/speech` endpoint into that dialect for you.
 
 ## Configure
@@ -31,7 +31,7 @@ providers:
 
 ## Temperature
 
-MiniMax requires `temperature` in `(0.0, 1.0]` and rejects zero. GoModel clamps
+MiniMax requires `temperature` in `(0.0, 1.0]` and rejects zero. Gateway clamps
 a zero or negative temperature to `1.0` so OpenAI-style requests that pin
 `temperature: 0` keep working.
 
@@ -49,7 +49,7 @@ curl https://your-gateway/v1/audio/speech \
   -H "Content-Type: application/json" \
   -d '{
     "model": "speech-2.6-hd",
-    "input": "Hello from GoModel.",
+    "input": "Hello from Gateway.",
     "voice": "English_expressive_narrator",
     "response_format": "mp3"
   }' \
@@ -68,7 +68,7 @@ client = OpenAI(
 
 speech = client.audio.speech.create(
     model="speech-2.6-hd",
-    input="Hello from GoModel.",
+    input="Hello from Gateway.",
     voice="English_expressive_narrator",
     response_format="mp3",
 )
@@ -86,7 +86,7 @@ const client = new OpenAI({
 
 const speech = await client.audio.speech.create({
   model: "speech-2.6-hd",
-  input: "Hello from GoModel.",
+  input: "Hello from Gateway.",
   voice: "English_expressive_narrator",
   response_format: "mp3",
 });
@@ -108,7 +108,7 @@ them to the configured model list to make them routable:
 MINIMAX_MODELS=speech-2.6-hd,speech-2.6-turbo
 ```
 
-MiniMax reports failures as HTTP 200 with a native status code; GoModel maps
+MiniMax reports failures as HTTP 200 with a native status code; Gateway maps
 the common ones to real errors (invalid parameters and blocked content → 400,
 authentication → 401, insufficient balance → 402, rate limits → 429) instead of
 relaying them as opaque gateway errors.

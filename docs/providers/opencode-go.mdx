@@ -1,12 +1,12 @@
 ---
 title: "OpenCode Go"
-description: "Configure OpenCode Zen (Go subscription) in GoModel using an OpenAI-compatible endpoint."
+description: "Configure OpenCode Zen (Go subscription) in Gateway using an OpenAI-compatible endpoint."
 icon: "terminal"
 keywords: ["OpenCode Zen", "OpenCode Go", "provider setup"]
 ---
 
 [OpenCode Zen](https://opencode.ai/docs/zen/) exposes its "Go" subscription
-models behind an OpenAI-compatible API. GoModel ships a native `opencode_go`
+models behind an OpenAI-compatible API. Gateway ships a native `opencode_go`
 provider that defaults the base URL, so you only need an API key.
 
 ## Configure
@@ -44,13 +44,13 @@ OPENCODE_GO_MODELS=glm-5.1,kimi-k2.7-code,deepseek-v4-pro
 
 OpenCode Zen serves most models on OpenAI-style `/chat/completions` (Bearer
 auth) and a few models only on the Anthropic-native `/messages` endpoint
-(`x-api-key` auth). GoModel routes per model:
+(`x-api-key` auth). Gateway routes per model:
 
 - **OpenAI-style models** (GLM, Kimi, DeepSeek, MiMo, MiniMax, most Qwen) go to
   `/chat/completions`. `/models` and `/v1/responses` (translated to chat
   completions) use the same path.
 - **Anthropic-only models** are translated to the Anthropic Messages dialect and
-  sent to `/messages`, mirroring how GoModel already serves native Anthropic.
+  sent to `/messages`, mirroring how Gateway already serves native Anthropic.
   Both paths normalize to the same OpenAI-compatible response, so clients see
   one consistent surface regardless of which model they pick — whether they call
   `/v1/chat/completions` or `/v1/messages`.

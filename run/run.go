@@ -37,7 +37,7 @@ var shutdownTimeout = 30 * time.Second
 // gateway on os.Args.
 type Options struct {
 	// ProductName names the binary in CLI usage output, the startup log line,
-	// and --version output. Default: "gomodel".
+	// and --version output. Default: "gateway".
 	ProductName string
 	// Extensions is the extension registry snapshotted at server
 	// construction. Default: ext.Default.
@@ -49,7 +49,7 @@ type Options struct {
 	Stderr io.Writer
 	// ConfigureSwaggerDocs receives the configured server base path so the
 	// caller's generated swagger docs package can be aligned with it. The
-	// gomodel binary passes its build-tagged implementation. Default: no-op.
+	// gateway binary passes its build-tagged implementation. Default: no-op.
 	ConfigureSwaggerDocs func(basePath string)
 	// Setup, when set, runs once the process is committed to starting the
 	// gateway — after CLI parsing, --version/--health/--ready
@@ -67,7 +67,7 @@ type Options struct {
 
 func (o Options) withDefaults() Options {
 	if o.ProductName == "" {
-		o.ProductName = "gomodel"
+		o.ProductName = "gateway"
 	}
 	if o.Extensions == nil {
 		o.Extensions = ext.Default
@@ -113,7 +113,7 @@ func ExitCode(err error) int {
 // with graceful shutdown.
 //
 // Cancelling ctx triggers the same graceful shutdown as SIGINT/SIGTERM. A
-// reload signal (SIGHUP, what `gomodel --reload` sends) instead re-reads the
+// reload signal (SIGHUP, what `gateway --reload` sends) instead re-reads the
 // environment file and the configuration and replaces the running application
 // with one built from them, without giving up the listening socket.
 func Run(ctx context.Context, opts Options) error {

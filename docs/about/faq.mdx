@@ -1,11 +1,11 @@
 ---
 title: "FAQ"
-description: "Updating, pinning, and uninstalling GoModel; where the gateway stores its data and whether updates are safe."
+description: "Updating, pinning, and uninstalling Gateway; where the gateway stores its data and whether updates are safe."
 icon: "circle-help"
 keywords: ["faq", "update", "uninstall", "data location", "version pinning"]
 ---
 
-## How do I update GoModel?
+## How do I update Gateway?
 
 <Tabs>
   <Tab title="macOS / Linux">
@@ -13,17 +13,18 @@ keywords: ["faq", "update", "uninstall", "data location", "version pinning"]
     the binary in place:
 
     ```bash
-    curl -fsSL https://gomodel.enterpilot.io/install.sh | sh
+    curl -fsSL https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.sh | sh
     ```
   </Tab>
   <Tab title="Windows">
     ```powershell
-    irm https://gomodel.enterpilot.io/install.ps1 | iex
+    irm https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.ps1 | iex
     ```
   </Tab>
   <Tab title="Docker">
     ```bash
-    docker pull enterpilot/gomodel
+    git pull
+    docker build -t gateway .
     ```
 
     Then recreate the container. With Docker Compose:
@@ -39,7 +40,7 @@ Restart the gateway after updating; there is no in-place hot upgrade.
 ## How do I check which version I'm running?
 
 ```bash
-gomodel --version
+gateway --version
 ```
 
 The version is also printed on the first line of the startup log.
@@ -49,12 +50,11 @@ The version is also printed on the first line of the startup log.
 Yes — set `GOMODEL_VERSION` before running the installer:
 
 ```bash
-curl -fsSL https://gomodel.enterpilot.io/install.sh | GOMODEL_VERSION=vX.Y.Z sh
+curl -fsSL https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.sh | GOMODEL_VERSION=vX.Y.Z sh
 ```
 
-On Windows set `$env:GOMODEL_VERSION` first. With Docker, use a version tag
-(`enterpilot/gomodel:X.Y.Z`) instead of `latest`. Replace `X.Y.Z` with a
-[published GoModel release](https://github.com/ENTERPILOT/GoModel/releases).
+On Windows set `$env:GOMODEL_VERSION` first. Replace `X.Y.Z` with a
+[published Gateway release](https://github.com/DevKuAI/devku-gateway/releases).
 
 ## Is updating safe for my data?
 
@@ -63,9 +63,9 @@ move or delete your database, configuration, or cache. Rolling back a version
 is equally safe for typical minor upgrades, though a database written by a
 much newer version may contain tables an older binary simply ignores.
 
-## Where does GoModel store its data?
+## Where does Gateway store its data?
 
-When a `./data` directory exists next to where you launch GoModel (existing
+When a `./data` directory exists next to where you launch Gateway (existing
 deployments, the Docker image), the database stays at `./data/gomodel.db`.
 Otherwise the binary uses your OS's conventional per-user directories:
 

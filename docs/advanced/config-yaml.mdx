@@ -5,7 +5,7 @@ icon: "file-cog"
 keywords: ["config.yaml", "YAML configuration", "Docker", "environment variables"]
 ---
 
-The goal in GoModel is to make `config.yaml` optional as much as possible.
+The goal in Gateway is to make `config.yaml` optional as much as possible.
 Prefer environment variables for normal deployments, CI, containers, and secret
 injection.
 
@@ -87,7 +87,7 @@ Entity-level validation also still applies: a virtual model whose target names a
 provider that does not exist fails startup even when the key that would have
 declared that provider was ignored with a warning.
 
-To confirm which layer supplied your providers, GoModel logs one line at boot:
+To confirm which layer supplied your providers, Gateway logs one line at boot:
 
 ```json
 {"msg":"providers resolved","total":5,"from_config_file":4,"from_env":1,
@@ -96,15 +96,15 @@ To confirm which layer supplied your providers, GoModel logs one line at boot:
 ```
 
 `from_config_file: 0` while a file is loaded means the file contributed no
-providers. GoModel also logs `config file loaded` with the resolved path, or
+providers. Gateway also logs `config file loaded` with the resolved path, or
 `no config file found` with the paths it searched.
 
 ## Current Schema
 
 The current source of truth lives in the main codebase:
 
-- [config/config.go](https://github.com/ENTERPILOT/GoModel/blob/main/config/config.go)
-- [config/config.example.yaml](https://github.com/ENTERPILOT/GoModel/blob/main/config/config.example.yaml)
+- [config/config.go](https://github.com/DevKuAI/devku-gateway/blob/main/config/config.go)
+- [config/config.example.yaml](https://github.com/DevKuAI/devku-gateway/blob/main/config/config.example.yaml)
 
 For deployments mounted below a domain root, set `server.base_path` or
 `BASE_PATH`. For example, `BASE_PATH=/g` serves the gateway at `/g/v1/...`,
@@ -113,7 +113,7 @@ For deployments mounted below a domain root, set `server.base_path` or
 To change the inbound user path header, set `server.user_path_header` or
 `USER_PATH_HEADER`. The default remains `X-GoModel-User-Path`.
 
-Edits to this file are applied to a running gateway with `gomodel --reload`,
+Edits to this file are applied to a running gateway with `gateway --reload`,
 which re-reads the file and the environment and rebuilds the gateway in place —
 see [CLI Operations](/advanced/cli#configuration-reload). Nothing changes if the
 new file fails to load. `server.port` and `server.pid_file` are the exceptions:
@@ -122,10 +122,10 @@ the running values until the gateway is restarted.
 
 ## Docker
 
-GoModel reads `config/config.yaml` first, then `config.yaml`.
+Gateway reads `config/config.yaml` first, then `config.yaml`.
 
 With `docker run`, you can keep a host file named `config.yml` and mount it to
-the in-container path GoModel expects:
+the in-container path Gateway expects:
 
 ```bash
 docker run --rm -p 8080:8080 \

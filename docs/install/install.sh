@@ -1,7 +1,7 @@
 #!/bin/sh
-# GoModel installer for macOS and Linux.
+# Gateway installer for macOS and Linux.
 #
-#   curl -fsSL https://gomodel.enterpilot.io/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.sh | sh
 #
 # Downloads the latest release binary from GitHub, verifies its SHA-256
 # checksum, and installs it to /usr/local/bin (or ~/.local/bin when
@@ -13,8 +13,8 @@
 
 set -eu
 
-REPO="ENTERPILOT/GoModel"
-BINARY="gomodel"
+REPO="DevKuAI/devku-gateway"
+BINARY="gateway"
 
 say() { printf '%s\n' "$*"; }
 fail() { printf 'error: %s\n' "$*" >&2; exit 1; }
@@ -99,4 +99,4 @@ say "Get started:"
 say "  export OPENAI_API_KEY=sk-...   # or any other provider key"
 say "  $BINARY"
 say ""
-say "Docs: https://gomodel.enterpilot.io"
+say "Repository: https://github.com/DevKuAI/devku-gateway"

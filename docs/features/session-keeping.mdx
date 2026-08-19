@@ -5,7 +5,7 @@ icon: "pin"
 ---
 
 Coding agents and chat apps send many requests that belong to one logical
-session — one conversation, one agent task. GoModel detects that session and
+session — one conversation, one agent task. Gateway detects that session and
 uses it throughout routing and observability:
 
 - **Sticky load balancing** — a load-balanced virtual model routes every
@@ -148,7 +148,7 @@ curl -H "Authorization: Bearer $GOMODEL_MASTER_KEY" \
 }
 ```
 
-Requests and tokens include responses served by GoModel's local response
+Requests and tokens include responses served by Gateway's local response
 cache. Cost fields include provider-bound requests only, because cost stored on
 a local-cache hit is the cost that was avoided, not money actually spent.
 Results are ordered by latest session activity; `limit` defaults to 50 and is

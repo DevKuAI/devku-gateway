@@ -1,17 +1,17 @@
 ---
-title: "GoModel & Kimi Code CLI"
-description: "Route Kimi Code CLI through GoModel without an api.json registry URL, configure a model profile, and verify prompts and tool calls."
+title: "Gateway & Kimi Code CLI"
+description: "Route Kimi Code CLI through Gateway without an api.json registry URL, configure a model profile, and verify prompts and tool calls."
 icon: "terminal"
 keywords: ["Kimi Code", "Kimi Code CLI", "Kimi CLI", "api.json", "coding agent", "setup guide"]
 ---
 
-Kimi Code CLI can use GoModel as an OpenAI-compatible provider. You configure
-the GoModel base URL, a dedicated managed API key, and at least one model in
+Kimi Code CLI can use Gateway as an OpenAI-compatible provider. You configure
+the Gateway base URL, a dedicated managed API key, and at least one model in
 Kimi's `~/.kimi/config.toml` file.
 
 Flow:
 
-`Kimi Code CLI -> GoModel -> upstream model provider`
+`Kimi Code CLI -> Gateway -> upstream model provider`
 
 ## You do not need an `api.json` URL
 
@@ -19,7 +19,7 @@ Kimi's **Custom registry (`api.json`)** option imports a models.dev-shaped
 provider catalog. It is optional and is not the normal OpenAI-compatible setup
 path.
 
-GoModel exposes its model catalog at `/v1/models`, but that response uses the
+Gateway exposes its model catalog at `/v1/models`, but that response uses the
 OpenAI model-list format rather than Kimi's custom-registry format. Do not paste
 `http://localhost:8080/v1/models` into Kimi's `api.json` prompt. Exit that
 prompt and use the direct configuration below instead.
@@ -32,13 +32,13 @@ prompt and use the direct configuration below instead.
 ## Before you start
 
 - Install [Kimi Code CLI](https://moonshotai.github.io/kimi-cli/en/guides/getting-started.html).
-- Choose a GoModel master key for gateway administration, for example
+- Choose a Gateway master key for gateway administration, for example
   `change-me`.
-- Make sure GoModel has an upstream credential for the model you want to use.
+- Make sure Gateway has an upstream credential for the model you want to use.
 
-## 1. Run GoModel
+## 1. Run Gateway
 
-Start GoModel with a master key and at least one upstream provider. This
+Start Gateway with a master key and at least one upstream provider. This
 example uses OpenAI:
 
 ```bash
@@ -50,11 +50,11 @@ docker run --rm -p 8080:8080 \
 
 `GOMODEL_MASTER_KEY` is the gateway's bootstrap and administrator credential.
 Do not put it in Kimi's persistent configuration. `OPENAI_API_KEY` belongs to
-GoModel and is used only for the upstream request.
+Gateway and is used only for the upstream request.
 
 ## 2. Create a dedicated Kimi API key
 
-Open the GoModel dashboard at
+Open the Gateway dashboard at
 [http://localhost:8080/admin/dashboard](http://localhost:8080/admin/dashboard)
 and sign in with `GOMODEL_MASTER_KEY`. Go to
 `API Keys -> Create API Key`, then:
@@ -77,7 +77,7 @@ use those policies, allow only the selectors Kimi needs for `/agents/kimi`.
 
 ## 3. Choose a model
 
-List the models visible through GoModel:
+List the models visible through Gateway:
 
 ```bash
 curl -s http://localhost:8080/v1/models \
@@ -91,7 +91,7 @@ curl -s http://localhost:8080/v1/models \
 
 This guide uses `openai/gpt-5-mini`, with a 400,000-token context window and a
 128,000-token output limit. Prefer a provider-qualified ID from this
-response so GoModel routes the request to the intended provider.
+response so Gateway routes the request to the intended provider.
 
 ## 4. Configure Kimi Code CLI
 
@@ -114,22 +114,22 @@ capabilities = ["thinking", "image_in"]
 ```
 
 The alias `gomodel/gpt-5-mini` is local to Kimi. The `model` value is the
-exact selector Kimi sends to GoModel.
+exact selector Kimi sends to Gateway.
 
 <Warning>
   Kimi does not automatically read ordinary provider credentials such as
   `OPENAI_API_KEY` from your shell for persistent providers. In this file,
-  `api_key` must contain the dedicated GoModel managed key, not the master key
+  `api_key` must contain the dedicated Gateway managed key, not the master key
   or an upstream provider key. Restrict access with
   `chmod 600 ~/.kimi/config.toml`.
 </Warning>
 
-Use the `context_window` value returned by GoModel as `max_context_size` when
+Use the `context_window` value returned by Gateway as `max_context_size` when
 you configure a different model. The `thinking` capability and
 `default_thinking = true` match the reasoning model used here. Adjust Kimi's
 capabilities to match another model.
 
-If GoModel runs on another host, replace `localhost:8080`. Keep `/v1` in the
+If Gateway runs on another host, replace `localhost:8080`. Keep `/v1` in the
 base URL; do not append `/chat/completions`.
 
 ## 5. Validate the setup
@@ -164,14 +164,14 @@ The final model response should be:
 tool-ok
 ```
 
-## 6. Check the traffic in GoModel
+## 6. Check the traffic in Gateway
 
-Open the GoModel dashboard audit logs:
+Open the Gateway dashboard audit logs:
 
 [http://localhost:8080/admin/dashboard/audit](http://localhost:8080/admin/dashboard/audit)
 
 Use the audit trail to confirm that Kimi is sending streaming requests to
-`POST /v1/chat/completions` and that GoModel is routing them to the selected
+`POST /v1/chat/completions` and that Gateway is routing them to the selected
 provider. Sign in with the master key or a separate managed key that has
 dashboard access; the Kimi key intentionally cannot open this page.
 
@@ -180,7 +180,7 @@ dashboard access; the Kimi key intentionally cannot open this page.
 ### Kimi asks for an `api.json` URL
 
 You selected Kimi's custom-registry import flow. Cancel it and edit
-`~/.kimi/config.toml` as shown above. GoModel does not need a registry
+`~/.kimi/config.toml` as shown above. Gateway does not need a registry
 endpoint for Kimi to work.
 
 ### `401 Unauthorized`
@@ -211,15 +211,15 @@ the same model, use the provider-qualified ID, such as
 
 This guide was validated against:
 
-- a local GoModel instance on `http://localhost:8080`
+- a local Gateway instance on `http://localhost:8080`
 - Kimi Code CLI `1.49.0`
-- `openai/gpt-5-mini` through GoModel's OpenAI-compatible Chat Completions API
+- `openai/gpt-5-mini` through Gateway's OpenAI-compatible Chat Completions API
 
 Local validation confirmed:
 
 - Kimi accepted the documented TOML configuration with a dedicated managed key
   that had `/agents/kimi` as its user path and no dashboard access
-- `kimi --quiet -p` returned `ok` through `Kimi Code CLI -> GoModel -> OpenAI`
+- `kimi --quiet -p` returned `ok` through `Kimi Code CLI -> Gateway -> OpenAI`
 - Kimi invoked its Shell tool and returned `tool-ok` through the same route
 - the Kimi key could list and call models but received `403` from the admin API
-- no GoModel application change or `api.json` endpoint was required
+- no Gateway application change or `api.json` endpoint was required

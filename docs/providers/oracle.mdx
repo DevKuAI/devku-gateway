@@ -1,11 +1,11 @@
 ---
 title: "Oracle GenAI"
-description: "Configure Oracle GenAI's OpenAI-compatible endpoint in GoModel, including the required OCI policy and configured model lists."
+description: "Configure Oracle GenAI's OpenAI-compatible endpoint in Gateway, including the required OCI policy and configured model lists."
 icon: "/brand/oracle.svg"
 keywords: ["Oracle GenAI", "OCI", "provider setup"]
 ---
 
-GoModel calls Oracle Generative AI through Oracle's OpenAI-compatible inference
+Gateway calls Oracle Generative AI through Oracle's OpenAI-compatible inference
 endpoint. Setup needs an OCI IAM policy for `generativeaiapikey`, a
 region-specific base URL, and a configured model list (Oracle's `/models` is
 not reliably available on the API-key flow).
@@ -48,7 +48,7 @@ providers:
 If both are set, `ORACLE_MODELS` overrides YAML `models:` for the matching
 provider.
 
-## 3. Run GoModel
+## 3. Run Gateway
 
 <CodeGroup>
 
@@ -67,7 +67,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash Binary (make build)
 make build
-./bin/gomodel
+./bin/gateway
 ```
 
 </CodeGroup>

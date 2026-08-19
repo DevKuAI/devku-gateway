@@ -1,4 +1,4 @@
-# GoModel Helm Chart
+# Gateway Helm Chart
 
 High-performance AI gateway for multiple LLM providers (OpenAI, Anthropic, Cohere, Gemini, DeepSeek, Groq, Kilo AI, Z.ai, xAI, Oracle, SGLang, vLLM).
 
@@ -50,7 +50,7 @@ helm install gomodel ./helm \
 | `image.repository`               | Image repository                                                                               | `enterpilot/gomodel`   |
 | `image.tag`                      | Image tag                                                                                      | `""` (uses appVersion) |
 | `server.port`                    | Server port                                                                                    | `8080`                 |
-| `server.basePath`                | URL path prefix where GoModel is mounted                                                       | `"/"`                  |
+| `server.basePath`                | URL path prefix where Gateway is mounted                                                       | `"/"`                  |
 | `server.userPathHeader`          | Header used to read/write request user_path values                                             | `"X-GoModel-User-Path"` |
 | `server.bodySizeLimit`           | Max request body size                                                                          | `"10M"`                |
 | `auth.masterKey`                 | Master key for auth                                                                            | `""`                   |
@@ -77,7 +77,7 @@ helm install gomodel ./helm \
 | `providers.llmd.enabled`         | Enable llm-d                                                                                   | `false`                |
 | `providers.llmd.baseUrl`         | llm-d Router/EPP base URL mapped to `LLMD_BASE_URL`; required when llm-d is enabled            | `""`                   |
 | `providers.llmd.inferenceObjective` | Trusted llm-d objective mapped to `LLMD_INFERENCE_OBJECTIVE`                                | `""`                   |
-| `providers.llmd.fairnessFromUserPath` | Derive llm-d fairness ID from GoModel's effective user path                               | `true`                 |
+| `providers.llmd.fairnessFromUserPath` | Derive llm-d fairness ID from Gateway's effective user path                               | `true`                 |
 | `cache.type`                     | Cache type (local/redis)                                                                       | `"redis"`              |
 | `redis.enabled`                  | Deploy Redis subchart                                                                          | `true`                 |
 | `metrics.enabled`                | Enable Prometheus metrics                                                                      | `true`                 |

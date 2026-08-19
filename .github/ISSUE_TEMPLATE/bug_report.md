@@ -11,8 +11,8 @@ type: Bug
 **Describe the bug**
 ....
 
-**GoModel version**
-... Check with gomodel --version or Dashboard->Settings on the bottom ...
+**Gateway version**
+... Check with gateway --version or Dashboard->Settings on the bottom ...
 
 **Steps To Reproduce (optionally)**
 1. Go to '...'

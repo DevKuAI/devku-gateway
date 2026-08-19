@@ -87,7 +87,7 @@
     <div class="sidebar-logo">
       <GoModelLogo />
     </div>
-    <h1>GoModel</h1>
+    <h1>Gateway</h1>
     <span class="badge">{m.common_label_admin()}</span>
   </div>
   <nav class="sidebar-nav">

@@ -23,7 +23,7 @@ ARG COMMIT=none
 ARG DATE=unknown
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} GOARM=${TARGETVARIANT#v} go build \
 	-ldflags="-s -w -X github.com/enterpilot/gomodel/internal/version.Version=${VERSION} -X github.com/enterpilot/gomodel/internal/version.Commit=${COMMIT} -X github.com/enterpilot/gomodel/internal/version.Date=${DATE}" \
-	-o /gomodel ./cmd/gomodel
+	-o /gateway ./cmd/gomodel
 
 # Create .cache and data directories for runtime (with placeholder for COPY)
 RUN mkdir -p /app/.cache /app/data && touch /app/.cache/.keep /app/data/.keep
@@ -35,7 +35,7 @@ FROM gcr.io/distroless/static-debian12:nonroot
 LABEL io.modelcontextprotocol.server.name="io.github.ENTERPILOT/gomodel"
 
 # Copy binary and runtime config
-COPY --from=builder /gomodel /gomodel
+COPY --from=builder /gateway /gateway
 COPY --from=builder /app/config/*.yaml /app/config/
 
 # Create writable .cache and data directories for nonroot user (UID=65532)
@@ -46,6 +46,6 @@ WORKDIR /app
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD ["/gomodel", "--health"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD ["/gateway", "--health"]
 
-ENTRYPOINT ["/gomodel"]
+ENTRYPOINT ["/gateway"]

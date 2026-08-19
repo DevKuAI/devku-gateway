@@ -1,4 +1,4 @@
-# GoModel Testing Strategy
+# Gateway Testing Strategy
 
 A 3-layer testing strategy with **DB state verification** as the highest priority:
 

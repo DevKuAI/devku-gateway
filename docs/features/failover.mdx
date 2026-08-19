@@ -1,23 +1,23 @@
 ---
 title: "Failover"
-description: "Configure GoModel failover with manual mappings and know when failover attempts run."
+description: "Configure Gateway failover with manual mappings and know when failover attempts run."
 icon: "shuffle"
 keywords: ["failover", "fallback", "provider outage", "automatic retry", "high availability"]
 ---
 
 <img
   src="/features/failover.png"
-  alt="GoModel dashboard failover mapping editor for a model, showing an ordered fallback model list, Add fallback model and Generate automatically buttons"
+  alt="Gateway dashboard failover mapping editor for a model, showing an ordered fallback model list, Add fallback model and Generate automatically buttons"
   style={{ width: "100%", maxWidth: "795px", height: "auto" }}
   className="rounded-lg"
 />
 
 ## Overview
 
-GoModel exposes failover through the `failover` config block, environment
+Gateway exposes failover through the `failover` config block, environment
 variables, and the Dashboard.
 
-When a request fails, GoModel can retry it against alternate models. Runtime
+When a request fails, Gateway can retry it against alternate models. Runtime
 failover uses manual rules only.
 
 ## Manual Mappings
@@ -42,7 +42,7 @@ an ordered failover target list (array); top-level keys are not ordered:
 
 The order-sensitive part is the array under each model entry.
 
-GoModel tries the listed candidates in order and stops on the first success.
+Gateway tries the listed candidates in order and stops on the first success.
 Use bare model names like `gpt-4o` or provider-qualified selectors like
 `azure/gpt-4o`.
 
@@ -68,7 +68,7 @@ Two ways to reach the generator in the dashboard:
 
 <img
   src="/features/failover-generate.png"
-  alt="GoModel dashboard Settings page Failover section with Generate failover models automatically and Remove all the failover models buttons"
+  alt="Gateway dashboard Settings page Failover section with Generate failover models automatically and Remove all the failover models buttons"
   style={{ width: "100%", maxWidth: "1000px", height: "auto" }}
   className="rounded-lg"
 />

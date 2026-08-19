@@ -321,8 +321,8 @@ func (s *Service) getServer(r *http.Request) *mcp.Server {
 	views := s.visibleServers(scope)
 
 	server := mcp.NewServer(&mcp.Implementation{
-		Name:    "gomodel",
-		Title:   "GoModel MCP Gateway",
+		Name:    "gateway",
+		Title:   "Gateway MCP",
 		Version: version.Version,
 	}, &mcp.ServerOptions{
 		Instructions: s.composeInstructions(scope, views),
@@ -466,7 +466,7 @@ func (s *Service) composeInstructions(scope requestScope, views []ServerView) st
 			names = append(names, view.Spec.Name)
 		}
 		sort.Strings(names)
-		fmt.Fprintf(&b, "GoModel MCP gateway aggregating %d server(s): %s. Tools and prompts are namespaced as {server}%s{name}.",
+		fmt.Fprintf(&b, "Gateway aggregates %d MCP server(s): %s. Tools and prompts are namespaced as {server}%s{name}.",
 			len(names), strings.Join(names, ", "), namespaceSeparator)
 	}
 	for _, view := range views {

@@ -43,7 +43,7 @@ make lint-fix      # Auto-fix issues
 Use `make swagger` to regenerate the checked-in Swagger docs package and
 `docs/openapi.json`.
 
-GoModel intentionally uses `github.com/swaggo/swag/v2/cmd/swag`. The Swagger UI
+Gateway intentionally uses `github.com/swaggo/swag/v2/cmd/swag`. The Swagger UI
 is served through Echo v5 and `github.com/swaggo/echo-swagger`'s
 `WrapHandlerV3`, which reads registered specs through `github.com/swaggo/swag/v2`.
 Using the v1 `swag` generator will produce a docs package that does not match
@@ -77,7 +77,7 @@ Log format is chosen automatically based on the environment:
 - **Non-TTY** (piped, redirected, Docker, CI): structured JSON
 
 ```text
-12:12PM INFO  starting gomodel version=dev commit=none
+12:12PM INFO  starting gateway version=dev commit=none
 12:12PM WARN  SECURITY WARNING: GOMODEL_MASTER_KEY not set ...
 12:12PM INFO  starting server address=:8080
 ```

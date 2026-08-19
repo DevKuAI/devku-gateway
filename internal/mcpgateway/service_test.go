@@ -794,7 +794,7 @@ func TestInstructionsComposeFromUpstreams(t *testing.T) {
 	if init == nil || !strings.Contains(init.Instructions, "instructions from alpha") {
 		t.Fatalf("aggregated instructions = %q, want upstream instructions merged", init.Instructions)
 	}
-	if !strings.Contains(init.Instructions, "GoModel MCP gateway") {
+	if !strings.Contains(init.Instructions, "Gateway aggregates") {
 		t.Fatalf("aggregated instructions = %q, want gateway preamble", init.Instructions)
 	}
 }

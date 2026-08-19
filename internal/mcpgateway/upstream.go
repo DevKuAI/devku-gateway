@@ -140,8 +140,8 @@ func (u *upstream) ensureSessionLocked(ctx context.Context) (*mcp.ClientSession,
 		return nil, err
 	}
 	client := mcp.NewClient(&mcp.Implementation{
-		Name:    "gomodel",
-		Title:   "GoModel MCP Gateway",
+		Name:    "gateway",
+		Title:   "Gateway MCP",
 		Version: version.Version,
 	}, u.clientOptions())
 	session, err = client.Connect(dialCtx, transport, nil)

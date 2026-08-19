@@ -19,7 +19,7 @@ import (
 )
 
 // reloadSignal asks a running gateway to re-read its configuration, the same
-// way SIGHUP does for nginx. `gomodel --reload` sends it; `kill -HUP <pid>`
+// way SIGHUP does for nginx. `gateway --reload` sends it; `kill -HUP <pid>`
 // works just as well.
 const reloadSignal = syscall.SIGHUP
 
@@ -111,7 +111,7 @@ func (d *dotenv) apply() (undo func()) {
 	}
 }
 
-// writePIDFile records the running process id so `gomodel --reload` can find
+// writePIDFile records the running process id so `gateway --reload` can find
 // the gateway to signal. The returned function removes the file again, unless
 // another instance has claimed it in the meantime.
 func writePIDFile(path string) (func(), error) {

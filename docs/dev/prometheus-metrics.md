@@ -157,7 +157,7 @@ For end-to-end verification:
 
 ```bash
 export METRICS_ENABLED=true
-./bin/gomodel
+./bin/gateway
 # in another shell:
 curl -X POST http://localhost:8080/v1/chat/completions \
   -H "Content-Type: application/json" \

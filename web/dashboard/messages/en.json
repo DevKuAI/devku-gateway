@@ -83,7 +83,7 @@
   "usage_column_output_cost": "Output Cost",
   "usage_column_total_cost": "Total Cost",
   "usage_prompt_cached_help": "Provider prompt-cache reads included in the input tokens",
-  "usage_local_cached_help": "Tokens served from GoModel's local response cache (excluded from the other columns)",
+  "usage_local_cached_help": "Tokens served from Gateway's local response cache (excluded from the other columns)",
   "usage_current_cached_price": "~{cost} at current cached-input pricing",
   "usage_local_cached_split": "{input} input + {output} output",
   "usage_request_log": "Request Log",
@@ -339,7 +339,7 @@
   "overview_cache_prompt": "Prompt cached",
   "overview_cache_prompt_note": "Provider prompt-cache reads",
   "overview_cache_local": "Locally cached",
-  "overview_cache_local_note": "Served from GoModel response cache",
+  "overview_cache_local_note": "Served from Gateway response cache",
   "overview_cache_breakdown_label": "Cache breakdown of input tokens — {details}",
   "overview_activity": "Activity",
   "overview_loading_activity": "Loading activity",
@@ -931,7 +931,7 @@
   "demo_mode_label": "Demo mode notice",
   "demo_mode_title": "Public demo",
   "demo_mode_warning": "Do not enter sensitive or personal data. Demo data is reset regularly.",
-  "demo_mode_website_label": "GoModel website",
+  "demo_mode_website_label": "Gateway repository",
   "pagination_summary": "Showing {start}–{end} of {total}",
   "date_picker_last_days": [
     {

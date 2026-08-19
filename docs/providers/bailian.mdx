@@ -7,16 +7,16 @@ keywords: ["Alibaba Cloud Model Studio", "Bailian", "DashScope", "Qwen", "provid
 
 Alibaba Cloud Model Studio is Alibaba Cloud's model-as-a-service platform for
 the Qwen family of models. The service has also been called Bailian (百炼) and
-DashScope in consoles, SDKs, and API documentation. GoModel routes to it through
+DashScope in consoles, SDKs, and API documentation. Gateway routes to it through
 the OpenAI-compatible endpoint (`/compatible-mode/v1`).
 
 <Note>
-  GoModel keeps the provider ID, environment variables, and passthrough path as
+  Gateway keeps the provider ID, environment variables, and passthrough path as
   `bailian`, `BAILIAN_*`, and `/p/bailian/...` for compatibility.
 </Note>
 
 Because Bailian deprecated `max_tokens` in April 2026 in favor of
-`max_completion_tokens`, GoModel automatically maps the standard
+`max_completion_tokens`, Gateway automatically maps the standard
 `max_tokens` field to `max_completion_tokens` for every request — no
 client change required.
 
@@ -70,9 +70,9 @@ current catalog:
 Model Studio deprecated `max_tokens` on 2026-04-20 (effective 2026-05-30).
 Its compatible-mode models now require `max_completion_tokens` instead.
 
-GoModel transparently maps the standard `max_tokens` parameter to
+Gateway transparently maps the standard `max_tokens` parameter to
 `max_completion_tokens` for every `bailian` provider request — send
-`max_tokens` as you normally would, and GoModel rewrites it before forwarding to
+`max_tokens` as you normally would, and Gateway rewrites it before forwarding to
 Model Studio.
 
 <CodeGroup>

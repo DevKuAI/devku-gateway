@@ -1,8 +1,8 @@
 {
     "$schema": "https://mintlify.com/docs.json",
     "theme": "maple",
-    "name": "GoModel",
-    "description": "GoModel is an open-source, OpenAI-compatible AI gateway that routes requests to any LLM provider, with failover, budgets, rate limits, caching, and usage tracking.",
+    "name": "Gateway",
+    "description": "Gateway is an open-source, OpenAI-compatible AI gateway that routes requests to any LLM provider, with failover, budgets, rate limits, caching, and usage tracking.",
     "logo": {
         "light": "/wordmark-light.svg",
         "dark": "/wordmark-dark.svg"
@@ -25,18 +25,17 @@
     "seo": {
         "indexing": "navigable",
         "metatags": {
-            "generator": "GoModel",
+            "generator": "Gateway",
             "google-site-verification": "EhaMJtqC22YnPJetcCW5SCi3fdJF2BOai2WHjae8ymY",
             "robots": "index, follow, max-image-preview:large"
         },
         "organization": {
-            "id": "https://enterpilot.io/#organization",
-            "name": "enterpilot, Inc.",
-            "legalName": "enterpilot, Inc.",
-            "url": "https://enterpilot.io",
-            "logo": "https://gomodel.enterpilot.io/docs/logo.svg",
+            "id": "https://github.com/DevKuAI#organization",
+            "name": "DevKuAI",
+            "url": "https://github.com/DevKuAI",
+            "logo": "https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/logo.svg",
             "sameAs": [
-                "https://github.com/ENTERPILOT/GoModel"
+                "https://github.com/DevKuAI/devku-gateway"
             ]
         }
     },
@@ -58,7 +57,7 @@
         "links": [
             {
                 "type": "github",
-                "href": "https://github.com/ENTERPILOT/GoModel"
+                "href": "https://github.com/DevKuAI/devku-gateway"
             }
         ]
     },
@@ -66,9 +65,9 @@
         "global": {
             "anchors": [
                 {
-                    "anchor": "Discord",
-                    "icon": "/discord.svg",
-                    "href": "https://discord.gg/gaEB9BQSPH"
+                    "anchor": "Issues",
+                    "icon": "circle-dot",
+                    "href": "https://github.com/DevKuAI/devku-gateway/issues"
                 }
             ]
         },

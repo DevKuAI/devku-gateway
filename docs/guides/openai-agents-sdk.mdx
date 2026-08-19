@@ -1,32 +1,32 @@
 ---
-title: "GoModel & OpenAI Agents SDK"
-description: "Route OpenAI Agents SDK model calls through GoModel's OpenAI-compatible Responses API."
+title: "Gateway & OpenAI Agents SDK"
+description: "Route OpenAI Agents SDK model calls through Gateway's OpenAI-compatible Responses API."
 icon: "bot"
 keywords: ["OpenAI Agents SDK", "Responses API", "agents", "Python SDK"]
 ---
 
-GoModel can sit in front of the OpenAI Agents SDK when you want gateway keys,
+Gateway can sit in front of the OpenAI Agents SDK when you want gateway keys,
 budgets, audit logs, model routing, and usage tracking around agent runs.
 
 Flow:
 
-`OpenAI Agents SDK -> GoModel /v1 -> selected provider`
+`OpenAI Agents SDK -> Gateway /v1 -> selected provider`
 
 ## Before you start
 
-- Install GoModel.
-- Choose a GoModel master key, for example `change-me`.
+- Install Gateway.
+- Choose a Gateway master key, for example `change-me`.
 - Configure at least one upstream model provider.
 - Install the OpenAI Agents SDK for Python or JavaScript.
 
 <Note>
-  The SDK exports traces to OpenAI by default. If GoModel is your only OpenAI
+  The SDK exports traces to OpenAI by default. If Gateway is your only OpenAI
   client endpoint, disable tracing or configure a separate OpenAI tracing key.
 </Note>
 
-## 1. Run GoModel
+## 1. Run Gateway
 
-Start GoModel with a master key and an upstream provider key. This example uses
+Start Gateway with a master key and an upstream provider key. This example uses
 OpenAI upstream:
 
 ```bash
@@ -36,12 +36,12 @@ docker run --rm -p 8080:8080 \
   enterpilot/gomodel
 ```
 
-If you use another provider, keep the same GoModel base URL and choose a model
-that your provider exposes through GoModel.
+If you use another provider, keep the same Gateway base URL and choose a model
+that your provider exposes through Gateway.
 
 ## 2. Confirm the Responses endpoint
 
-Send one small request through GoModel:
+Send one small request through Gateway:
 
 <CodeGroup>
 
@@ -90,7 +90,7 @@ If the gateway is wired correctly, the response will contain `ok`.
 
 ## 3. Configure the SDK
 
-Point the SDK's OpenAI client at GoModel:
+Point the SDK's OpenAI client at Gateway:
 
 <CodeGroup>
 
@@ -161,7 +161,7 @@ console.log(result.finalOutput);
 
 The Python SDK treats strings like `anthropic/claude-sonnet-4-20250514` and
 `gemini/gemini-2.0-flash` as provider-prefixed model names by default. When you
-want those namespaced GoModel IDs to reach the gateway unchanged, configure the
+want those namespaced Gateway IDs to reach the gateway unchanged, configure the
 SDK model provider in model ID pass-through mode:
 
 ```python
@@ -206,7 +206,7 @@ if __name__ == "__main__":
 
 ## Supported SDK paths
 
-GoModel supports the SDK's normal HTTP Responses path:
+Gateway supports the SDK's normal HTTP Responses path:
 
 - non-streaming `Runner.run(...)`
 - streaming `Runner.run_streamed(...)` over HTTP/SSE
@@ -219,9 +219,9 @@ GoModel supports the SDK's normal HTTP Responses path:
 - local response retrieval through `/v1/responses/{id}` and
   `/v1/responses/{id}/input_items`
 
-GoModel also preserves newer Responses input items for native Responses
+Gateway also preserves newer Responses input items for native Responses
 providers. If a request has to be translated to Chat Completions for a provider
-that does not implement Responses natively, GoModel translates structured
+that does not implement Responses natively, Gateway translates structured
 `text` output settings into the Chat Completions `response_format` (and passes
 `text.verbosity` through) only for chat providers that support those fields,
 while returning a clear error for stateful or provider-native Responses fields
@@ -232,23 +232,23 @@ feature matrix.
 
 ## Storage behavior
 
-GoModel stores local response snapshots so lifecycle endpoints can work even
+Gateway stores local response snapshots so lifecycle endpoints can work even
 when the upstream provider does not support response retrieval. If the SDK sends
-`store: false`, GoModel does not persist that local response snapshot.
+`store: false`, Gateway does not persist that local response snapshot.
 
 ## Current limitations
 
 - Responses websocket transport is not implemented. Use the SDK's HTTP/SSE
-  transport with GoModel.
+  transport with Gateway.
 - Hosted tools such as web search, file search, and computer use require a
   native upstream provider that supports those tool payloads. Chat-translated
-  providers such as Anthropic and Gemini reject those tools unless GoModel adds
+  providers such as Anthropic and Gemini reject those tools unless Gateway adds
   explicit provider capability mapping for them.
 - Anthropic does not currently accept translated structured-output
-  `response_format` or `text.verbosity` settings. GoModel rejects those fields
+  `response_format` or `text.verbosity` settings. Gateway rejects those fields
   instead of silently ignoring them.
 - `previous_response_id` and `conversation` are forwarded to native Responses
-  providers. Chat-translated providers reject them because GoModel cannot safely
+  providers. Chat-translated providers reject them because Gateway cannot safely
   reconstruct provider-managed state across that translation boundary yet.
 - Tracing is separate from model routing. Disable SDK tracing or configure a
   real OpenAI tracing key.

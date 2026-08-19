@@ -72,7 +72,7 @@ def save_single_plot(results_dir: Path, grouped, key, title, ylabel, filename, c
 
 def render_dashboard(results_dir: Path, grouped, colors):
     fig, axes = plt.subplots(2, 2, figsize=(14, 9), constrained_layout=True)
-    fig.suptitle("GoModel vs LiteLLM Benchmark Dashboard", fontsize=18, weight="bold")
+    fig.suptitle("Gateway vs LiteLLM Benchmark Dashboard", fontsize=18, weight="bold")
 
     plot_metric(axes[0, 0], grouped, "req_per_sec", "Throughput", "Req/s", colors)
     plot_metric(axes[0, 1], grouped, "p95_ms", "Latency (p95)", "Milliseconds", colors)

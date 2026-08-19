@@ -45,7 +45,7 @@ type ServerConfig struct {
 	// at /v1/realtime and the /p/{provider}/v1/realtime passthrough upgrade.
 	// Default: true. Only providers implementing realtime accept sessions.
 	RealtimeEnabled bool `yaml:"realtime_enabled" env:"REALTIME_ENABLED"`
-	// PIDFile records the process id of the running gateway so `gomodel --reload`
+	// PIDFile records the process id of the running gateway so `gateway --reload`
 	// can find it. Default: DefaultPIDFilePath(). Set it per instance when
 	// several gateways share a host, or to "" in config.yaml to write no pid
 	// file at all, which also disables `--reload` (an empty PID_FILE reads as

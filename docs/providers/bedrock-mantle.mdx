@@ -6,7 +6,7 @@ keywords: ["Amazon Bedrock Mantle", "Responses API", "OpenAI-compatible Bedrock"
 ---
 
 Bedrock Mantle is Amazon Bedrock's OpenAI-compatible inference endpoint.
-GoModel calls its Responses API directly, so Responses-only models are not
+Gateway calls its Responses API directly, so Responses-only models are not
 translated to Chat Completions or Bedrock Converse.
 
 <Note>
@@ -46,7 +46,7 @@ GOMODEL_MASTER_KEY=change-me
   </Tab>
 </Tabs>
 
-For SigV4, GoModel uses the AWS SDK credential chain, including
+For SigV4, Gateway uses the AWS SDK credential chain, including
 `AWS_PROFILE`, IAM Identity Center, and container or instance roles. In
 production, prefer workload credentials over long-lived access keys.
 
@@ -61,7 +61,7 @@ BEDROCK_MANTLE_BASE_URL=us-west-2
 # Equivalent host: https://bedrock-mantle.us-west-2.api.aws
 ```
 
-For an API-key or YAML configuration where the base URL is omitted, GoModel
+For an API-key or YAML configuration where the base URL is omitted, Gateway
 uses `BEDROCK_MANTLE_REGION`, then `AWS_REGION`, then `AWS_DEFAULT_REGION`, and
 finally `us-east-1`. With only IAM credentials, set
 `BEDROCK_MANTLE_BASE_URL` so provider discovery enables Mantle.
@@ -139,13 +139,13 @@ fields are forwarded to Mantle without translating the request to chat.
 | Luna | `openai.gpt-5.6-luna` | 272K | `us-east-1`, `us-east-2`, `us-west-2` |
 
 These models support the Responses API, not Chat Completions, Converse, or
-Invoke. GoModel automatically sends them to `/openai/v1/responses`, the model-
+Invoke. Gateway automatically sends them to `/openai/v1/responses`, the model-
 specific path required by AWS. Other Mantle models use `/v1/responses` or
 `/v1/chat/completions` as appropriate.
 
 ## Endpoint path selection
 
-`BEDROCK_MANTLE_API_MODE` controls which OpenAI-compatible path GoModel uses:
+`BEDROCK_MANTLE_API_MODE` controls which OpenAI-compatible path Gateway uses:
 
 | Value | Behavior |
 | ----- | -------- |
@@ -154,7 +154,7 @@ specific path required by AWS. Other Mantle models use `/v1/responses` or
 | `standard` | Forces `/v1` for inference requests. |
 
 The model catalog always uses `/v1/models`. Use an override when AWS adds a
-model before GoModel's automatic path list is updated.
+model before Gateway's automatic path list is updated.
 
 In YAML, set the same option with `api_mode`:
 

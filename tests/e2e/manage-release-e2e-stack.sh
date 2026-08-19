@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 STACK_DIR="${RELEASE_STACK_DIR:-/tmp/gomodel-release-stack}"
-BIN="${GOMODEL_RELEASE_BINARY:-$REPO_ROOT/bin/gomodel}"
+BIN="${GOMODEL_RELEASE_BINARY:-$REPO_ROOT/bin/gateway}"
 ENV_FILE="${GOMODEL_RELEASE_ENV_FILE:-$REPO_ROOT/.env}"
 PG_DATABASE="${GOMODEL_RELEASE_PG_DATABASE:-gomodel_release_e2e}"
 MONGO_DATABASE="${GOMODEL_RELEASE_MONGO_DATABASE:-gomodel_release_e2e}"
@@ -25,7 +25,7 @@ Commands:
   logs GATEWAY          Show the last 40 log lines for one gateway
 
 Options:
-  --build               Rebuild bin/gomodel before starting
+  --build               Rebuild bin/gateway before starting
   --help                Show this help
 
 Gateways:

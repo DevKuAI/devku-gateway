@@ -2,6 +2,7 @@
 
 ## Reporting a Vulnerability
 
-Please report security issues to `abuse (#) enterpilot.io`.
+Please report security issues privately through the repository's
+[GitHub Security Advisories](https://github.com/DevKuAI/devku-gateway/security/advisories/new).
 
-As a fallback, you can also try to reach SantiagoDePL#0353 via GoModel's Discord server.
+Do not open a public issue for an unpatched vulnerability.

@@ -1,33 +1,33 @@
 ---
-title: "GoModel & Codex"
-description: "Route OpenAI Codex through GoModel's Responses API: run the gateway with Docker, point Codex at it with a master key, and verify the setup."
+title: "Gateway & Codex"
+description: "Route OpenAI Codex through Gateway's Responses API: run the gateway with Docker, point Codex at it with a master key, and verify the setup."
 icon: "code-xml"
 keywords: ["Codex", "OpenAI Codex", "coding agent", "setup guide"]
 ---
 
-GoModel is a good fit for Codex because Codex already targets the OpenAI
+Gateway is a good fit for Codex because Codex already targets the OpenAI
 Responses API.
 
 Flow:
 
-`Codex -> GoModel -> upstream model provider`
+`Codex -> Gateway -> upstream model provider`
 
 ## Before you start
 
 - Install Codex on your machine.
-- Choose a GoModel master key, for example `change-me`.
-- Make sure GoModel has the upstream provider key for the models you want to use.
+- Choose a Gateway master key, for example `change-me`.
+- Make sure Gateway has the upstream provider key for the models you want to use.
 
 <Note>
-  You can keep using Codex with a ChatGPT subscription sign-in, but GoModel
+  You can keep using Codex with a ChatGPT subscription sign-in, but Gateway
   still needs a gateway credential from Codex and an upstream provider key of
-  its own. In this guide, `OPENAI_API_KEY=change-me` is the GoModel master key
-  that Codex sends to GoModel, not your OpenAI Platform key.
+  its own. In this guide, `OPENAI_API_KEY=change-me` is the Gateway master key
+  that Codex sends to Gateway, not your OpenAI Platform key.
 </Note>
 
-## 1. Run GoModel
+## 1. Run Gateway
 
-Start GoModel with a master key and an OpenAI provider key:
+Start Gateway with a master key and an OpenAI provider key:
 
 ```bash
 docker run --rm -p 8080:8080 \
@@ -38,11 +38,11 @@ docker run --rm -p 8080:8080 \
 
 ## 2. Confirm the Responses API
 
-Before testing Codex itself, you can optionally verify that GoModel answers a
+Before testing Codex itself, you can optionally verify that Gateway answers a
 normal Responses API request:
 
 This step is optional. If you are sure you have configured a valid
-`OPENAI_API_KEY` in GoModel, you can skip it and go straight to
+`OPENAI_API_KEY` in Gateway, you can skip it and go straight to
 [step 3](#3-configure-codex-to-use-gomodel).
 
 <CodeGroup>
@@ -93,7 +93,7 @@ console.log(response.output_text);
 
 If the gateway is wired correctly, the response will contain `ok`.
 
-## 3. Configure Codex to use GoModel
+## 3. Configure Codex to use Gateway
 
 Use a Responses-based provider in your Codex config file:
 
@@ -102,13 +102,13 @@ model_provider = "gomodel"
 model = "gpt-4.1-mini"
 
 [model_providers.gomodel]
-name = "GoModel"
+name = "Gateway"
 base_url = "http://localhost:8080/v1"
 env_key = "OPENAI_API_KEY"
 wire_api = "responses"
 ```
 
-Then export the GoModel master key for that provider:
+Then export the Gateway master key for that provider:
 
 ```bash
 export OPENAI_API_KEY=change-me
@@ -137,7 +137,7 @@ ok
 
 Codex sends `POST /v1/responses`. DeepSeek exposes chat completions instead of
 a native Responses API, so configure the first-class DeepSeek provider and let
-GoModel translate the request.
+Gateway translate the request.
 
 ```yaml
 providers:
@@ -153,11 +153,11 @@ upstream, while the DeepSeek provider translates `/responses` to
 `/chat/completions`.
 
 See the [DeepSeek guide](/providers/deepseek) for the full reasoning effort
-mapping table (DeepSeek V4 only accepts `high` and `max`, so GoModel maps
+mapping table (DeepSeek V4 only accepts `high` and `max`, so Gateway maps
 `low` and `medium` up to `high`).
 
 Codex attaches `include: ["reasoning.encrypted_content"]` to every Responses
-request. GoModel ignores it on chat-translated providers, so the response
+request. Gateway ignores it on chat-translated providers, so the response
 carries no encrypted reasoning items. See
 [Responses compatibility](/advanced/responses-compatibility) for the full
 feature matrix.
@@ -169,21 +169,21 @@ model_provider = "gomodel"
 model = "deepseek-v4-pro"
 
 [model_providers.gomodel]
-name = "GoModel"
+name = "Gateway"
 base_url = "http://localhost:8080/v1"
 env_key = "OPENAI_API_KEY"
 wire_api = "responses"
 ```
 
-## 5. Check the traffic in GoModel
+## 5. Check the traffic in Gateway
 
-Open the GoModel dashboard audit logs:
+Open the Gateway dashboard audit logs:
 
 [http://localhost:8080/admin/dashboard/audit](http://localhost:8080/admin/dashboard/audit)
 
-This lets you confirm that Codex is reaching GoModel and inspect the full
+This lets you confirm that Codex is reaching Gateway and inspect the full
 request and response trail. From the same dashboard, you can keep following
-your GoModel traffic and usage.
+your Gateway traffic and usage.
 
 ## Current status
 
@@ -204,16 +204,16 @@ your GoModel traffic and usage.
 
 This guide was validated against:
 
-- a local GoModel instance on `http://localhost:8080`
+- a local Gateway instance on `http://localhost:8080`
 - Codex CLI `0.122.0`
 
 Local validation confirmed:
 
 - `POST /v1/responses` returned `200 OK` with `curl`
-- `codex exec` returned `ok` through `Codex -> GoModel -> OpenAI-compatible upstream`
+- `codex exec` returned `ok` through `Codex -> Gateway -> OpenAI-compatible upstream`
 - Codex sent plain JSON to `POST /v1/responses`; no `Content-Encoding: zstd`
   header was present
 - a ChatGPT-signed-in Codex session worked with the custom `gomodel` provider
-  when `OPENAI_API_KEY` was set to the GoModel master key
+  when `OPENAI_API_KEY` was set to the Gateway master key
 - the same custom provider failed without `OPENAI_API_KEY`, because the provider
   `env_key` is still required

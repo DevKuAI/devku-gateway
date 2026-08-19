@@ -1,19 +1,19 @@
-# GoModel installer for Windows.
+# Gateway installer for Windows.
 #
-#   irm https://gomodel.enterpilot.io/install.ps1 | iex
+#   irm https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.ps1 | iex
 #
 # Downloads the latest release from GitHub, verifies its SHA-256 checksum,
-# and installs gomodel.exe to %LOCALAPPDATA%\Programs\gomodel (added to the
+# and installs gateway.exe to %LOCALAPPDATA%\Programs\gateway (added to the
 # user PATH when missing). No telemetry is sent by this script.
 #
 # Overrides (set before running):
 #   $env:GOMODEL_VERSION      install a specific version (e.g. v0.1.50); default: latest
-#   $env:GOMODEL_INSTALL_DIR  install directory; default: %LOCALAPPDATA%\Programs\gomodel
+#   $env:GOMODEL_INSTALL_DIR  install directory; default: %LOCALAPPDATA%\Programs\gateway
 
 $ErrorActionPreference = 'Stop'
 
-$Repo = 'ENTERPILOT/GoModel'
-$Binary = 'gomodel'
+$Repo = 'DevKuAI/devku-gateway'
+$Binary = 'gateway'
 
 # PROCESSOR_ARCHITEW6432 reports the real machine architecture when running
 # in a 32-bit PowerShell on a 64-bit Windows.
@@ -46,7 +46,7 @@ $version = $tag.TrimStart('v')
 $archive = "${Binary}_${version}_windows_${arch}.zip"
 $baseUrl = "https://github.com/$Repo/releases/download/$tag"
 
-$tmpDir = Join-Path ([IO.Path]::GetTempPath()) "gomodel-install-$([IO.Path]::GetRandomFileName())"
+$tmpDir = Join-Path ([IO.Path]::GetTempPath()) "gateway-install-$([IO.Path]::GetRandomFileName())"
 New-Item -ItemType Directory -Path $tmpDir | Out-Null
 try {
     Write-Host "Downloading $Binary $tag (windows/$arch)..."
@@ -66,7 +66,7 @@ try {
     Expand-Archive -Path (Join-Path $tmpDir $archive) -DestinationPath $tmpDir -Force
 
     $installDir = $env:GOMODEL_INSTALL_DIR
-    if (-not $installDir) { $installDir = Join-Path $env:LOCALAPPDATA 'Programs\gomodel' }
+    if (-not $installDir) { $installDir = Join-Path $env:LOCALAPPDATA 'Programs\gateway' }
     New-Item -ItemType Directory -Path $installDir -Force | Out-Null
     Copy-Item (Join-Path $tmpDir "$Binary.exe") (Join-Path $installDir "$Binary.exe") -Force
 
@@ -85,7 +85,7 @@ try {
     Write-Host '  $env:OPENAI_API_KEY = "sk-..."   # or any other provider key'
     Write-Host "  $Binary"
     Write-Host ''
-    Write-Host 'Docs: https://gomodel.enterpilot.io'
+    Write-Host 'Repository: https://github.com/DevKuAI/devku-gateway'
 }
 finally {
     Remove-Item -Recurse -Force $tmpDir -ErrorAction SilentlyContinue

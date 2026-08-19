@@ -133,37 +133,37 @@ test("providerDocUrl links provider types with docs and stays empty otherwise", 
   // Types with a dedicated docs page.
   assert.equal(
     providerDocUrl({ type: "anthropic" }),
-    "https://gomodel.enterpilot.io/docs/providers/anthropic?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/anthropic.mdx",
   );
   assert.equal(
     providerDocUrl({ config: { type: "bedrock" } }),
-    "https://gomodel.enterpilot.io/docs/providers/bedrock?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/bedrock.mdx",
   );
   assert.equal(
     providerDocUrl({ type: "bedrock-mantle" }),
-    "https://gomodel.enterpilot.io/docs/providers/bedrock-mantle?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/bedrock-mantle.mdx",
   );
   assert.equal(
     providerDocUrl({ type: "cohere" }),
-    "https://gomodel.enterpilot.io/docs/providers/cohere?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/cohere.mdx",
   );
   // Type slug differs from the docs slug.
   assert.equal(
     providerDocUrl({ type: "opencode_go" }),
-    "https://gomodel.enterpilot.io/docs/providers/opencode-go?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/opencode-go.mdx",
   );
   // Resolves even when the (type) label is hidden because name === type.
   assert.equal(
     providerDocUrl({ name: "gemini", type: "GEMINI" }),
-    "https://gomodel.enterpilot.io/docs/providers/gemini?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/gemini.mdx",
   );
   assert.equal(
     providerDocUrl({ type: "llmd" }),
-    "https://gomodel.enterpilot.io/docs/providers/llmd?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/llmd.mdx",
   );
   assert.equal(
     providerDocUrl({ type: "sglang" }),
-    "https://gomodel.enterpilot.io/docs/providers/sglang?utm_source=gomodel_dashboard",
+    "https://github.com/DevKuAI/devku-gateway/blob/main/docs/providers/sglang.mdx",
   );
   // Types without a provider-specific doc → no link (no icon).
   assert.equal(providerDocUrl({ type: "openai" }), "");

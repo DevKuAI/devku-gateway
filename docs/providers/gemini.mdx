@@ -1,6 +1,6 @@
 ---
 title: "Google Gemini"
-description: "Configure Google Gemini via AI Studio in GoModel, choose native or OpenAI-compatible routing, and understand image_url behavior."
+description: "Configure Google Gemini via AI Studio in Gateway, choose native or OpenAI-compatible routing, and understand image_url behavior."
 icon: "sparkles"
 keywords: ["Google Gemini", "AI Studio", "native Gemini API", "provider setup"]
 ---
@@ -8,7 +8,7 @@ keywords: ["Google Gemini", "AI Studio", "native Gemini API", "provider setup"]
 This page covers Gemini through **Google AI Studio** API keys. For Gemini on
 Google Cloud's Vertex AI, see the [Google Vertex AI guide](/providers/vertex).
 
-By default, GoModel routes Gemini chat and Responses requests through Gemini's
+By default, Gateway routes Gemini chat and Responses requests through Gemini's
 native `generateContent` API. Switch to the OpenAI-compatible endpoint when
 you need compatibility behavior the native adapter does not implement yet
 (notably remote `image_url` values).
@@ -35,7 +35,7 @@ providers:
   when per-provider `GEMINI_API_MODE` is unset. Prefer `GEMINI_API_MODE`.
 </Note>
 
-Native AI Studio mode can also materialize GoModel's post-routing prompt-cache
+Native AI Studio mode can also materialize Gateway's post-routing prompt-cache
 plans as five-minute Gemini cached-content objects. Reuse is scoped to the API
 key selected for the session; sessionless traffic with rotating keys skips
 object creation so a resource is never reused under the wrong credential.
@@ -43,13 +43,13 @@ Vertex currently receives the original request without cached-content objects.
 
 ## Base URLs
 
-GoModel keeps separate internal bases for native Gemini and the
+Gateway keeps separate internal bases for native Gemini and the
 OpenAI-compatible API:
 
 - native chat/models: `https://generativelanguage.googleapis.com/v1beta`
 - OpenAI-compatible: `https://generativelanguage.googleapis.com/v1beta/openai`
 
-`GEMINI_BASE_URL` overrides them. When the value ends in `/openai`, GoModel
+`GEMINI_BASE_URL` overrides them. When the value ends in `/openai`, Gateway
 uses it for the OpenAI-compatible client and derives the native base by
 stripping `/openai`. Embeddings, files, and batches always use the
 OpenAI-compatible surface.

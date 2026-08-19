@@ -33,7 +33,7 @@ BASE="http://localhost:$GW_PORT"
 ROOT_WORK="${UPGRADE_WORK_DIR:-/tmp/gomodel-upgrade-compat}"
 BASELINE_TREE="$ROOT_WORK/baseline-tree"
 OLD_BIN="$ROOT_WORK/gomodel-baseline"
-NEW_BIN="$REPO_ROOT/bin/gomodel"
+NEW_BIN="$REPO_ROOT/bin/gateway"
 PG_DB="${UPGRADE_PG_DATABASE:-gomodel_upgrade_compat}"
 MONGO_DB="${UPGRADE_MONGO_DATABASE:-gomodel_upgrade_compat}"
 MONGO_CONTAINER="${UPGRADE_MONGO_CONTAINER:-gomodel-mongodb-1}"
@@ -60,7 +60,7 @@ WORK="$ROOT_WORK/$BACKEND"
 build_binaries() {
   mkdir -p "$ROOT_WORK"
 
-  # Always rebuild: an existing bin/gomodel from an earlier session would make
+  # Always rebuild: an existing bin/gateway from an earlier session would make
   # this harness validate a binary that predates the change under test, and
   # report a pass for it.
   (cd "$REPO_ROOT" && make build)

@@ -1,16 +1,16 @@
 ---
 title: "Amazon Bedrock"
-description: "Configure Amazon Bedrock in GoModel using AWS credentials and the Bedrock Runtime Converse API."
+description: "Configure Amazon Bedrock in Gateway using AWS credentials and the Bedrock Runtime Converse API."
 icon: "/brand/bedrock.svg"
 keywords: ["Amazon Bedrock", "AWS", "Converse API", "provider setup"]
 ---
 
-GoModel routes Bedrock requests through the Bedrock Runtime Converse and
+Gateway routes Bedrock requests through the Bedrock Runtime Converse and
 ConverseStream APIs, normalizing responses across model families (Anthropic,
 Amazon Nova, Meta Llama, Mistral, Cohere, AI21, and others) into
 OpenAI-compatible chat completions.
 
-Bedrock has no API key of its own — GoModel resolves AWS credentials at runtime
+Bedrock has no API key of its own — Gateway resolves AWS credentials at runtime
 through the standard AWS credential chain (env, `AWS_PROFILE`, IAM Identity
 Center, instance/container roles).
 
@@ -25,10 +25,10 @@ GOMODEL_MASTER_KEY=change-me
 ```
 
 In production, prefer instance roles, IRSA, or IAM Identity Center over
-long-lived access keys. When `BEDROCK_BASE_URL` is empty, GoModel falls back to
+long-lived access keys. When `BEDROCK_BASE_URL` is empty, Gateway falls back to
 `AWS_REGION` / `AWS_DEFAULT_REGION`.
 
-## Run GoModel
+## Run Gateway
 
 <CodeGroup>
 
@@ -47,7 +47,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash Binary (make build)
 make build
-./bin/gomodel
+./bin/gateway
 ```
 
 </CodeGroup>
@@ -111,7 +111,7 @@ Responses API are bridged onto Converse internally.
 
 ## Restrict or extend the model list
 
-By default GoModel queries Bedrock's control plane and lists all on-demand
+By default Gateway queries Bedrock's control plane and lists all on-demand
 text models the account has access to. To pin inference profile IDs or custom
 model ARNs:
 
@@ -165,7 +165,7 @@ still come from the standard AWS credential chain.
 - **`model registry has no models`** — region has no on-demand text models, or
   the control-plane call failed. Set `BEDROCK_MODELS` or check IAM.
 - **Wrong region inferred** — pass `BEDROCK_BASE_URL` explicitly. With a full
-  endpoint URL, GoModel only extracts the region segment when the host ends in
+  endpoint URL, Gateway only extracts the region segment when the host ends in
   `.amazonaws.com`; custom endpoints should pair with `AWS_REGION`.
 
 ## References

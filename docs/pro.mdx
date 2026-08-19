@@ -1,16 +1,16 @@
 ---
-title: "GoModel Pro"
-description: "GoModel Pro adds licensed prompt compression, intelligent routing, and OIDC SSO to the GoModel gateway."
+title: "Gateway Pro"
+description: "Gateway Pro adds licensed prompt compression, intelligent routing, and OIDC SSO to Gateway."
 icon: "gem"
 noindex: true
-keywords: ["GoModel Pro", "prompt compression", "intelligent routing", "OIDC", "SSO", "OpenTelemetry", "quota templates", "license"]
+keywords: ["Gateway Pro", "prompt compression", "intelligent routing", "OIDC", "SSO", "OpenTelemetry", "quota templates", "license"]
 ---
 
 ## What Pro is
 
-GoModel Pro is the commercial distribution of GoModel. It uses the same
+Gateway Pro is the commercial distribution of Gateway. It uses the same
 gateway, configuration, providers, dashboard, and APIs as open-source
-GoModel, with licensed extensions for prompt compression, intelligent routing,
+Gateway, with licensed extensions for prompt compression, intelligent routing,
 OIDC single sign-on, OpenTelemetry export, and per-child quota templates.
 
 Without a valid license, the Pro binary starts as the open-source gateway and
@@ -100,7 +100,7 @@ models:
   observed latency, errors, cooldowns, target capacity, and the configured
   cost or latency objective.
 
-Configure a tiered alias with ordinary GoModel model names. The tier targets can
+Configure a tiered alias with ordinary Gateway model names. The tier targets can
 be concrete models or virtual models:
 
 ```bash
@@ -131,7 +131,7 @@ session pin. Responses return `X-GoModel-Pro-Tier`,
 OIDC SSO protects the Dashboard and supports Authorization Code flow with
 PKCE, state and nonce validation, discovery, and signed `HttpOnly`,
 `SameSite=Lax` sessions. Configure it under `extensions.sso` in the main
-GoModel YAML configuration:
+Gateway YAML configuration:
 
 ```yaml
 extensions:
@@ -153,7 +153,7 @@ an intentionally unrestricted OIDC client.
 
 <Warning>
   SSO session revocation is process-local. Deploy SSO on exactly one active
-  GoModel Pro replica until a shared session or revocation store is available.
+  Gateway Pro replica until a shared session or revocation store is available.
 </Warning>
 
 Successful logins, rejected policies, and logouts are recorded as sanitized

@@ -6,7 +6,7 @@ keywords: ["API key rotation", "multiple API keys", "round robin", "rate limits"
 ---
 
 A provider normally holds one API key, and every request to it uses that key.
-Configure more than one and GoModel spreads identified sessions across them. Each
+Configure more than one and Gateway spreads identified sessions across them. Each
 conversation stays on one key by default, so it can keep hitting the provider's
 prompt cache while each key still carries a fraction of the overall traffic.
 
@@ -116,7 +116,7 @@ provider suffix, not a key number.
 
 ## What rotation covers
 
-Every call GoModel makes to the provider uses the same selection policy: chat
+Every call Gateway makes to the provider uses the same selection policy: chat
 completions, responses, embeddings, audio, images, batches, provider-native
 [passthrough routes](/features/passthrough-api), and realtime sessions. Identified
 sessions are sticky; sessionless traffic is round robin.

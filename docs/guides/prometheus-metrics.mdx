@@ -1,25 +1,25 @@
 ---
 title: "Prometheus Metrics"
-description: "Enable GoModel's experimental Prometheus metrics with METRICS_ENABLED, scrape the /metrics endpoint, and see which gateway metrics are exported."
+description: "Enable Gateway's experimental Prometheus metrics with METRICS_ENABLED, scrape the /metrics endpoint, and see which gateway metrics are exported."
 icon: "chart-line"
 keywords: ["Prometheus", "metrics", "monitoring", "observability", "Grafana"]
 ---
 
 <Warning>
   Prometheus support is **experimental**. The metric names, labels, and
-  configuration surface may change without notice. Pin to a specific GoModel
+  configuration surface may change without notice. Pin to a specific Gateway
   version if you depend on a stable schema.
 </Warning>
 
 This guide explains how to configure the experimental Prometheus metrics
-endpoint in GoModel.
+endpoint in Gateway.
 
 ## Quick Start
 
 ### Disabled by Default
 
 Metrics are **disabled by default**. To enable metrics collection, set
-`METRICS_ENABLED=true` and start GoModel:
+`METRICS_ENABLED=true` and start Gateway:
 
 <CodeGroup>
 
@@ -37,11 +37,11 @@ docker run --rm -p 8080:8080 \
 ```
 
 ```bash Binary (make build)
-# Requires Go 1.26.4+; produces bin/gomodel.
+# Requires Go 1.26.4+; produces bin/gateway.
 make build
 
 export METRICS_ENABLED=true
-./bin/gomodel
+./bin/gateway
 # Metrics available at http://localhost:8080/metrics
 ```
 
@@ -50,7 +50,7 @@ export METRICS_ENABLED=true
 <Note>
   The rest of this guide shows just the variable being set. Apply it via
   whichever launcher you picked above — `.env` plus `--env-file`, an inline
-  `-e` flag, or `export` before `./bin/gomodel` — and restart GoModel.
+  `-e` flag, or `export` before `./bin/gateway` — and restart Gateway.
 </Note>
 
 ### Disable Metrics
@@ -325,7 +325,7 @@ echo $METRICS_ENABLED  # "true" enables; empty or "false" disables
 
 Set `METRICS_ENABLED=true` via your `.env` file, an inline `-e METRICS_ENABLED=true`
 flag, or `export METRICS_ENABLED=true` (see the [Quick Start](#disabled-by-default)
-for the three launch forms), then restart GoModel.
+for the three launch forms), then restart Gateway.
 
 ### No Metrics Data Appearing
 

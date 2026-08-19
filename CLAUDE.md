@@ -1,4 +1,4 @@
-This project is GoModel - a high-performance, lightweight AI gateway that routes requests to multiple AI model providers through an OpenAI-compatible API.
+This project is Gateway - a high-performance, lightweight AI gateway that routes requests to multiple AI model providers through an OpenAI-compatible API.
 
 ## Core Principles
 
@@ -98,7 +98,7 @@ Before opening a PR:
 - Mention provider-specific behavior when relevant.
 - Update documentation for new configuration or API behavior.
 
-If this repository is not the official GoModel repository, ask the user whether they also want to create a PR against the official repository:
+If this repository is not the official repository, ask the user whether they also want to create a PR against the official upstream repository:
 
 [https://github.com/ENTERPILOT/GoModel/](https://github.com/ENTERPILOT/GoModel/)
 

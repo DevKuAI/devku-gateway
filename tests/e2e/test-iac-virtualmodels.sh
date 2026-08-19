@@ -21,7 +21,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
-BIN="${GOMODEL_RELEASE_BINARY:-$REPO/bin/gomodel}"
+BIN="${GOMODEL_RELEASE_BINARY:-$REPO/bin/gateway}"
 WORK="${IAC_WORK_DIR:-/tmp/gomodel-iac-vm-$$}"
 
 PASS=0; FAIL=0

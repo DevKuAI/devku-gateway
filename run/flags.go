@@ -29,11 +29,11 @@ func parseCLI(productName string, args []string, output io.Writer) (cliOptions, 
 	flags := flag.NewFlagSet(productName, flag.ContinueOnError)
 	flags.SetOutput(output)
 	flags.BoolVar(&opts.Version, "version", false, "Print version information")
-	flags.BoolVar(&opts.Health, "health", false, "Check the local GoModel health (liveness) endpoint and exit")
+	flags.BoolVar(&opts.Health, "health", false, "Check the local Gateway health (liveness) endpoint and exit")
 	flags.DurationVar(&opts.HealthTimeout, "health-timeout", defaultHealthTimeout, "Timeout for --health")
-	flags.BoolVar(&opts.Ready, "ready", false, "Check the local GoModel readiness endpoint and exit")
+	flags.BoolVar(&opts.Ready, "ready", false, "Check the local Gateway readiness endpoint and exit")
 	flags.DurationVar(&opts.ReadyTimeout, "ready-timeout", defaultReadyTimeout, "Timeout for --ready")
-	flags.BoolVar(&opts.Reload, "reload", false, "Tell the running GoModel to reload its configuration and exit")
+	flags.BoolVar(&opts.Reload, "reload", false, "Tell the running Gateway to reload its configuration and exit")
 	if err := flags.Parse(args); err != nil {
 		return opts, err
 	}

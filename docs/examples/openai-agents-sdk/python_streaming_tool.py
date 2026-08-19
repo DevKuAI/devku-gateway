@@ -24,7 +24,7 @@ set_tracing_disabled(True)
 @function_tool
 def gateway_status() -> str:
     """Return the status of the local gateway smoke test."""
-    return "GoModel is reachable through the OpenAI-compatible Responses API."
+    return "Gateway is reachable through the OpenAI-compatible Responses API."
 
 
 agent = Agent(

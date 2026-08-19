@@ -1,28 +1,28 @@
 ---
 title: "Cost tracking"
-description: "How GoModel estimates request costs, where pricing comes from, how to override it, and how to recalculate stored costs."
+description: "How Gateway estimates request costs, where pricing comes from, how to override it, and how to recalculate stored costs."
 icon: "calculator"
 keywords: ["cost tracking", "LLM cost", "token pricing", "spend", "pricing override", "cost estimate"]
 ---
 
-GoModel estimates the cost of every tracked request from model pricing and shows the totals on the dashboard.
+Gateway estimates the cost of every tracked request from model pricing and shows the totals on the dashboard.
 
 <Warning>
   These costs are **estimates**, not a billing record. Unless a provider reports
-  an exact cost, GoModel multiplies the tokens a provider reports by that model's
+  an exact cost, Gateway multiplies the tokens a provider reports by that model's
   configured rates, so discounts, promotions, and provider-side rounding are not
   reflected. Treat the provider's dashboard as the source of truth, and check
-  GoModel figures against it before using them for invoicing or reconciliation.
+  Gateway figures against it before using them for invoicing or reconciliation.
 </Warning>
 
 ## How costs are estimated
 
-For each request GoModel prices:
+For each request Gateway prices:
 
 - **Input** and **output** tokens at the model's per-million-token (MTok) rates.
 - **Cached input**, **reasoning**, and **audio** tokens at their own rates when the provider reports them, so cache-heavy and reasoning-heavy traffic is priced correctly.
 
-When a provider returns an exact cost (OpenRouter credits, xAI `cost_in_usd_ticks`), GoModel uses that value instead of catalog pricing. Each row records which method was used in its `cost_source` field: `model_pricing`, `openrouter_credits`, or `xai_cost_in_usd_ticks`.
+When a provider returns an exact cost (OpenRouter credits, xAI `cost_in_usd_ticks`), Gateway uses that value instead of catalog pricing. Each row records which method was used in its `cost_source` field: `model_pricing`, `openrouter_credits`, or `xai_cost_in_usd_ticks`.
 
 <Note>
   Cached tokens are discounted only when the model's pricing includes a
@@ -48,14 +48,14 @@ Override pricing when the catalog price is wrong, missing, or differs from your 
 <Frame caption="The Models page lists each model's prices; the $ action opens its pricing override">
   <img
     src="/features/pricing-override-models.png"
-    alt="GoModel Models page listing registered models with input and output prices per MTok and a pricing override action on each row"
+    alt="Gateway Models page listing registered models with input and output prices per MTok and a pricing override action on each row"
   />
 </Frame>
 
 <Frame caption="Set a price type and USD value; saved fields override catalog and config.yaml pricing for the selector">
   <img
     src="/features/pricing-override-editor.png"
-    alt="GoModel Pricing override editor showing the selector, an Input dollars-per-MTok price type, and its USD value"
+    alt="Gateway Pricing override editor showing the selector, an Input dollars-per-MTok price type, and its USD value"
   />
 </Frame>
 

@@ -8,7 +8,7 @@ Depends on: `feat(quotas): add per-child user-path templates` (`#670`)
 ## 1. Why
 
 Request and token windows live only in process memory. A restart or
-`gomodel --reload` (SIGHUP) starts them at zero. Minute windows barely
+`gateway --reload` (SIGHUP) starts them at zero. Minute windows barely
 notice; an hour or day cap — the thing operators use for daily provider
 quotas and team allowances — silently resets. The original spec documented
 this and listed two follow-ups:

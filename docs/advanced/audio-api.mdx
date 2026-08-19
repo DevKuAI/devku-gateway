@@ -1,21 +1,21 @@
 ---
 title: "Audio API"
-description: "OpenAI-compatible text-to-speech and transcription through GoModel, routed by model with the same access rules, budgets, and virtual models as chat."
+description: "OpenAI-compatible text-to-speech and transcription through Gateway, routed by model with the same access rules, budgets, and virtual models as chat."
 icon: "audio-lines"
 keywords: ["audio API", "text-to-speech", "speech-to-text", "transcription", "TTS", "STT"]
 ---
 
 ## Overview
 
-GoModel exposes the **OpenAI-compatible audio endpoints** for text-to-speech (TTS)
+Gateway exposes the **OpenAI-compatible audio endpoints** for text-to-speech (TTS)
 and speech-to-text (STT). Clients and SDKs that already call OpenAI's
-`/v1/audio/*` routes can point at GoModel unchanged.
+`/v1/audio/*` routes can point at Gateway unchanged.
 
 Requests route **by model** through the same registry used for chat and
 embeddings, so `model` selection, `provider` hints, virtual models, per-key model
 access rules ([user paths](/features/user-path)), and budgets all apply. Audio is
 served by OpenAI and the OpenAI-compatible providers (OpenRouter, Azure OpenAI,
-vLLM, Oracle, Z.ai), plus providers whose **native audio APIs GoModel translates**
+vLLM, Oracle, Z.ai), plus providers whose **native audio APIs Gateway translates**
 behind the same endpoints: [Xiaomi MiMo](/providers/xiaomi) (TTS and ASR via chat
 completions), [Cohere](/providers/cohere) (transcription), and
 [MiniMax](/providers/minimax) (TTS via its native `t2a_v2` API). A provider that
@@ -38,7 +38,7 @@ curl https://your-gateway/v1/audio/speech \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4o-mini-tts",
-    "input": "Hello from GoModel.",
+    "input": "Hello from Gateway.",
     "voice": "alloy",
     "response_format": "wav"
   }' \
@@ -57,7 +57,7 @@ client = OpenAI(
 
 speech = client.audio.speech.create(
     model="gpt-4o-mini-tts",
-    input="Hello from GoModel.",
+    input="Hello from Gateway.",
     voice="alloy",
     response_format="wav",
 )
@@ -75,7 +75,7 @@ const client = new OpenAI({
 
 const speech = await client.audio.speech.create({
   model: "gpt-4o-mini-tts",
-  input: "Hello from GoModel.",
+  input: "Hello from Gateway.",
   voice: "alloy",
   response_format: "wav",
 });
@@ -148,7 +148,7 @@ console.log(transcription.text);
 JSON object; `text`, `srt`, and `vtt` return a `text/plain` body.
 
 <Tip>
-  The bracketed `timestamp_granularities[]` form key is canonical, but GoModel
+  The bracketed `timestamp_granularities[]` form key is canonical, but Gateway
   also accepts the unbracketed `timestamp_granularities` for client compatibility.
 </Tip>
 

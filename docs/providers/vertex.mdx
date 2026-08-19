@@ -1,6 +1,6 @@
 ---
 title: "Google Vertex AI"
-description: "Configure Gemini on Google Vertex AI in GoModel, including ADC and service-account authentication, regions, and native vs OpenAI-compatible routing."
+description: "Configure Gemini on Google Vertex AI in Gateway, including ADC and service-account authentication, regions, and native vs OpenAI-compatible routing."
 icon: "/brand/vertex.svg"
 keywords: ["Google Vertex AI", "Gemini", "ADC", "service account", "provider setup"]
 ---
@@ -9,7 +9,7 @@ This page covers Gemini hosted on **Google Vertex AI**. For Gemini through
 Google AI Studio API keys, see the [Google Gemini guide](/providers/gemini).
 
 Vertex needs a GCP project, a region where the model is available, and either
-Application Default Credentials or a service-account JSON key. GoModel routes
+Application Default Credentials or a service-account JSON key. Gateway routes
 to Vertex's native Gemini publisher endpoint by default; switch to the
 OpenAI-compatible endpoint when you need its compatibility behavior.
 

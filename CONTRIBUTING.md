@@ -1,8 +1,6 @@
-# Contributing to GoModel
+# Contributing to Gateway
 
 Thank you for contributing!
-
-Please note that this is currently a one-person venture, so reviews and replies may take some time. Sorry for any delays, and thank you for your patience.
 
 ## Guidelines
 
@@ -10,9 +8,8 @@ We use AI tools to speed up development and code review. Because of that, you ma
 
 You do not need to fix every AI-generated comment. Sometimes these tools miss the project context or are not aligned with the project vision. Please use your judgment, but try to review at least the comments marked as high priority - P1, critical, major etc.
 
-You may also find helpful this short note about our technical philosophy:
-
-https://gomodel.enterpilot.io/docs/about/technical-philosophy
+See the [technical philosophy](docs/about/technical-philosophy.mdx) for the
+project's implementation principles.
 
 ## Commit Messages
 
@@ -47,17 +44,13 @@ development, run the gateway on :8080 and `npm run dev` in `web/dashboard/`
 
 For questions, ideas, or general discussion, please use GitHub Discussions:
 
-https://github.com/ENTERPILOT/GoModel/discussions
-
-You can also reach out on Discord. If something is urgent, feel free to ping me: `SantiagoDePL`.
+https://github.com/DevKuAI/devku-gateway/discussions
 
 ## License
 
 The project is currently licensed under the MIT License.
 
-If you want to understand our perspective on the future of the license, please read:
-
-https://gomodel.enterpilot.io/docs/about/license
+See the [license documentation](docs/about/license.mdx) for details.
 
 By submitting a contribution, you confirm that you have the right to submit it.
 

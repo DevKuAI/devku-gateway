@@ -8,7 +8,7 @@ keywords: ["budgets", "spend limits", "cost controls", "user path", "labels"]
 ## Overview
 
 Budgets let you set spend limits for a `user_path` subtree or a request
-[label](/features/labelling). GoModel evaluates them from tracked usage cost
+[label](/features/labelling). Gateway evaluates them from tracked usage cost
 records and blocks matching requests when a limit has already been spent.
 
 Every budget has a **scope** that names what it limits:
@@ -46,7 +46,7 @@ records:
 USAGE_ENABLED=true
 ```
 
-If usage tracking is disabled, GoModel starts with budget management disabled
+If usage tracking is disabled, Gateway starts with budget management disabled
 and logs a warning.
 
 ## Create budgets
@@ -59,7 +59,7 @@ Budgets -> Create Budget
 
 <img
   src="/features/budgets.png"
-  alt="GoModel dashboard Budgets page listing per-user-path monthly, weekly, and daily budgets with spend bars and remaining amounts"
+  alt="Gateway dashboard Budgets page listing per-user-path monthly, weekly, and daily budgets with spend bars and remaining amounts"
   style={{ width: "100%", maxWidth: "1280px", height: "auto" }}
   className="rounded-lg"
 />
@@ -84,7 +84,7 @@ budgets:
         - period: "weekly"
           amount: 50.00
     - path: "/customers"
-      # GoModel Pro: requires the quota_templates entitlement.
+      # Gateway Pro: requires the quota_templates entitlement.
       per_child: true
       limits:
         - period: "daily"
@@ -105,7 +105,7 @@ Or use environment variables:
 ```env
 SET_BUDGET_TEAM__ALPHA="daily=10,weekly=50"
 SET_BUDGET_="monthly=500"
-# GoModel Pro (quota_templates entitlement):
+# Gateway Pro (quota_templates entitlement):
 SET_BUDGET_CUSTOMERS='[{"period":"daily","amount":5,"per_child":true}]'
 ```
 
@@ -179,16 +179,16 @@ Labels come from the tagging rules and from labels attached to the managed API
 key that authenticated the request; see [Labelling](/features/labelling). A
 request carrying several labels is charged against every matching label budget.
 
-If multiple budgets match a request, GoModel checks all matching limits in one
+If multiple budgets match a request, Gateway checks all matching limits in one
 lookup. The request is rejected if any matching limit is exhausted.
 
 ### Dynamic per-child budgets
 
 <Info>
-  Dynamic per-child budgets are available in GoModel Pro and require the
+  Dynamic per-child budgets are available in Gateway Pro and require the
   `quota_templates` license entitlement. Without it, admin API writes are
   rejected with 403 `quota_templates_not_entitled`, and `per_child: true` in
-  configuration aborts startup — GoModel never silently falls back to one
+  configuration aborts startup — Gateway never silently falls back to one
   shared subtree budget, since that would change enforcement semantics.
 </Info>
 
@@ -231,7 +231,7 @@ precedence.
 
 <Note>
   Response cache hits can return before budget enforcement. If a cached response
-  exists, GoModel can serve it without spending additional provider cost.
+  exists, Gateway can serve it without spending additional provider cost.
 </Note>
 
 ## Reset windows

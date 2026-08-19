@@ -5266,7 +5266,7 @@ curl -fsS -H "$ADMIN_AUTH_HEADER" -X DELETE "$AUTH_BASE_URL/admin/budgets" \
 
 ## 25. Rate limit counters across reload
 
-These scenarios cover request-window persistence across `gomodel --reload`
+These scenarios cover request-window persistence across `gateway --reload`
 (SIGHUP). Hour windows so the cap outlives the reload wait. Shared
 user-path rules only — the OSS release stack has no `quota_templates`
 entitlement.

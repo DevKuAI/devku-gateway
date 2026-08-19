@@ -5,7 +5,7 @@ icon: "shield-check"
 keywords: ["resilience", "retries", "circuit breaker", "backoff", "fault tolerance"]
 ---
 
-GoModel wraps every upstream provider call with two resilience layers:
+Gateway wraps every upstream provider call with two resilience layers:
 
 1. **Retry with exponential backoff** — repeats a failed request against the
    same provider with growing delays.
@@ -208,6 +208,6 @@ Unhealthy until its first successful fetch.
 ## Failover vs. Resilience
 
 The retry and circuit breaker layers stay on a single provider. If you also
-want GoModel to try a different model or provider when the primary keeps
+want Gateway to try a different model or provider when the primary keeps
 failing, configure manual failover rules. See
 [Failover](/features/failover).

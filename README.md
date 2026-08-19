@@ -1,89 +1,87 @@
 <p align="center">
-  <img alt="GoModel logo" src="docs/logo.svg" width="96">
+  <img alt="Gateway logo" src="docs/logo.svg" width="96">
 </p>
 
 <h1 align="center">
-  GoModel - The last AI gateway you will ever need
+  Gateway
 </h1>
 
 <p align="center">
-  <a href="https://github.com/ENTERPILOT/GoModel/actions/workflows/test.yml"><img alt="CI" src="https://github.com/ENTERPILOT/GoModel/actions/workflows/test.yml/badge.svg"></a>
-  <a href="https://github.com/ENTERPILOT/GoModel/blob/main/go.mod"><img alt="GO Version" src="https://img.shields.io/github/go-mod/go-version/ENTERPILOT/GoModel?label=GO"></a>
-  <a href="https://hub.docker.com/r/enterpilot/gomodel"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/enterpilot/gomodel?label=Docker%20Pulls"></a>
-  <a href="https://discord.gg/gaEB9BQSPH"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white"></a>
+  A high-performance, lightweight AI gateway with OpenAI-compatible APIs.
 </p>
 
 <p align="center">
-  <a href="https://news.ycombinator.com/item?id=47849097"><img alt="Hacker News" src="https://img.shields.io/badge/Hacker%20News-Apr%2021%20%2726%20%7C%20%234-brightgreen?logo=ycombinator&logoColor=white"></a>
-  <a href="https://gomodel.enterpilot.io/docs?utm_source=readme"><img alt="docs GoModel" src="https://img.shields.io/badge/Docs-GoModel-blue"></a>
+  <a href="https://github.com/DevKuAI/devku-gateway/actions/workflows/test.yml"><img alt="CI" src="https://github.com/DevKuAI/devku-gateway/actions/workflows/test.yml/badge.svg"></a>
+  <a href="https://github.com/DevKuAI/devku-gateway/blob/main/go.mod"><img alt="GO Version" src="https://img.shields.io/github/go-mod/go-version/DevKuAI/devku-gateway?label=GO"></a>
 </p>
 
 <p align="center">
-  <a href="https://news.ycombinator.com/item?id=47849097"><img alt="GoModel on Hacker News" src="https://hackerbadge.vercel.app/api?id=47849097"></a>
+  <a href="./docs/getting-started/quickstart.mdx">Documentation</a> |
+  <a href="./docs/advanced/configuration.mdx">Configuration</a> |
+  <a href="https://github.com/DevKuAI/devku-gateway">Repository</a> |
+  <a href="https://github.com/ENTERPILOT/GoModel">Original upstream</a>
 </p>
 
-<p align="center">
-  GoModel is the fastest and the most resource-efficient AI Gateway (<a href="https://gomodel.enterpilot.io/docs/about/benchmarks?utm_source=readme">the self-reproducible benchmarks</a>). It's an alternative to LiteLLM (which was hacked recently) and Portkey (which is no longer maintained on GitHub).
-</p>
+Gateway routes requests to multiple AI model providers through a single API. It
+adds provider routing, failover, budgets, rate limits, caching, usage tracking,
+guardrails, virtual models, and an operations dashboard without requiring client
+applications to adopt a provider-specific API.
 
-<a href="https://demo.enterpilot.io/admin/dashboard?utm_source=readme">
-  <img src="docs/2026-07-07_demo.gif" alt="GoModel AI gateway dashboard showing AI usage analytics, observability panel, token and costs tracking, and estimated cost monitoring" width="100%">
-</a>
-<p align="center">
-  (click on the animation ↑ to see the live demo)
-</p>
-
-<p>
-  GoModel saves you money and nerves.
-</p>
-<p>
-  <strong>Money</strong> - because you can remember the responses on this layer (caching), track your spending and do tricks like prompt compression and intelligent routing.
-</p>
-<p>
-  <strong>Nerves</strong> - because we strive to achieve good quality and reliability. Our ambition is to be the last AI gateway you will need - the most reliable, resource-optimal, feature-rich and fast.
-</p>
+> [!NOTE]
+> Gateway is maintained by [DevKuAI](https://github.com/DevKuAI) as a downstream
+> distribution of the original
+> [ENTERPILOT/GoModel](https://github.com/ENTERPILOT/GoModel) project. Upstream
+> application logic is synchronized into this repository, while Gateway keeps
+> its own product name, distribution artifacts, and admin experience.
 
 ## Quick Start
 
-**Step 1:** Install and start GoModel
+### 1. Install and start Gateway
 
-**macOS / Linux**
+**macOS and Linux**
 
 ```bash
-curl -fsSL https://gomodel.enterpilot.io/install.sh | sh
-# OPENAI_API_KEY="your-openai-key" # (optional)
-gomodel
+curl -fsSL https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.sh | sh
+# Optional; providers can also be added in the dashboard.
+export OPENAI_API_KEY="your-openai-key"
+gateway
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-irm https://gomodel.enterpilot.io/install.ps1 | iex
-# $env:OPENAI_API_KEY = "your-openai-key" # (optional)
-gomodel
+irm https://raw.githubusercontent.com/DevKuAI/devku-gateway/main/docs/install/install.ps1 | iex
+# Optional; providers can also be added in the dashboard.
+$env:OPENAI_API_KEY = "your-openai-key"
+gateway
 ```
 
 **Docker**
 
 ```bash
+docker build -t gateway .
 docker run --rm -p 8080:8080 \
   -e OPENAI_API_KEY="your-openai-key" \
-  enterpilot/gomodel
+  gateway
 ```
 
-ℹ️ You can configure GoModel with `.env` variables, a `config.yaml` file, OR directly in the dashboard.
+Gateway can be configured with environment variables, `config.yaml`, or the
+dashboard. Environment variables override YAML settings. See
+[`.env.template`](./.env.template) for the complete list.
 
-ℹ️ Full list of environment variables (including all available providers): [`.env.template`](./.env.template)
+For production, set `ADMIN_PASSWORD` and `GOMODEL_MASTER_KEY`, then provide
+provider credentials through environment variables or your secret manager. The
+default admin password is `password` and is intended only for local setup.
 
-ℹ️ The most secure way in production is to use `.env` to load API keys.
+### 2. Open the dashboard
 
-**Step 2:** Open the dashboard
-
-```
+```text
 http://localhost:8080/admin/dashboard
 ```
 
-**Step 3:** Make your first API call
+Sign in with the configured `ADMIN_PASSWORD`, then add or verify a provider.
+
+### 3. Make your first API call
 
 ```bash
 curl http://localhost:8080/v1/responses \
@@ -94,11 +92,14 @@ curl http://localhost:8080/v1/responses \
   }'
 ```
 
-## Using GoModel with official SDKs
+When `GOMODEL_MASTER_KEY` is configured, add
+`-H "Authorization: Bearer $GOMODEL_MASTER_KEY"` to the request.
 
-GoModel exposes an OpenAI-compatible API at `/v1` and an Anthropic-compatible
+## Using Gateway with official SDKs
+
+Gateway exposes an OpenAI-compatible API at `/v1` and an Anthropic-compatible
 API at `/v1/messages`, so the official SDKs work unchanged - just point the
-base URL at your GoModel server and use your GoModel key
+base URL at your Gateway server and use your Gateway key
 (set up with the `GOMODEL_MASTER_KEY` env variable or one generated in the dashboard).
 
 ### OpenAI SDK
@@ -109,8 +110,8 @@ base URL at your GoModel server and use your GoModel key
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="http://localhost:8080/v1",  # your GoModel server
-    api_key="your-gomodel-key",
+    base_url="http://localhost:8080/v1",  # your Gateway server
+    api_key="your-gateway-key",
 )
 ```
 
@@ -120,14 +121,14 @@ client = OpenAI(
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: "http://localhost:8080/v1", // your GoModel server
-  apiKey: "your-gomodel-key",
+  baseURL: "http://localhost:8080/v1", // your Gateway server
+  apiKey: "your-gateway-key",
 });
 ```
 
 ### Anthropic SDK
 
-The Anthropic SDK authenticates with `x-api-key`, which GoModel accepts
+The Anthropic SDK authenticates with `x-api-key`, which Gateway accepts
 alongside `Authorization: Bearer`.
 
 **Python**
@@ -136,8 +137,8 @@ alongside `Authorization: Bearer`.
 from anthropic import Anthropic
 
 client = Anthropic(
-    base_url="http://localhost:8080",  # your GoModel server (no /v1 suffix)
-    api_key="your-gomodel-key",
+    base_url="http://localhost:8080",  # your Gateway server (no /v1 suffix)
+    api_key="your-gateway-key",
 )
 ```
 
@@ -147,21 +148,21 @@ client = Anthropic(
 import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic({
-  baseURL: "http://localhost:8080", // your GoModel server (no /v1 suffix)
-  apiKey: "your-gomodel-key",
+  baseURL: "http://localhost:8080", // your Gateway server (no /v1 suffix)
+  apiKey: "your-gateway-key",
 });
 ```
 
 ## Supported LLM Providers
 
-GoModel supports OpenAI, Anthropic, Cohere, Google Gemini, Vertex AI, DeepSeek,
+Gateway supports OpenAI, Anthropic, Cohere, Google Gemini, Vertex AI, DeepSeek,
 Groq, Fireworks AI, Meta (Muse Spark), OpenRouter, Z.ai, xAI (Grok), Alibaba
 Cloud Model Studio (Bailian), Kilo AI, MiniMax, Xiaomi MiMo, OpenCode Go, Azure
 OpenAI, Oracle, Ollama, SGLang, vLLM, llm-d, Amazon Bedrock Runtime, Amazon
-Bedrock Mantle, and all OpenAI-compatible providers. Voice: ElevenLabs
-(text-to-speech and speech-to-text).
+Bedrock Mantle, and all OpenAI-compatible providers. ElevenLabs is supported
+for text-to-speech and speech-to-text.
 
-See the [Providers Overview](https://gomodel.enterpilot.io/docs/providers/overview?utm_source=readme) for the full
+See the [provider overview](./docs/providers/overview.mdx) for the full
 per-provider feature matrix (chat, `/responses`, embeddings, files, batches,
 passthrough), credentials, and configuration notes.
 
@@ -178,7 +179,7 @@ docker compose up -d
 # or: make infra
 ```
 
-**Full stack** (adds GoModel + Prometheus; builds the app image):
+**Full stack** (adds Gateway + Prometheus; builds the app image):
 
 ```bash
 docker compose --profile app up -d
@@ -187,59 +188,65 @@ docker compose --profile app up -d
 
 | Service         | URL                   |
 | --------------- | --------------------- |
-| GoModel API     | http://localhost:8080 |
+| Gateway API     | http://localhost:8080 |
 | Adminer (DB UI) | http://localhost:8081 |
 | Prometheus      | http://localhost:9090 |
 
 ### Building the Docker Image Locally
 
 ```bash
-docker build -t gomodel .
-docker run --rm -p 8080:8080 --env-file .env gomodel
+docker build -t gateway .
+docker run --rm -p 8080:8080 --env-file .env gateway
 ```
 
 ---
 
 ## API Endpoints
 
-GoModel exposes OpenAI-compatible and Anthropic-compatible APIs, provider-native
-passthrough, and operations routes. See the
-[API Endpoints reference](https://gomodel.enterpilot.io/docs/advanced/api-endpoints?utm_source=readme) for the full
-endpoint tables, and [Admin Endpoints](https://gomodel.enterpilot.io/docs/advanced/admin-endpoints?utm_source=readme) for
-the admin REST API and dashboard.
+Gateway exposes OpenAI-compatible and Anthropic-compatible APIs, provider-native
+passthrough, and operations routes. See the [API endpoints
+reference](./docs/advanced/api-endpoints.mdx) for the complete endpoint tables
+and [Admin endpoints](./docs/advanced/admin-endpoints.mdx) for the admin REST API
+and dashboard.
 
 ---
 
-## Gateway Configuration
+## Configuration
 
-GoModel is configured through environment variables and an optional `config.yaml`. Environment variables override YAML values. See the [Configuration reference](https://gomodel.enterpilot.io/docs/advanced/configuration?utm_source=readme) for the full list of settings organized by category, along with [`.env.template`](./.env.template) and [`config/config.example.yaml`](./config/config.example.yaml).
+Gateway is configured through environment variables and an optional
+`config.yaml`. Environment variables override YAML values. See the
+[configuration reference](./docs/advanced/configuration.mdx),
+[`.env.template`](./.env.template), and
+[`config/config.example.yaml`](./config/config.example.yaml).
 
 ---
 
 ## Features
 
-- [Caching](https://gomodel.enterpilot.io/docs/features/cache?utm_source=readme) - exact and semantic response caching, so repeated prompts cost nothing
-- [Cost tracking](https://gomodel.enterpilot.io/docs/features/cost-tracking?utm_source=readme) - per-request cost estimates, usage analytics, and spending breakdowns in the dashboard
-- [Budgets](https://gomodel.enterpilot.io/docs/features/budgets?utm_source=readme) - hard spend limits per user, team, or key
-- [Rate limits](https://gomodel.enterpilot.io/docs/features/rate-limits?utm_source=readme) - requests, tokens, and concurrency caps per user path, provider, or model
-- [Virtual models](https://gomodel.enterpilot.io/docs/features/virtual-models?utm_source=readme) - aliases and load balancing (round-robin or cost-based) behind stable model names
-- [Failover](https://gomodel.enterpilot.io/docs/features/failover?utm_source=readme) - automatic rerouting to backup providers, with [retries and circuit breakers](https://gomodel.enterpilot.io/docs/advanced/resilience?utm_source=readme)
-- [Labelling](https://gomodel.enterpilot.io/docs/features/labelling?utm_source=readme) - tag requests from HTTP headers or API keys and break down usage by label
-- [User paths](https://gomodel.enterpilot.io/docs/features/user-path?utm_source=readme) - hierarchical scoping of keys, model access, budgets, usage, and audit logs
-- [MCP gateway](https://gomodel.enterpilot.io/docs/features/mcp-gateway?utm_source=readme) - aggregate your MCP servers behind one authenticated endpoint
-- [Passthrough API](https://gomodel.enterpilot.io/docs/features/passthrough-api?utm_source=readme) - provider-native APIs under `/p/{provider}/...`, with GoModel auth and tracking
-- [Guardrails](https://gomodel.enterpilot.io/docs/advanced/guardrails?utm_source=readme) - request and response policies enforced at the gateway
-- [Provider key rotation](https://gomodel.enterpilot.io/docs/providers/key-rotation?utm_source=readme) - round-robin over multiple API keys to lift per-key rate limits
-- [Observability](https://gomodel.enterpilot.io/docs/guides/prometheus-metrics?utm_source=readme) - Prometheus metrics, audit logs, and live request streaming in the dashboard
+- [Caching](./docs/features/cache.mdx) - exact and semantic response caching
+- [Cost tracking](./docs/features/cost-tracking.mdx) - per-request cost estimates and usage analytics
+- [Budgets](./docs/features/budgets.mdx) - spending limits per user path, label, or key
+- [Rate limits](./docs/features/rate-limits.mdx) - request, token, and concurrency limits
+- [Virtual models](./docs/features/virtual-models.mdx) - stable aliases and load balancing across models
+- [Failover](./docs/features/failover.mdx) - automatic fallback routing with [retries and circuit breakers](./docs/advanced/resilience.mdx)
+- [Labelling](./docs/features/labelling.mdx) - request labels from headers or API keys
+- [User paths](./docs/features/user-path.mdx) - hierarchical access, usage, and policy scopes
+- [MCP gateway](./docs/features/mcp-gateway.mdx) - authenticated aggregation of MCP servers
+- [Passthrough API](./docs/features/passthrough-api.mdx) - provider-native APIs with Gateway authentication and tracking
+- [Guardrails](./docs/advanced/guardrails.mdx) - request and response policies
+- [Provider key rotation](./docs/providers/key-rotation.mdx) - round-robin credential rotation
+- [Observability](./docs/guides/prometheus-metrics.mdx) - Prometheus metrics, audit logs, and live request streaming
 
 ## Roadmap
 
-See the [Roadmap](https://gomodel.enterpilot.io/docs/about/roadmap?utm_source=readme) for commercial features and the public 0.2.0 milestone.
+See the [roadmap](./docs/about/roadmap.mdx) for current progress and planned work.
 
-## Sponsors
+## Repositories
 
-<a href="https://github.com/Neiko2002"><img src="https://github.com/Neiko2002.png" alt="Neiko2002" width="64"></a>
+- **Gateway:** [DevKuAI/devku-gateway](https://github.com/DevKuAI/devku-gateway)
+- **Original upstream:** [ENTERPILOT/GoModel](https://github.com/ENTERPILOT/GoModel)
 
-## Community
+## License
 
-Join our [Discord](https://discord.gg/gaEB9BQSPH) to connect with other GoModel users.
+Gateway is available under the [MIT License](./LICENSE). See the
+[license documentation](./docs/about/license.mdx) for details.

@@ -1,13 +1,13 @@
 ---
 title: "Cache"
-description: "How GoModel response caching works, how to enable exact and semantic cache layers, and what is included in the exact-cache key."
+description: "How Gateway response caching works, how to enable exact and semantic cache layers, and what is included in the exact-cache key."
 icon: "database"
 keywords: ["response cache", "semantic cache", "exact cache", "cache key", "Redis"]
 ---
 
 ## Overview
 
-GoModel ships with two response-cache layers for non-streaming requests on:
+Gateway ships with two response-cache layers for non-streaming requests on:
 
 - `/v1/chat/completions`
 - `/v1/responses`
@@ -98,7 +98,7 @@ non-cacheable responses are never fanned out.
 
 ## Provider prompt-cache planning
 
-After routing resolves the concrete provider and model, GoModel adds a cache
+After routing resolves the concrete provider and model, Gateway adds a cache
 plan when the stable prefix meets that provider's minimum size and the client
 did not already supply a cache directive:
 
@@ -113,7 +113,7 @@ The plan is applied post-routing so provider-only fields cannot leak through a
 fallback to another backend. Cache keys include the concrete provider instance
 and model, and caller-supplied cache controls always win.
 
-Provider prompt-cache planning is enabled by default. To disable GoModel's
+Provider prompt-cache planning is enabled by default. To disable Gateway's
 automatic planning while continuing to pass through compatible client cache
 directives, set:
 

@@ -1,13 +1,13 @@
 ---
 title: "Configuration"
-description: "Configure GoModel with environment variables, .env files, or config.yaml, and see which layer wins. Every setting has a default, so zero config works."
+description: "Configure Gateway with environment variables, .env files, or config.yaml, and see which layer wins. Every setting has a default, so zero config works."
 icon: "sliders-horizontal"
 keywords: ["configuration", "environment variables", ".env", "settings"]
 ---
 
 ## Good defaults
 
-GoModel uses a good defaults philosophy. This means that the default settings should be enough to use it.
+Gateway uses a good defaults philosophy. This means that the default settings should be enough to use it.
 
 ## How to override the default settings?
 
@@ -22,20 +22,20 @@ flowchart LR
 ```
 
 <Tip>
-  As GoModel works out of the box with no configuration files, you can try it in
+  As Gateway works out of the box with no configuration files, you can try it in
   a minute.
 
 Start here: [Quick Start](/getting-started/quickstart)
 
 </Tip>
 
-GoModel automatically discovers providers from well-known environment variables.
+Gateway automatically discovers providers from well-known environment variables.
 
 ## Configuration Methods
 
 ### 1. Environment Variables
 
-The most common way to configure GoModel. Set any of the variables below to override defaults.
+The most common way to configure Gateway. Set any of the variables below to override defaults.
 
 #### Server
 
@@ -47,10 +47,10 @@ The most common way to configure GoModel. Set any of the variables below to over
 | `GOMODEL_DEMO_MODE`  | Enable public demo warnings in logs and the dashboard  | `false`                |
 | `BODY_SIZE_LIMIT`    | Max request body size (e.g., `10M`, `1024K`, `500KB`) | _(no limit)_           |
 | `USER_PATH_HEADER`   | Header used to read/write request `user_path` values  | `X-GoModel-User-Path`  |
-| `PID_FILE`           | Where the running gateway records its process id for `gomodel --reload`. Changing it needs a restart | `data/gomodel.pid` next to a `./data` directory, otherwise the per-user data directory |
+| `PID_FILE`           | Where the running gateway records its process id for `gateway --reload`. Changing it needs a restart | `data/gomodel.pid` next to a `./data` directory, otherwise the per-user data directory |
 
 Set `GOMODEL_DEMO_MODE=true` for a public or shared demonstration instance.
-GoModel logs a warning at startup and every five minutes, renders a persistent
+Gateway logs a warning at startup and every five minutes, renders a persistent
 warning at the top of the dashboard, and exposes `DEMO_MODE=on` through the
 allowlisted `/admin/runtime/config` response. Demo mode does not reset storage;
 schedule that separately in the deployment.
@@ -161,7 +161,7 @@ to `LOGGING_FLUSH_INTERVAL` seconds to appear through the stored-log API.
 <Note>
   `LOGGING_LOG_REVISION_BODIES` refines `LOGGING_LOG_BODIES` for the ingress
   request-rewrite chain — it has no effect unless body logging is enabled. With
-  both on, every rewriter that changed a request (for example GoModel Pro token
+  both on, every rewriter that changed a request (for example Gateway Pro token
   compression) stores the full rewritten body alongside the original client
   body in the audit entry. Disabling it keeps the revision metadata (rewriter
   name, byte sizes, tokens saved, change detail) but drops the extra body copy,
@@ -194,7 +194,7 @@ to `LOGGING_FLUSH_INTERVAL` seconds to appear through the stored-log API.
 
 #### Budgets
 
-Budgets use tracked usage cost records. If usage tracking is disabled, GoModel
+Budgets use tracked usage cost records. If usage tracking is disabled, Gateway
 starts with budget management disabled and logs a warning.
 
 | Variable            | Description                                             | Default |
@@ -216,7 +216,7 @@ some shells and orchestrators, including some Kubernetes validators, may reject
 it. Use YAML or the dashboard when your environment cannot set it.
 
 Migration note: budget management depends on usage tracking. If
-`USAGE_ENABLED=false`, GoModel starts with budgets disabled and logs a warning,
+`USAGE_ENABLED=false`, Gateway starts with budgets disabled and logs a warning,
 even when `BUDGETS_ENABLED=true`. Set both `USAGE_ENABLED=true` and
 `BUDGETS_ENABLED=true` to enforce budgets.
 
@@ -285,7 +285,7 @@ Set these to automatically register providers. No YAML configuration required.
 | `LLAMACPP_BASE_URL`  | llama.cpp llama-server / LM Studio (no API key needed unless started with `--api-key`) |
 | `LLMD_BASE_URL`      | llm-d Router/EPP (no API key needed unless its Gateway requires one) |
 
-Most providers can use a custom base URL via `<PROVIDER>_BASE_URL` (for example `OPENAI_BASE_URL`). Chutes AI defaults to `https://llm.chutes.ai/v1` and can be overridden with `CHUTES_BASE_URL`. DeepSeek defaults to `https://api.deepseek.com`; set `DEEPSEEK_BASE_URL` only for a compatible proxy or alternate DeepSeek endpoint. OpenRouter defaults to `https://openrouter.ai/api/v1` and can be overridden with `OPENROUTER_BASE_URL`. Kilo AI defaults to `https://api.kilo.ai/api/gateway` and can be overridden with `KILO_BASE_URL`. Z.ai defaults to `https://api.z.ai/api/paas/v4`; set `ZAI_BASE_URL=https://api.z.ai/api/coding/paas/v4` for the GLM Coding Plan endpoint. SGLang defaults to `http://localhost:30000/v1` when `SGLANG_API_KEY` is set, but keyless deployments should set `SGLANG_BASE_URL` explicitly to register the provider. vLLM follows the same pattern at `http://localhost:8000/v1`. llama.cpp's `LLAMACPP_BASE_URL` is always required (llama-server's default port collides with GoModel's own 8080, so there is no default); `LLAMACPP_API_KEY` is optional. llm-d has no universal endpoint, so `LLMD_BASE_URL` is always required; `LLMD_API_KEY` is optional. Azure uses `AZURE_BASE_URL` for its deployment base URL and accepts an optional `AZURE_API_VERSION` override; otherwise it defaults to `2024-10-21`. Oracle requires `ORACLE_BASE_URL` because its OpenAI-compatible endpoint is region-specific.
+Most providers can use a custom base URL via `<PROVIDER>_BASE_URL` (for example `OPENAI_BASE_URL`). Chutes AI defaults to `https://llm.chutes.ai/v1` and can be overridden with `CHUTES_BASE_URL`. DeepSeek defaults to `https://api.deepseek.com`; set `DEEPSEEK_BASE_URL` only for a compatible proxy or alternate DeepSeek endpoint. OpenRouter defaults to `https://openrouter.ai/api/v1` and can be overridden with `OPENROUTER_BASE_URL`. Kilo AI defaults to `https://api.kilo.ai/api/gateway` and can be overridden with `KILO_BASE_URL`. Z.ai defaults to `https://api.z.ai/api/paas/v4`; set `ZAI_BASE_URL=https://api.z.ai/api/coding/paas/v4` for the GLM Coding Plan endpoint. SGLang defaults to `http://localhost:30000/v1` when `SGLANG_API_KEY` is set, but keyless deployments should set `SGLANG_BASE_URL` explicitly to register the provider. vLLM follows the same pattern at `http://localhost:8000/v1`. llama.cpp's `LLAMACPP_BASE_URL` is always required (llama-server's default port collides with Gateway's own 8080, so there is no default); `LLAMACPP_API_KEY` is optional. llm-d has no universal endpoint, so `LLMD_BASE_URL` is always required; `LLMD_API_KEY` is optional. Azure uses `AZURE_BASE_URL` for its deployment base URL and accepts an optional `AZURE_API_VERSION` override; otherwise it defaults to `2024-10-21`. Oracle requires `ORACLE_BASE_URL` because its OpenAI-compatible endpoint is region-specific.
 
 Every provider type also accepts a comma-separated configured model list via
 `<PROVIDER>_MODELS`, for example `OPENROUTER_MODELS`, `ORACLE_MODELS`,
@@ -297,11 +297,11 @@ providers that define a list and skip their upstream `/models` calls. YAML
 `providers.<name>.models` provides the same model-list input for named provider
 blocks.
 
-For OpenRouter, GoModel also sends default attribution headers unless the request already sets them. Override those defaults with `OPENROUTER_SITE_URL` and `OPENROUTER_APP_NAME`.
+For OpenRouter, Gateway also sends default attribution headers unless the request already sets them. Override those defaults with `OPENROUTER_SITE_URL` and `OPENROUTER_APP_NAME`.
 
 ### 2. `.env` File
 
-GoModel automatically loads a `.env` file from the working directory at startup. This is convenient for local development.
+Gateway automatically loads a `.env` file from the working directory at startup. This is convenient for local development.
 
 ```bash
 # .env
@@ -324,7 +324,7 @@ cp .env.template .env
 
 ### 3. Configuration File (YAML)
 
-For more complex setups, you can use an optional YAML configuration file. GoModel looks for it in two locations (in order):
+For more complex setups, you can use an optional YAML configuration file. Gateway looks for it in two locations (in order):
 
 1. `config/config.yaml`
 2. `config.yaml`
@@ -401,7 +401,7 @@ providers:
 
 ### Auto-Discovery from Environment Variables
 
-The simplest way to add providers. GoModel checks for well-known API key environment variables and automatically registers providers:
+The simplest way to add providers. Gateway checks for well-known API key environment variables and automatically registers providers:
 
 ```bash
 export OPENAI_API_KEY="sk-..."      # Registers "openai" provider
@@ -436,7 +436,7 @@ export LLMD_MODELS="Qwen/Qwen2.5-0.5B-Instruct"
 ```
 
 Use suffixed variables to register more than one instance of the same provider
-type without YAML. GoModel normalizes the suffix to lowercase and converts
+type without YAML. Gateway normalizes the suffix to lowercase and converts
 underscores to hyphens in the configured provider name:
 
 ```bash
@@ -499,7 +499,7 @@ providers:
       - openai.gpt-oss-120b
       - xai.grok-3
 
-  # Add DeepSeek. GoModel translates /v1/responses to DeepSeek chat completions.
+  # Add DeepSeek. Gateway translates /v1/responses to DeepSeek chat completions.
   deepseek:
     type: deepseek
     base_url: "https://api.deepseek.com"
@@ -603,8 +603,8 @@ generated provider names are not enough or you need a larger structured block.
 ### Anthropic `max_tokens` default
 
 Anthropic requires `max_tokens` on every `/v1/messages` request. If a client
-omits it, GoModel injects a fallback so the request still succeeds. OpenAI and
-Gemini treat the field as optional and GoModel does not inject a default for
+omits it, Gateway injects a fallback so the request still succeeds. OpenAI and
+Gemini treat the field as optional and Gateway does not inject a default for
 them.
 
 | Variable                       | Description                                       | Default |
